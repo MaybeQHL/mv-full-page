@@ -1,37 +1,56 @@
-# v-full-page
+# vue-full-page
 
-#### 介绍
-vue全屏滑动组件(目前仅支持移动端，后续支持PC端)
+## 介绍
 
-#### 软件架构
-软件架构说明
+vue全屏滑动组件(目前仅支持移动端，后续支持PC端) 附带animate动画指令
+
+## 安装
+
+拷贝 components/VFullPage 以及 utils/directives.js
+
+yarn add animate.css
+
+yarn add inobounce
+
+```
+// main.js
+
+import 'animate.css'
+import directives from './utils/directives'
+Vue.use(directives)
+
+```
+
+## 使用方法
+```
+<v-full-page     :pages="4" // 全屏页面数量
+                 :page.sync="currentPage"  // 当前页码
+                 :bgArr="bgArr" // 页面背景数组> 
+     <template #page1>
+        <div class="page1">
+          <p v-animate="{
+            name:'bounceInLeft'
+          }">页面1 第一个动画</p>
+          <p v-animate="{
+            name:'bounceInLeft',
+            delay:1
+          }">页面1 第二个动画</p>
+        </div>
+      </template>
+</v-full-page>
+```
 
 
-#### 安装教程
+## 功能点
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.自定义animate动画指令
 
-#### 使用说明
+2.全屏触摸滑动
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+3.页面切换动画重置
 
-#### 参与贡献
+4.支持动画队列式出现
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+5.解决ios滑动页面回弹
 
 
-#### 码云特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  码云官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解码云上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是码云最有价值开源项目，是码云综合评定出的优秀开源项目
-5.  码云官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  码云封面人物是一档用来展示码云会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
