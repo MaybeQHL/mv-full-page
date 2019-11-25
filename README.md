@@ -53,7 +53,6 @@ Vue.use(directives)
 
 ## 使用方法
 ```
-
 <mv-full-page     :pages="4" // 全屏页面数量
                  :page.sync="currentPage"  // 当前页码
                  :bgArr="bgArr" // 页面背景数组> 
@@ -70,6 +69,7 @@ Vue.use(directives)
       </template>
 </mv-full-page>
 <script>
+// 按需引入
 import 'mv-full-page/lib-dist/mv-full-page.css'
 import MvFullPage from 'mv-full-page'
 
@@ -86,5 +86,14 @@ export default {
   }
 }
 </script>
+```
+
+```
+// 全局引入
+// main.js
+import 'mv-full-page/lib-dist/mv-full-page.css'
+import MvFullPage from 'mv-full-page'
+
+Vue.use(MvFullPage)
 ```
 
