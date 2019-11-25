@@ -53,7 +53,6 @@ Vue.use(directives)
 
 ## 使用方法
 ```
-import MVFullPage from 'mv-full-page'
 
 <mv-full-page     :pages="4" // 全屏页面数量
                  :page.sync="currentPage"  // 当前页码
@@ -71,12 +70,12 @@ import MVFullPage from 'mv-full-page'
       </template>
 </mv-full-page>
 
-import VFullPage from '@/components/VFullPage/index.vue'
+import MvFullPage from 'mv-full-page'
 
 export default {
   name: 'home',
   components: {
-    VFullPage
+    MvFullPage
   },
   data () {
     return {
