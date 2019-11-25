@@ -7,6 +7,10 @@ import 'animate.css'
 import directives from './utils/directives'
 Vue.use(directives)
 
+import MvFullPage from '@/components/VFullPage/index.js'
+
+Vue.use(MvFullPage)
+
 Vue.config.productionTip = false
 
 new Vue({
