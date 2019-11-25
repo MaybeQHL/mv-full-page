@@ -22,9 +22,14 @@
 </template>
 
 <script>
+/**
+ * @description vue全屏滚动组件(支持PC端和移动端)
+ * @author maybe 
+ * @warn 转载请注明出处 https://gitee.com/null_639_5368/v-full-page
+ */
 // 禁止IOS回弹库
 import inobounce from 'inobounce'
-
+import { debounce } from './utils'
 export default {
   name: 'VFullPage',
   props: {
@@ -48,11 +53,12 @@ export default {
   },
   data () {
     return {
+      isPc: false, // 默认 移动端
       fullHeight: 800,
       maxY: 0,
       startY: 0,
       endY: 0,
-      currentPage: 1,  // 当前页面页码
+      currentPage: 2,  // 当前页面页码
       isRoll: false,  // 是否达到滑动阈值
       isUp: false,   // 是否向上滑动
       isUpdate: true // 页码异步是否更新完成
@@ -62,8 +68,13 @@ export default {
 
   },
   created () {
-    let isIos = this.isIOS();
-    if (isIos) {
+    this.isPc = this.isPCFn();
+    if (!this.isPc) {
+      // let isIos = this.isIOS();
+      // if (isIos) {
+      //   inobounce.enable()
+      // }
+      // 由于安卓微信公众号也存在类似问题，现全平台开启滚动禁用
       inobounce.enable()
     }
   },
@@ -72,13 +83,21 @@ export default {
     this.fullHeight = this.$refs.fullPage.clientHeight;
     // 设置最大滑动高度
     this.maxY = this.pages * this.fullHeight;
-
+    // 初始化容器高度
     this.$refs.allPage.style.height = this.fullHeight * this.pages + 'px';
     // 初始化页面滑动事件
     this.initPageListener();
-    console.log(this.maxY)
   },
   watch: {
+    page: {
+      handler: function (val) {
+        this.currentPage = val;
+        this.$nextTick(() => {
+          this.rollPage(-((val - 1) * this.fullHeight));
+        })
+      },
+      immediate: true
+    },
     currentPage (value) {
       this.$emit('update:page', value)
     }
@@ -94,10 +113,41 @@ export default {
       }
       return false;
     },
+    /**
+     * 判断是否是PC端
+     */
+    isPCFn () {
+      var userAgentInfo = navigator.userAgent;
+      var Agents = ["Android", "iPhone",
+        "SymbianOS", "Windows Phone",
+        "iPad", "iPod"];
+      var flag = true;
+      for (var v = 0; v < Agents.length; v++) {
+        if (userAgentInfo.indexOf(Agents[v]) > 0) {
+          flag = false;
+          break;
+        }
+      }
+      return flag;
+    },
     initPageListener () {
-      document.addEventListener('touchstart', this.pageStart, false)
-      document.addEventListener('touchmove', this.pageMove, false)
-      document.addEventListener('touchend', this.pageEnd, false)
+      if (!this.isPc) {
+        document.addEventListener('touchstart', this.pageStart, false)
+        document.addEventListener('touchmove', this.pageMove, false)
+        document.addEventListener('touchend', this.pageEnd, false)
+      } else {
+        // pc端鼠标滚轮事件监听 使用函数防抖解决滚动多次触发问题
+        window.onmousewheel = document.onmousewheel = debounce(this.pcRoll, 500, true);//IE/Opera/Chrome
+      }
+    },
+    pcRoll (e) {
+      if (e.deltaY > 0) {
+        console.log('滚动下')
+        this.switchPage(true);
+      } else {
+        this.switchPage(false);
+        console.log('滚动上')
+      }
     },
     removePageListener () {
       document.removeEventListener('touchstart');
@@ -119,39 +169,67 @@ export default {
         this.isUp = false;
       }
     },
-    pageEnd (e) {
+    pageEnd () {
       console.log('触摸结束');
       if (this.isRoll && this.isUpdate) {
         // 滑动逻辑
-        let rollY;
-        if (this.isUp && this.currentPage < this.pages) {
-          // 上滑动
-          this.isUpdate = false
-          rollY = -(this.currentPage * this.fullHeight);
-          this.$refs.allPage.style.transform = `translateY(${rollY}px)`;
-          setTimeout(() => {
-            this.currentPage++;
-            this.isUpdate = true
-          }, 800)
-        }
-        if (!this.isUp && this.currentPage > 1) {
-          // 下滑动
-          this.isUpdate = false
-          rollY = -((this.currentPage - 1) * this.fullHeight) + this.fullHeight;
-          this.$refs.allPage.style.transform = `translateY(${rollY}px)`;
-          setTimeout(() => {
-            this.currentPage--;
-            this.isUpdate = true
-          }, 800)
+        if (this.isUp) {
+          // 页面上滑
+          this.switchPage(true);
+        } else {
+          // 页面下滑
+          this.switchPage(false);
         }
         this.isRoll = false;
+      }
+    },
+    rollPage (rollY) {
+      this.$refs.allPage.style.transform = `translateY(${rollY}px)`;
+    },
+    /**
+     * 切换页面
+     * @param   {Boolean} isDown 滑动方向 默认向下滑动 true  向上滑动 false
+     * @author   maybe
+     */
+    switchPage (isDown = true) {
+      if (this.$refs.allPage) {
+        let rollY;
+        this.isUpdate = false
+        if (isDown && this.currentPage < this.pages) {
+          // 向下翻页
+          rollY = -(this.currentPage * this.fullHeight);
+          // 页面开始滑动
+          this.$refs.allPage.style.transform = `translateY(${rollY}px)`;
+          let self = this;
+          setTimeout(() => {
+            // 确保页面滑动动画执行完毕
+            isDown ? self.currentPage++ : self.currentPage--;
+            this.isUpdate = true
+          }, 800)
+        } else if (!isDown && this.currentPage > 1) {
+          // 向上翻页
+          rollY = -((this.currentPage - 1) * this.fullHeight) + this.fullHeight;
+          // 页面开始滑动
+          this.$refs.allPage.style.transform = `translateY(${rollY}px)`;
+          let self = this;
+          setTimeout(() => {
+            // 确保页面滑动动画执行完毕
+            isDown ? self.currentPage++ : self.currentPage--;
+            self.isUpdate = true
+          }, 800)
+        }
       }
     }
   },
   destroyed () {
-    inobounce.disable()
-    // 销毁页面滑动事件
-    this.removePageListener();
+    if (!this.isPc) {
+      // 解除滚动禁用
+      inobounce.disable()
+      // 销毁页面滑动事件
+      this.removePageListener();
+    } else {
+      window.onmousewheel = document.onmousewheel = null;
+    }
   }
 };
 </script>
