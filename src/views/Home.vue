@@ -42,7 +42,7 @@
 
 <script>
 
-import VFullPage from '@/components/VFullPage/index'
+import VFullPage from '@/components/VFullPage/index.vue'
 
 export default {
   name: 'home',

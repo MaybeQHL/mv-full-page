@@ -1,10 +1,13 @@
 {
-  "name": "vue-full-page",
-  "version": "0.1.0",
+  "name": "mv-full-page",
+  "version": "0.1.1",
   "private": false,
+  "main": "lib-dist/v-full-page.umd.min.js",
+  "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build:lib": "vue-cli-service build --mode lib --target lib --name mv-full-page src/components/VFullPage/index.js ",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
