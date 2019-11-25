@@ -1,4 +1,4 @@
-# vue-full-page
+# mv-full-page
 
 ## 介绍
 
@@ -69,7 +69,8 @@ Vue.use(directives)
         </div>
       </template>
 </mv-full-page>
-
+<script>
+import 'mv-full-page/lib-dist/mv-full-page.css'
 import MvFullPage from 'mv-full-page'
 
 export default {
@@ -84,5 +85,6 @@ export default {
     }
   }
 }
+</script>
 ```
 
