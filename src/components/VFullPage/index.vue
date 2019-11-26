@@ -59,7 +59,7 @@ export default {
       startY: 0,
       endY: 0,
       currentPage: 2,  // 当前页面页码
-      isRoll: false,  // 是否达到滑动阈值
+      isRoll: false,  // 是否可以开始滚动
       isUp: false,   // 是否向上滑动
     };
   },
@@ -140,7 +140,6 @@ export default {
       }
     },
     pcRoll (e) {
-      this.isRoll = true;
       if (e.deltaY > 0) {
         console.log('滚动下')
         this.switchPage(true);
@@ -162,24 +161,20 @@ export default {
     pageMove (e) {
       console.log('触摸移动中...')
       if ((e.changedTouches[0].pageY - this.startY) < -50) {
-        this.isRoll = true;
         this.isUp = true;
       } else if ((e.changedTouches[0].pageY - this.startY) > 50) {
-        this.isRoll = true;
         this.isUp = false;
       }
     },
     pageEnd () {
       console.log('触摸结束');
-      if (this.isRoll) {
-        // 滑动逻辑
-        if (this.isUp) {
-          // 页面上滑
-          this.switchPage(true);
-        } else {
-          // 页面下滑
-          this.switchPage(false);
-        }
+      // 滑动逻辑
+      if (this.isUp) {
+        // 页面上滑
+        this.switchPage(true);
+      } else {
+        // 页面下滑
+        this.switchPage(false);
       }
     },
     rollPage (rollY) {
@@ -191,30 +186,36 @@ export default {
      * @author   maybe
      */
     switchPage (isDown = true) {
-      if (this.$refs.allPage) {
+      if (this.$refs.allPage && !this.isRoll) {
         let rollY;
         if (isDown && this.currentPage < this.pages) {
+          this.isRoll = true;
           // 向下翻页
           rollY = -(this.currentPage * this.fullHeight);
           // 页面开始滑动
           this.$refs.allPage.style.transform = `translateY(${rollY}px)`;
           let self = this;
           let rollTransitionend = () => {
-            console.log('解除滑动限制')
-            self.isRoll = false;
+            setTimeout(() => {
+              console.log('解除滑动限制')
+              self.isRoll = false;
+            }, 500)
             self.currentPage++
             this.$refs.allPage.removeEventListener('transitionend', rollTransitionend)
           }
           this.$refs.allPage.addEventListener('transitionend', rollTransitionend)
         } else if (!isDown && this.currentPage > 1) {
+          this.isRoll = true;
           // 向上翻页
           rollY = -((this.currentPage - 1) * this.fullHeight) + this.fullHeight;
           // 页面开始滑动
           this.$refs.allPage.style.transform = `translateY(${rollY}px)`;
           let self = this;
           let rollTransitionend = () => {
-            console.log('解除滑动限制')
-            self.isRoll = false;
+            setTimeout(() => {
+              console.log('解除滑动限制')
+              self.isRoll = false;
+            }, 500)
             self.currentPage--;
             this.$refs.allPage.removeEventListener('transitionend', rollTransitionend)
           }
