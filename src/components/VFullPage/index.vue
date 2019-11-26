@@ -140,6 +140,7 @@ export default {
       }
     },
     pcRoll (e) {
+      this.isRoll = true;
       if (e.deltaY > 0) {
         console.log('滚动下')
         this.switchPage(true);
@@ -179,7 +180,6 @@ export default {
           // 页面下滑
           this.switchPage(false);
         }
-        this.isRoll = false;
       }
     },
     rollPage (rollY) {
@@ -193,7 +193,6 @@ export default {
     switchPage (isDown = true) {
       if (this.$refs.allPage) {
         let rollY;
-        // this.isUpdate = false
         if (isDown && this.currentPage < this.pages) {
           // 向下翻页
           rollY = -(this.currentPage * this.fullHeight);
@@ -201,6 +200,8 @@ export default {
           this.$refs.allPage.style.transform = `translateY(${rollY}px)`;
           let self = this;
           let rollTransitionend = () => {
+            console.log('解除滑动限制')
+            self.isRoll = false;
             self.currentPage++
             this.$refs.allPage.removeEventListener('transitionend', rollTransitionend)
           }
@@ -212,6 +213,8 @@ export default {
           this.$refs.allPage.style.transform = `translateY(${rollY}px)`;
           let self = this;
           let rollTransitionend = () => {
+            console.log('解除滑动限制')
+            self.isRoll = false;
             self.currentPage--;
             this.$refs.allPage.removeEventListener('transitionend', rollTransitionend)
           }
