@@ -1,6 +1,6 @@
 {
   "name": "mv-full-page",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": false,
   "main": "lib-dist/mv-full-page.umd.min.js",
   "license": "MIT",
@@ -28,6 +28,7 @@
     "@vue/cli-service": "^4.0.0",
     "@vue/test-utils": "1.0.0-beta.29",
     "babel-eslint": "^10.0.3",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "sass": "^1.19.0",
