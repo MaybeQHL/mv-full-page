@@ -12,7 +12,7 @@
              :style="{height:fullHeight+'px','background':bgArr[index]}"
              :ref="`page${item}`">
           <div class="page-box"
-               v-show="currentPage==item">
+               v-if="currentPage==item">
             <slot :name="`page${item}`"></slot>
           </div>
         </div>
@@ -239,7 +239,9 @@ export default {
 
 <style scoped lang="scss">
 .full-page-wrapper {
-  position: absolute;
+  position: fixed;
+  top: 0px;
+  left: 0px;
   width: 100%;
   height: 100%;
   background: #cccccc;
