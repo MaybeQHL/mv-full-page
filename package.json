@@ -1,6 +1,6 @@
 {
   "name": "mv-full-page",
-  "version": "0.1.10",
+  "version": "1.0.0",
   "private": false,
   "main": "lib-dist/mv-full-page.umd.min.js",
   "license": "MIT",

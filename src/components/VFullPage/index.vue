@@ -200,20 +200,22 @@ export default {
           // 页面开始滑动
           this.$refs.allPage.style.transform = `translateY(${rollY}px)`;
           let self = this;
-          setTimeout(() => {
-            // 确保页面滑动动画执行完毕
-            isDown ? self.currentPage++ : self.currentPage--;
-          }, 800)
+          let rollTransitionend = () => {
+            self.currentPage++
+            this.$refs.allPage.removeEventListener('transitionend', rollTransitionend)
+          }
+          this.$refs.allPage.addEventListener('transitionend', rollTransitionend)
         } else if (!isDown && this.currentPage > 1) {
           // 向上翻页
           rollY = -((this.currentPage - 1) * this.fullHeight) + this.fullHeight;
           // 页面开始滑动
           this.$refs.allPage.style.transform = `translateY(${rollY}px)`;
           let self = this;
-          setTimeout(() => {
-            // 确保页面滑动动画执行完毕
-            isDown ? self.currentPage++ : self.currentPage--;
-          }, 800)
+          let rollTransitionend = () => {
+            self.currentPage--;
+            this.$refs.allPage.removeEventListener('transitionend', rollTransitionend)
+          }
+          this.$refs.allPage.addEventListener('transitionend', rollTransitionend)
         }
       }
     }
