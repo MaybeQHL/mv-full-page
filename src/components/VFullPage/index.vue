@@ -61,7 +61,6 @@ export default {
       currentPage: 2,  // 当前页面页码
       isRoll: false,  // 是否达到滑动阈值
       isUp: false,   // 是否向上滑动
-      isUpdate: true // 页码异步是否更新完成
     };
   },
   computed: {
@@ -171,7 +170,7 @@ export default {
     },
     pageEnd () {
       console.log('触摸结束');
-      if (this.isRoll && this.isUpdate) {
+      if (this.isRoll) {
         // 滑动逻辑
         if (this.isUp) {
           // 页面上滑
@@ -194,7 +193,7 @@ export default {
     switchPage (isDown = true) {
       if (this.$refs.allPage) {
         let rollY;
-        this.isUpdate = false
+        // this.isUpdate = false
         if (isDown && this.currentPage < this.pages) {
           // 向下翻页
           rollY = -(this.currentPage * this.fullHeight);
@@ -204,7 +203,6 @@ export default {
           setTimeout(() => {
             // 确保页面滑动动画执行完毕
             isDown ? self.currentPage++ : self.currentPage--;
-            this.isUpdate = true
           }, 800)
         } else if (!isDown && this.currentPage > 1) {
           // 向上翻页
@@ -215,7 +213,6 @@ export default {
           setTimeout(() => {
             // 确保页面滑动动画执行完毕
             isDown ? self.currentPage++ : self.currentPage--;
-            self.isUpdate = true
           }, 800)
         }
       }
