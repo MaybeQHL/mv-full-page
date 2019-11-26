@@ -136,7 +136,7 @@ export default {
         document.addEventListener('touchend', this.pageEnd, false)
       } else {
         // pc端鼠标滚轮事件监听 使用函数防抖解决滚动多次触发问题
-        window.onmousewheel = document.onmousewheel = debounce(this.pcRoll, 500, true);//IE/Opera/Chrome
+        window.onmousewheel = document.onmousewheel = debounce(this.pcRoll, 100, true);//IE/Opera/Chrome
       }
     },
     pcRoll (e) {
@@ -199,7 +199,7 @@ export default {
             setTimeout(() => {
               console.log('解除滑动限制')
               self.isRoll = false;
-            }, 500)
+            }, 100)
             self.currentPage++
             this.$refs.allPage.removeEventListener('transitionend', rollTransitionend)
           }
@@ -215,7 +215,7 @@ export default {
             setTimeout(() => {
               console.log('解除滑动限制')
               self.isRoll = false;
-            }, 500)
+            }, 100)
             self.currentPage--;
             this.$refs.allPage.removeEventListener('transitionend', rollTransitionend)
           }
