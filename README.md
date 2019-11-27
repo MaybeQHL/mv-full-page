@@ -60,7 +60,9 @@ Vue.use(directives)
 ```
 <mv-full-page     :pages="4" // 全屏页面数量
                  :page.sync="currentPage"  // 当前页码
-                 :bgArr="bgArr" // 页面背景数组> 
+                 :bgArr="bgArr" // 页面背景数组
+                 :isCache="true" // 默认缓存页面 不缓存（页面元素重新渲染 重置动画）
+                 > 
      <template #page1>  // 这里插槽必须按照page[number]的形式
         <div class="page1">
           <p v-animate="{
@@ -86,7 +88,10 @@ export default {
   data () {
     return {
       currentPage: 1,
-      bgArr: ['cadetblue', 'orange', 'pink', 'green']
+      bgArr: [{
+        isBg:true,
+        src:require('@/assets/....')
+      }, 'orange', 'pink', 'green']
     }
   }
 }

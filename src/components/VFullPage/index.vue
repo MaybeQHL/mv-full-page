@@ -4,17 +4,30 @@
        ref="fullPage">
     <div class="all-page"
          ref="allPage">
-      <template v-for="(item,index) in pages">
+      <template v-for="(item,index) in pagesArr">
         <div class="page"
-             :key="item"
-             :id="`page-${item}`"
-             :data-index="item"
-             :style="{height:fullHeight+'px','background':bgArr[index]}"
+             :key="index"
+             :id="`page-${item.page}`"
+             :data-index="item.page"
+             :style="{
+               height:fullHeight+'px',
+              'background-color':!bgArr[index].isBg?bgArr[index]:'',
+              'background-image':bgArr[index].isBg?`url(${bgArr[index].src})`:''
+              }
+             "
              :ref="`page${item}`">
-          <div class="page-box"
-               v-if="currentPage==item">
-            <slot :name="`page${item}`"></slot>
-          </div>
+          <template v-if="isCache">
+            <div class="page-box"
+                 v-if="item.isShow">
+              <slot :name="`page${item.page}`"></slot>
+            </div>
+          </template>
+          <template v-else>
+            <div class="page-box"
+                 v-if="currentPage == item.page">
+              <slot :name="`page${item.page}`"></slot>
+            </div>
+          </template>
         </div>
       </template>
     </div>
@@ -33,6 +46,11 @@ import { debounce } from './utils'
 export default {
   name: 'VFullPage',
   props: {
+    // 是否缓存页面
+    isCache: {
+      type: Boolean,
+      default: true
+    },
     // 页面总数
     pages: {
       type: Number,
@@ -53,18 +71,18 @@ export default {
   },
   data () {
     return {
+      pagesArr: [],
       isPc: false, // 默认 移动端
       fullHeight: 800,
       maxY: 0,
       startY: 0,
       endY: 0,
-      currentPage: 2,  // 当前页面页码
+      currentPage: 1,  // 当前页面页码
       isRoll: false,  // 是否可以开始滚动
       isUp: false,   // 是否向上滑动
     };
   },
   computed: {
-
   },
   created () {
     this.isPc = this.isPCFn();
@@ -75,6 +93,13 @@ export default {
       // }
       // 由于安卓微信公众号也存在类似问题，现全平台开启滚动禁用
       inobounce.enable()
+    }
+    this.pagesArr.length = 0;
+    for (let index = 0; index < this.pages; index++) {
+      this.pagesArr.push({
+        page: index + 1,
+        isShow: index == 0 ? true : false
+      })
     }
   },
   mounted () {
@@ -158,22 +183,17 @@ export default {
       this.startY = e.changedTouches[0].pageY
       console.log(e.changedTouches[0].pageY)
     },
-    pageMove (e) {
+    pageMove () {
       console.log('触摸移动中...')
-      if ((e.changedTouches[0].pageY - this.startY) < -50) {
-        this.isUp = true;
-      } else if ((e.changedTouches[0].pageY - this.startY) > 50) {
-        this.isUp = false;
-      }
     },
-    pageEnd () {
+    pageEnd (e) {
       console.log('触摸结束');
       // 滑动逻辑
-      if (this.isUp) {
-        // 页面上滑
+      if ((e.changedTouches[0].pageY - this.startY) < -50) {
+        this.startY = null;
         this.switchPage(true);
-      } else {
-        // 页面下滑
+      } else if ((e.changedTouches[0].pageY - this.startY) > 50) {
+        this.startY = null;
         this.switchPage(false);
       }
     },
@@ -191,6 +211,8 @@ export default {
         if (isDown && this.currentPage < this.pages) {
           this.isRoll = true;
           // 向下翻页
+          // 设置下一页为可视
+          this.pagesArr[(this.currentPage + 1) - 1].isShow = true;
           rollY = -(this.currentPage * this.fullHeight);
           // 页面开始滑动
           this.$refs.allPage.style.transform = `translateY(${rollY}px)`;
@@ -254,6 +276,13 @@ export default {
   }
   .page {
     z-index: 11;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+  .page-box {
+    position: absolute;
+    height: 100%;
+    width: 100%;
   }
 }
 </style>
