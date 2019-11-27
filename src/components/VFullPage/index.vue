@@ -278,6 +278,7 @@ export default {
     z-index: 11;
     background-size: cover;
     background-repeat: no-repeat;
+    position: relative;
   }
   .page-box {
     position: absolute;
