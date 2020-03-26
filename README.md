@@ -37,11 +37,19 @@ http://null_639_5368.gitee.io/v-full-page/#/
 
 https://gitee.com/null_639_5368/v-full-page
 
+## 属性
+name | 类型 |  默认值  |  备注 
+-|-|-|-|
+isV | Boolean | false | 滚动的方向 true为垂直方向，false为左右方向
+isCache | Boolean | true | 是否缓存页面
+pages | Number | 4 | 页面总数
+bgArr | Array | [ ] | 默认页面背景 格式 ["pink", "orange", "pink", "green"]
+page | Number | 1 | 当前页面
 ## 安装
 
 yarn add mv-full-page
 
-yarn add inobounce
+yarn add inobounce （禁止屏幕回弹js）
 
 按需使用动画指令：
 
