@@ -40,7 +40,7 @@ https://gitee.com/null_639_5368/v-full-page
 ## 属性
 name | 类型 |  默认值  |  备注 
 -|-|-|-|
-isV | Boolean | false | 滚动的方向 true为垂直方向，false为左右方向
+isV | Boolean | true | 滚动的方向 true为垂直方向，false为左右方向
 isCache | Boolean | true | 是否缓存页面
 pages | Number | 4 | 页面总数
 bgArr | Array | [ ] | 默认页面背景 格式 ["pink", "orange", "pink", { isBg:true, src:require('@/assets/....') } ]
