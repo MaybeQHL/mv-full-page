@@ -69,7 +69,8 @@ Vue.use(directives)
 
 ## 使用方法
 ```
-<mv-full-page     :pages="4" // 全屏页面数量
+<mv-full-page    :isV="true" // 滚动的方向 true为垂直方向，false为左右方向
+                 :pages="4" // 全屏页面数量
                  :page.sync="currentPage"  // 当前页码
                  :bgArr="bgArr" // 页面背景数组
                  :isCache="true" // 默认缓存页面 不缓存（页面元素重新渲染 重置动画）
