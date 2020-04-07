@@ -8,6 +8,20 @@ import Vue from 'vue'
  *~ For example, if you were writing a file for "super-greeter", this
  *~ file should be 'super-greeter/index.d.ts'
  */
+interface InstallationOptions {
+  locale: any
+  i18n: any
+  size: string
+}
+/** The version of current plugin */
+export const version: string
+
+/**
+ * Install all demo components into Vue.
+ * Please do not invoke this method directly.
+ * Call `Vue.use(demo)` to install.
+ */
+export function install(vue: typeof Vue, options: InstallationOptions): void
 
 /*~ Here, declare the same module as the one you imported above */
 declare module 'mv-full-page' {
@@ -21,22 +35,6 @@ declare module 'mv-full-page' {
   // }
   // /*~ New types can also be declared and will appear as if they
   //  *~ are in the original module */
-
-  interface InstallationOptions {
-    locale: any
-    i18n: any
-    size: string
-  }
-
-  /** The version of current plugin */
-  const version: string
-
-  /**
-   * Install all demo components into Vue.
-   * Please do not invoke this method directly.
-   * Call `Vue.use(demo)` to install.
-   */
-  function install(vue: typeof Vue, options: InstallationOptions): void
 
   export type currentPage = number
   export type isV = boolean
