@@ -3,10 +3,10 @@
 // import { MvFullPage } from './full-page'
 // export default MvFullPage
 import Vue, { PluginObject } from 'vue'
-import { ElementUIComponent } from './component'
+import { BaseComponent } from './component'
 
 /**  Component */
-export class FullPage extends ElementUIComponent {
+export class FullPage extends BaseComponent {
   currentPage: number
   isV: boolean
   isCache: boolean

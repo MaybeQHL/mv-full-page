@@ -2,32 +2,35 @@
 
 ## 介绍
 
-vue全屏滑动组件(移动端、PC端(鼠标滚轮滑动)都已兼容) 
+vue 全屏滑动组件(移动端、PC 端(鼠标滚轮滑动)都已兼容)
 
-支持局部页面动画 附带示例demo
+支持局部页面动画 附带示例 demo
 
-注意事项：本组件目前仅支持刷新初始化判断PC端和移动端环境、以及元素高度的初始化。
+注意事项：本组件目前仅支持刷新初始化判断 PC 端和移动端环境、以及元素高度的初始化。
 
-其他：因为作者目前2年水平有很多考虑不到的还望各位海涵，如果组件有bug的话大家提出issue我会尽快修改，设计组件的初衷是为了方便大家，也方便自己。
+其他：因为作者目前 2 年水平有很多考虑不到的还望各位海涵，如果组件有 bug 的话大家提出 issue 我会尽快修改，设计组件的初衷是为了方便大家，也方便自己。
+
 ## 更新
 
-同安装 yarn add mv-full-page ,  尽量更新到最新版本组件。
+同安装 yarn add mv-full-page , 尽量更新到最新版本组件。
 
 ## 功能点
 
-1.移动端全屏触摸滑动
+1. 移动端全屏触摸滑动
 
-2.pc端鼠标滚轮切换
+2. pc 端鼠标滚轮切换
 
-3.页面切换动画重置
+3. 页面切换动画重置
 
-4.支持动画队列式出现
+4. 支持动画队列式出现
 
-5.解决ios滑动页面回弹
+5. 解决 ios 滑动页面回弹
 
-6.扩展：自定义animate动画指令
+6. 扩展：自定义 animate 动画指令
 
-7.支持水平方向或垂直方向的滚动
+7. 支持水平方向或垂直方向的滚动
+
+8. 支持 ts
 
 ## 示例
 
@@ -38,23 +41,24 @@ http://null_639_5368.gitee.io/v-full-page/#/
 https://gitee.com/null_639_5368/v-full-page
 
 ## 属性
-name | 类型 |  默认值  |  备注 
--|-|-|-|
-isV | Boolean | true | 滚动的方向 true为垂直方向，false为左右方向
-isCache | Boolean | true | 是否缓存页面
-pages | Number | 4 | 页面总数
-bgArr | Array | [ ] | 默认页面背景 格式 ["pink", "orange", "pink", { isBg:true, src:require('@/assets/....') } ]
-page | Number | 1 | 当前页面
+
+| name    | 类型    | 默认值 | 备注                                                                                       |
+| ------- | ------- | ------ | ------------------------------------------------------------------------------------------ |
+| isV     | Boolean | true   | 滚动的方向 true 为垂直方向，false 为左右方向                                               |
+| isCache | Boolean | true   | 是否缓存页面                                                                               |
+| pages   | Number  | 4      | 页面总数                                                                                   |
+| bgArr   | Array   | [ ]    | 默认页面背景 格式 ["pink", "orange", "pink", { isBg:true, src:require('@/assets/....') } ] |
+| page    | Number  | 1      | 当前页面                                                                                   |
 
 ## 安装
 
 yarn add mv-full-page
 
-yarn add inobounce （禁止屏幕回弹js）
+yarn add inobounce （禁止屏幕回弹 js）
 
 按需使用动画指令：
 
-拷贝utils/directives.js
+拷贝 utils/directives.js
 
 yarn add animate.css
 
@@ -68,13 +72,14 @@ Vue.use(directives)
 ```
 
 ## 使用方法
+
 ```
 <mv-full-page    :isV="true" // 滚动的方向 true为垂直方向，false为左右方向
                  :pages="4" // 全屏页面数量
                  :page.sync="currentPage"  // 当前页码
                  :bgArr="bgArr" // 页面背景数组
                  :isCache="true" // 默认缓存页面 不缓存（页面元素重新渲染 重置动画）
-                 > 
+                 >
      <template #page1>  // 这里插槽必须按照page[number]的形式
         <div class="page1">
           <p v-animate="{
@@ -111,6 +116,27 @@ export default {
 ```
 
 ```
+// vue + typescript
+<script lang="ts">
+import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
+import MvFullPage from 'mv-full-page'
+@Component({
+  components: {
+    Button
+  },
+})
+export default class Home extends Vue implements MvFullPage {
+  currentPage = 1
+  bgArr = ['pink', 'orange', 'pink', 'green']
+  isV = false
+  isCache = false
+  pages = 4
+  page = 1
+}
+</script>
+```
+
+```
 // 全局引入
 // main.js
 import 'mv-full-page/lib-dist/mv-full-page.css'
@@ -118,4 +144,3 @@ import MvFullPage from 'mv-full-page'
 
 Vue.use(MvFullPage)
 ```
-
