@@ -1,5 +1,9 @@
 # mv-full-page
 
+## 当前版本
+
+<h2>v1.1.1</h2>
+
 ## 介绍
 
 vue 全屏滑动组件(移动端、PC 端(鼠标滚轮滑动)都已兼容)
@@ -8,7 +12,7 @@ vue 全屏滑动组件(移动端、PC 端(鼠标滚轮滑动)都已兼容)
 
 注意事项：本组件目前仅支持刷新初始化判断 PC 端和移动端环境、以及元素高度的初始化。
 
-其他：因为作者目前 2 年水平有很多考虑不到的还望各位海涵，如果组件有 bug 的话大家提出 issue 我会尽快修改，设计组件的初衷是为了方便大家，也方便自己。
+其他：喜欢的帮忙给个star, 只要有时间就更新和优化
 
 ## 更新
 
@@ -32,6 +36,8 @@ vue 全屏滑动组件(移动端、PC 端(鼠标滚轮滑动)都已兼容)
 
 8. 支持 ts
 
+9. 支持组件内添加局部滚动（已经处理了微信公众号局部元素滚动回弹的问题）
+
 ## 示例
 
 http://null_639_5368.gitee.io/v-full-page/#/
@@ -49,12 +55,12 @@ https://gitee.com/null_639_5368/v-full-page
 | pages   | Number  | 4      | 页面总数                                                                                   |
 | bgArr   | Array   | [ ]    | 默认页面背景 格式 ["pink", "orange", "pink", { isBg:true, src:require('@/assets/....') } ] |
 | page    | Number  | 1      | 当前页面                                                                                   |
-
+| data-scroll    | Number  | 1      | 局部滚动一定要在滚动容器添加这个属性`<div data-scroll="true"></div>`                                                                                  |
 ## 安装
 
 yarn add mv-full-page
 
-yarn add inobounce （禁止屏幕回弹 js）
+yarn add inobounce （禁止屏幕回弹 js 从1.1.1版本开始无需再导入已经集成在插件中)
 
 按需使用动画指令：
 
@@ -74,14 +80,16 @@ Vue.use(directives)
 ## 使用方法
 
 ```
-<mv-full-page    :isV="true" // 滚动的方向 true为垂直方向，false为左右方向
-                 :pages="4" // 全屏页面数量
-                 :page.sync="currentPage"  // 当前页码
-                 :bgArr="bgArr" // 页面背景数组
-                 :isCache="true" // 默认缓存页面 不缓存（页面元素重新渲染 重置动画）
-                 >
-     <template #page1>  // 这里插槽必须按照page[number]的形式
+<template>
+  <div class="home">
+    <v-full-page :isV="true"
+                 :pages="4"
+                 :page.sync="currentPage"
+                 :bgArr="bgArr"
+                 :isCache="false">
+      <template #page1>
         <div class="page1">
+          <h2> mv-full-page</h2>
           <p v-animate="{
             name:'bounceInLeft'
           }">页面1 第一个动画</p>
@@ -89,30 +97,91 @@ Vue.use(directives)
             name:'bounceInLeft',
             delay:1
           }">页面1 第二个动画</p>
+          <!-- <div class="img-test"></div> -->
+          <div class="sub_scroll-test-box"
+               data-scroll="true"
+              >
+            <p v-for="item in 99">滚动测试数据</p>
+          </div>
         </div>
       </template>
-</mv-full-page>
+
+      <template #page2>
+        <div class="page2">
+          <p class="block"
+             style="margin-top:250px;"
+             v-animate="{
+            name:'bounceInUp'
+          }">页面2 第一个动画</p>
+        </div>
+      </template>
+
+      <template #page3>
+        <div class="page3">
+          <p class="block"
+             v-animate="{
+            name:'bounceInRight'
+          }">页面3 第一个动画</p>
+        </div>
+      </template>
+
+      <template #page4>
+        <div class="page4">4</div>
+      </template>
+    </v-full-page>
+  </div>
+</template>
+
 <script>
-// 按需引入
-import 'mv-full-page/lib-dist/mv-full-page.css'
-import MvFullPage from 'mv-full-page'
+// 局部导入这里替换这下面的代码
+// import 'mv-full-page/lib-dist/mv-full-page.css'
+// import MvFullPage from 'mv-full-page'
+
+// test
+import VFullPage from "@/components/VFullPage/index.vue";
 
 export default {
-  name: 'home',
+  name: "home",
   components: {
-    MvFullPage
+    VFullPage
   },
   data () {
     return {
       currentPage: 1,
-      bgArr: [{
-        isBg:true,
-        src:require('@/assets/....')
-      }, 'orange', 'pink', 'green']
-    }
+      bgArr: ["pink", "orange", "pink", "green"],
+      // bgArr: [{
+      //   isBg: true,
+      //   src: require('@/assets/....')
+      // }, 'orange', 'pink', 'green']
+    };
   }
-}
+};
 </script>
+<style lang="scss" scoped>
+.block {
+  height: 300px;
+  width: 200px;
+  background: red;
+}
+.page2 {
+  // position: absolute;
+  width: 100%;
+  height: 100%;
+}
+.img-test {
+  background: url("~@/assets/logo.png") no-repeat;
+  width: 300px;
+  height: 300px;
+  background-size: cover;
+}
+.sub_scroll-test-box {
+  height: 300px;
+  width: 300px;
+  border: 1px solid red;
+  overflow: auto;
+}
+</style>
+
 ```
 
 ```

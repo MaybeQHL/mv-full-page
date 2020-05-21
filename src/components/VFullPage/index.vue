@@ -1,15 +1,16 @@
 <template>
   <!-- 全屏滚动组件 -->
-  <div class="full-page-wrapper" ref="fullPage">
-    <div class="all-page" ref="allPage">
+  <div class="full-page-wrapper"
+       ref="fullPage">
+    <div class="all-page"
+         ref="allPage">
       <template v-for="(item, index) in pagesArr">
-        <div
-          class="page"
-          :class="{ floatLeft: !isV }"
-          :key="index"
-          :id="`page-${item.page}`"
-          :data-index="item.page"
-          :style="{
+        <div class="page"
+             :class="{ floatLeft: !isV }"
+             :key="index"
+             :id="`page-${item.page}`"
+             :data-index="item.page"
+             :style="{
             height: fullHeight + 'px',
             width: fullWidth + 'px',
             'background-color': !bgArr[index].isBg ? bgArr[index] : '',
@@ -17,15 +18,16 @@
               ? `url(${bgArr[index].src})`
               : '',
           }"
-          :ref="`page${item}`"
-        >
+             :ref="`page${item}`">
           <template v-if="isCache">
-            <div class="page-box" v-if="item.isShow">
+            <div class="page-box"
+                 v-if="item.isShow">
               <slot :name="`page${item.page}`"></slot>
             </div>
           </template>
           <template v-else>
-            <div class="page-box" v-if="currentPage == item.page">
+            <div class="page-box"
+                 v-if="currentPage == item.page">
               <slot :name="`page${item.page}`"></slot>
             </div>
           </template>
@@ -42,7 +44,7 @@
  * @warn 转载请注明出处 https://gitee.com/null_639_5368/v-full-page
  */
 // 禁止IOS回弹库
-import inobounce from 'inobounce'
+import inobounce from './inobounce'
 import { debounce } from './utils'
 export default {
   name: 'MvFullPage',
@@ -70,12 +72,12 @@ export default {
     // 默认页面背景
     bgArr: {
       type: Array,
-      default: function() {
+      default: function () {
         return []
       },
     },
   },
-  data() {
+  data () {
     return {
       pagesArr: [],
       isPc: false, // 默认 移动端
@@ -90,18 +92,22 @@ export default {
       currentPage: 1, // 当前页面页码
       isRoll: false, // 是否可以开始滚动
       isUp: false, // 是否向上滑动
+      subScrollEl: null // 触发源为内部滚动子元素dom
     }
   },
   computed: {},
-  created() {
+  created () {
     this.isPc = this.isPCFn()
     if (!this.isPc) {
+      console.log('当前mv-full-page运行环境为: 移动端')
       // let isIos = this.isIOS();
       // if (isIos) {
       //   inobounce.enable()
       // }
       // 由于安卓微信公众号也存在类似问题，现全平台开启滚动禁用
       inobounce.enable()
+    } else {
+      console.log('当前mv-full-page运行环境为: PC端')
     }
     this.pagesArr.length = 0
     for (let index = 0; index < this.pages; index++) {
@@ -111,7 +117,9 @@ export default {
       })
     }
   },
-  mounted() {
+  mounted () {
+    // 禁止回弹
+    // stopDrop();
     // 获取全屏高度
     this.fullHeight = this.$refs.fullPage.clientHeight
     // 获取全屏宽度
@@ -126,10 +134,11 @@ export default {
     this.$refs.allPage.style.width = this.fullWidth * this.pages + 'px'
     // 初始化页面滑动事件
     this.initPageListener()
+
   },
   watch: {
     page: {
-      handler: function(val) {
+      handler: function (val) {
         this.currentPage = val
         this.$nextTick(() => {
           let rollOffset = -(
@@ -141,7 +150,7 @@ export default {
       },
       immediate: true,
     },
-    currentPage(value) {
+    currentPage (value) {
       this.$emit('update:page', value)
     },
   },
@@ -149,7 +158,7 @@ export default {
     /**
      * 判断是否是ios系统
      */
-    isIOS() {
+    isIOS () {
       let u = navigator.userAgent
       if (u.indexOf('iPhone') > -1) {
         return true
@@ -159,7 +168,7 @@ export default {
     /**
      * 判断是否是PC端
      */
-    isPCFn() {
+    isPCFn () {
       var userAgentInfo = navigator.userAgent
       var Agents = [
         'Android',
@@ -178,11 +187,11 @@ export default {
       }
       return flag
     },
-    initPageListener() {
+    initPageListener () {
       if (!this.isPc) {
-        document.addEventListener('touchstart', this.pageStart, false)
-        document.addEventListener('touchmove', this.pageMove, false)
-        document.addEventListener('touchend', this.pageEnd, false)
+        this.$refs.allPage.addEventListener('touchstart', this.pageStart, false)
+        this.$refs.allPage.addEventListener('touchmove', this.pageMove, false)
+        this.$refs.allPage.addEventListener('touchend', this.pageEnd, false)
       } else {
         // pc端鼠标滚轮事件监听 使用函数防抖解决滚动多次触发问题
         window.onmousewheel = document.onmousewheel = debounce(
@@ -192,7 +201,7 @@ export default {
         ) //IE/Opera/Chrome
       }
     },
-    pcRoll(e) {
+    pcRoll (e) {
       if (e.deltaY > 0) {
         console.log('滚动下')
         this.switchPage(true)
@@ -201,22 +210,51 @@ export default {
         console.log('滚动上')
       }
     },
-    removePageListener() {
-      document.removeEventListener('touchstart')
-      document.removeEventListener('touchmove')
-      document.removeEventListener('touchend')
+    removePageListener () {
+      this.$refs.allPage.removeEventListener('touchstart')
+      this.$refs.allPage.removeEventListener('touchmove')
+      this.$refs.allPage.removeEventListener('touchend')
     },
-    pageStart(e) {
-      console.log('触摸开始')
+    pageStart (e) {
+      let self = this;
+      // console.log(e)
+      // 判断是否是子元素滚动
+      e.path.forEach(el => {
+        if (el.dataset && el.dataset.scroll == 'true') {
+          // 保存子元素实例
+          self.subScrollEl = el;
+        }
+        // console.log(el)
+      })
+      if (self.subScrollEl) {
+        // console.log('处理子元素滚动');
+        inobounce.disable();
+      } else {
+        // console.log('处理插件滚动');
+        inobounce.enable();
+      }
+      // console.log('触摸开始')
       this.startY = e.changedTouches[0].pageY
       this.startX = e.changedTouches[0].pageX
-      console.log(e.changedTouches[0].pageY, e.changedTouches[0].pageX)
+      // console.log(e.changedTouches[0].pageY, e.changedTouches[0].pageX)
     },
-    pageMove() {
-      console.log('触摸移动中...')
+    pageMove (e) {
+      let self = this;
+      // console.log('触摸移动中...')
+      if (self.subScrollEl && self.subScrollEl.scrollTop == 0 && e.changedTouches[0].pageY - this.startY > 0) {
+        // 子元素顶部向下滑动禁用回弹
+        inobounce.enable();
+      }
     },
-    pageEnd(e) {
-      console.log('触摸结束')
+    pageEnd (e) {
+      // console.log('触摸结束')
+      // // 判断是否是子元素滚动
+      if (this.subScrollEl) {
+        this.subScrollEl = null;
+        inobounce.enable();
+        // console.log('子元素滚动结束')
+        return;
+      }
       // 滑动逻辑
       if (this.isV) {
         if (e.changedTouches[0].pageY - this.startY < -50) {
@@ -236,7 +274,7 @@ export default {
         }
       }
     },
-    rollPage(offset) {
+    rollPage (offset) {
       let transformBind = `translate${this.isV ? 'Y' : 'X'}(${offset}px)`
       this.$refs.allPage.style.transform = transformBind
     },
@@ -245,7 +283,7 @@ export default {
      * @param   {Boolean} isDown 滑动方向 默认向下滑动 true  向上滑动 false
      * @author   maybe
      */
-    switchPage(isDown = true) {
+    switchPage (isDown = true) {
       // debugger;
       if (this.$refs.allPage && !this.isRoll) {
         let rollY
@@ -261,7 +299,7 @@ export default {
           // 页面开始滑动
           let transformBind = `translate${
             this.isV ? 'Y' : 'X'
-          }(${rollOffset}px)`
+            }(${rollOffset}px)`
           this.$refs.allPage.style.transform = transformBind
           let self = this
           let rollTransitionend = () => {
@@ -289,7 +327,7 @@ export default {
           // 页面开始滑动
           let transformBind = `translate${
             this.isV ? 'Y' : 'X'
-          }(${rollOffset}px)`
+            }(${rollOffset}px)`
           this.$refs.allPage.style.transform = transformBind
           let self = this
           let rollTransitionend = () => {
@@ -311,7 +349,7 @@ export default {
       }
     },
   },
-  destroyed() {
+  destroyed () {
     if (!this.isPc) {
       // 解除滚动禁用
       inobounce.disable()
