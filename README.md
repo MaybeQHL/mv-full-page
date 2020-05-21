@@ -55,7 +55,7 @@ https://gitee.com/null_639_5368/v-full-page
 | pages   | Number  | 4      | 页面总数                                                                                   |
 | bgArr   | Array   | [ ]    | 默认页面背景 格式 ["pink", "orange", "pink", { isBg:true, src:require('@/assets/....') } ] |
 | page    | Number  | 1      | 当前页面                                                                                   |
-| data-scroll    | Number  | 1      | 局部滚动一定要在滚动容器添加这个属性`<div data-scroll="true"></div>`                                                                                  |
+| data-scroll    | Boolean  | false      | 局部滚动一定要在滚动容器添加这个属性`<div data-scroll="true"></div>`                                                                                  |
 ## 安装
 
 yarn add mv-full-page
