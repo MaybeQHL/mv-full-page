@@ -60,7 +60,7 @@ https://gitee.com/null_639_5368/v-full-page
 
 yarn add mv-full-page
 
-yarn add inobounce （禁止屏幕回弹 js 从1.1.1版本开始无需再导入已经集成在插件中)
+yarn add inobounce （禁止屏幕回弹 js 从1.1.2版本开始无需再导入已经集成在插件中)
 
 按需使用动画指令：
 
