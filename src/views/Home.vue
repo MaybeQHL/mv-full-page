@@ -16,10 +16,13 @@
             delay:1
           }">页面1 第二个动画</p>
           <!-- <div class="img-test"></div> -->
+          <p>局部列表滚动demo</p>
           <div class="sub_scroll-test-box"
                data-scroll="true">
             <p v-for="item in 99">滚动测试数据</p>
           </div>
+          <p><a href="https://gitee.com/null_639_5368/v-full-page">码云</a></p>
+          <p><a href="https://gitee.com/null_639_5368/v-full-page">npm</a></p>
         </div>
       </template>
 
@@ -65,7 +68,19 @@ export default {
   data () {
     return {
       currentPage: 1,
-      bgArr: ["pink", "orange", "pink", "green"],
+      bgArr: [{
+        isBg: true,
+        src: require('@/assets/bg_img_1.jpg')
+      }, {
+        isBg: true,
+        src: require('@/assets/bg_img_2.jpg')
+      }, {
+        isBg: true,
+        src: require('@/assets/bg_img_3.jpg')
+      }, {
+        isBg: true,
+        src: require('@/assets/bg_img_4.jpg')
+      }],
       // bgArr: [{
       //   isBg: true,
       //   src: require('@/assets/....')
@@ -75,10 +90,18 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.home {
+  text-align: center;
+  color: #ffffff;
+  line-height: 30px;
+  a {
+    color: #ffffff;
+  }
+}
 .block {
   height: 300px;
   width: 200px;
-  background: red;
+  background: #ff715e;
 }
 .page2 {
   // position: absolute;
@@ -92,9 +115,15 @@ export default {
   background-size: cover;
 }
 .sub_scroll-test-box {
+  margin: 0px auto;
   height: 300px;
   width: 300px;
-  border: 1px solid red;
+  border: 1px solid #ff715e;
+  color: #ffffff;
   overflow: auto;
+  background: #ff715e;
+}
+.color-red {
+  color: aquamarine;
 }
 </style>

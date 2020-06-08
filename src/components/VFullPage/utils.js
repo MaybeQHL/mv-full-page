@@ -25,6 +25,24 @@ export const debounce = (func, wait, immediate) => {
   }
 }
 /**
+ * @desc  函数节流
+ * @param  func 需要执行的函数
+ * @param  wait 延迟执行时间（毫秒）
+ **/
+export const throttle = (func, wait = 500) => {
+  let timeout;
+  return function () {
+    let context = this;
+    let args = arguments;
+    if (!timeout) {
+      timeout = setTimeout(() => {
+        timeout = null;
+        func.apply(context, args)
+      }, wait)
+    }
+  }
+}
+/**
  * 禁止浏览器下拉回弹
  */
 export const stopDrop = () => {

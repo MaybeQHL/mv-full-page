@@ -45,7 +45,7 @@
  */
 // 禁止IOS回弹库
 import inobounce from './inobounce'
-import { debounce } from './utils'
+import { debounce, throttle } from './utils'
 export default {
   name: 'MvFullPage',
   props: {
@@ -120,26 +120,20 @@ export default {
   mounted () {
     // 禁止回弹
     // stopDrop();
-    // 获取全屏高度
-    this.fullHeight = this.$refs.fullPage.clientHeight
-    // 获取全屏宽度
-    this.fullWidth = this.$refs.fullPage.clientWidth
-    // 设置最大滑动高度
-    this.maxY = this.pages * this.fullHeight
-    // 设置最大滑动宽度
-    this.maxX = this.pages * this.fullWidth
-    // 初始化容器高度
-    this.$refs.allPage.style.height = this.fullHeight * this.pages + 'px'
-    // 初始化容器宽度
-    this.$refs.allPage.style.width = this.fullWidth * this.pages + 'px'
+    // 初始化页面宽高
+    this.initPageWH();
     // 初始化页面滑动事件
     this.initPageListener()
-
+    // PC端监听窗口大小变化
+    // if (this.isPc) {
+    //   window.onresize = throttle(this.initPageWH, 100)
+    // }
   },
   watch: {
     page: {
       handler: function (val) {
         this.currentPage = val
+        // 动态切换到具体页面
         this.$nextTick(() => {
           let rollOffset = -(
             (val - 1) *
@@ -186,6 +180,21 @@ export default {
         }
       }
       return flag
+    },
+    // 初始化容器宽高
+    initPageWH () {
+      // 获取全屏高度
+      this.fullHeight = this.$refs.fullPage.clientHeight
+      // 获取全屏宽度
+      this.fullWidth = this.$refs.fullPage.clientWidth
+      // 设置最大滑动高度
+      this.maxY = this.pages * this.fullHeight
+      // 设置最大滑动宽度
+      this.maxX = this.pages * this.fullWidth
+      // 初始化容器高度
+      this.$refs.allPage.style.height = this.fullHeight * this.pages + 'px'
+      // 初始化容器宽度
+      this.$refs.allPage.style.width = this.fullWidth * this.pages + 'px'
     },
     initPageListener () {
       if (!this.isPc) {
@@ -357,6 +366,7 @@ export default {
       this.removePageListener()
     } else {
       window.onmousewheel = document.onmousewheel = null
+      // window.onresize = null;
     }
   },
 }
@@ -369,7 +379,7 @@ export default {
   left: 0px;
   width: 100%;
   height: 100%;
-  background: #cccccc;
+  background: #ffffff;
   overflow: hidden;
   .all-page {
     width: 100%;
@@ -382,6 +392,7 @@ export default {
     background-size: cover;
     background-repeat: no-repeat;
     position: relative;
+    // transition: all 0.1s linear;
   }
   .page-box {
     position: absolute;

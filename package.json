@@ -6,7 +6,7 @@
   "types": "types/index.d.ts",
   "license": "MIT",
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build:lib": "vue-cli-service build --mode lib --target lib --name mv-full-page src/components/VFullPage/index.js ",
     "test:unit": "vue-cli-service test:unit",
