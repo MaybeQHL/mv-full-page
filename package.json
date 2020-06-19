@@ -1,6 +1,6 @@
 {
   "name": "mv-full-page",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "private": false,
   "main": "lib-dist/mv-full-page.umd.min.js",
   "types": "types/index.d.ts",
@@ -13,7 +13,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
-    "animate.css": "^3.7.2",
+    "animate.css": "^3.5.2",
     "core-js": "^3.3.2",
     "inobounce": "^0.2.0",
     "vue": "^2.6.10",

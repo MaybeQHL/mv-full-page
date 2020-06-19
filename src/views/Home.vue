@@ -1,47 +1,81 @@
 <template>
   <div class="home">
-    <v-full-page :isV="true"
-                 :pages="4"
-                 :page.sync="currentPage"
-                 :bgArr="bgArr"
-                 :isCache="false">
+    <v-full-page
+      :isV="isV"
+      :pages="4"
+      :page.sync="currentPage"
+      :bgArr="bgArr"
+      :isCache="false"
+    >
       <template #page1>
         <div class="page1">
-          <h2> mv-full-page</h2>
-          <p v-animate="{
-            name:'bounceInLeft'
-          }">页面1 第一个动画</p>
-          <p v-animate="{
-            name:'bounceInLeft',
-            delay:1
-          }">页面1 第二个动画</p>
+          <h2>mv-full-page</h2>
+          <h3>一款兼容PC端移动端的Vue滑动组件</h3>
+          <h3>示例</h3>
+          <p
+            v-animate="{
+              name: 'bounceInLeft',
+            }"
+          >
+            页面1 第一个动画
+          </p>
+          <p
+            v-animate="{
+              name: 'bounceInLeft',
+              delay: 500,
+            }"
+          >
+            页面1 第二个动画
+          </p>
           <!-- <div class="img-test"></div> -->
-          <p>局部列表滚动demo</p>
-          <div class="sub_scroll-test-box"
-               data-scroll="true">
-            <p v-for="item in 99">滚动测试数据</p>
+          <p>移动端局部列表滚动demo</p>
+          <div class="sub_scroll-test-box" data-scroll="true">
+            <p v-for="item in 99" :key="item">滚动测试数据</p>
           </div>
-          <p><a href="https://gitee.com/null_639_5368/v-full-page">码云</a></p>
-          <p><a href="https://gitee.com/null_639_5368/v-full-page">npm</a></p>
+          <p>
+            <button @click="isV = !isV">切换滑动方向(默认垂直方向)</button>
+          </p>
+          <p>
+            <a
+              style="color:#F36B91;"
+              href="https://gitee.com/null_639_5368/v-full-page"
+              >码云</a
+            >
+          </p>
+          <p>
+            <a
+              style="color:#6751C1;"
+              href="https://www.npmjs.com/package/mv-full-page"
+              >npm</a
+            >
+          </p>
         </div>
       </template>
 
       <template #page2>
         <div class="page2">
-          <p class="block"
-             style="margin-top:250px;"
-             v-animate="{
-            name:'bounceInUp'
-          }">页面2 第一个动画</p>
+          <p
+            class="block"
+            style="margin-top:250px;"
+            v-animate="{
+              name: 'bounceInUp',
+            }"
+          >
+            页面2 第一个动画
+          </p>
         </div>
       </template>
 
       <template #page3>
         <div class="page3">
-          <p class="block"
-             v-animate="{
-            name:'bounceInRight'
-          }">页面3 第一个动画</p>
+          <p
+            class="block"
+            v-animate="{
+              name: 'bounceInRight',
+            }"
+          >
+            页面3 第一个动画
+          </p>
         </div>
       </template>
 
@@ -63,30 +97,36 @@ import VFullPage from "@/components/VFullPage/index.vue";
 export default {
   name: "home",
   components: {
-    VFullPage
+    VFullPage,
   },
-  data () {
+  data() {
     return {
+      isV: true,
       currentPage: 1,
-      bgArr: [{
-        isBg: true,
-        src: require('@/assets/bg_img_1.jpg')
-      }, {
-        isBg: true,
-        src: require('@/assets/bg_img_2.jpg')
-      }, {
-        isBg: true,
-        src: require('@/assets/bg_img_3.jpg')
-      }, {
-        isBg: true,
-        src: require('@/assets/bg_img_4.jpg')
-      }],
+      bgArr: [
+        {
+          isBg: true,
+          src: require("@/assets/bg_img_1.jpg"),
+        },
+        {
+          isBg: true,
+          src: require("@/assets/bg_img_2.jpg"),
+        },
+        {
+          isBg: true,
+          src: require("@/assets/bg_img_3.jpg"),
+        },
+        {
+          isBg: true,
+          src: require("@/assets/bg_img_4.jpg"),
+        },
+      ],
       // bgArr: [{
       //   isBg: true,
       //   src: require('@/assets/....')
       // }, 'orange', 'pink', 'green']
     };
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -97,6 +137,8 @@ export default {
   a {
     color: #ffffff;
   }
+  position: relative;
+  height: 300px;
 }
 .block {
   height: 300px;
