@@ -110,15 +110,15 @@ Vue.use(directives);
           <h3>一款兼容PC端移动端的Vue滑动组件</h3>
           <h3>示例</h3>
           <p
-            v-animate-css="{
-              classes: 'bounceInLeft',
+            v-animate="{
+              name: 'bounceInLeft',
             }"
           >
             页面1 第一个动画
           </p>
           <p
-            v-animate-css="{
-              classes: 'bounceInLeft',
+            v-animate="{
+              name: 'bounceInLeft',
               delay: 500,
             }"
           >
@@ -154,8 +154,8 @@ Vue.use(directives);
           <p
             class="block"
             style="margin-top:250px;"
-            v-animate-css="{
-              classes: 'bounceInUp',
+            v-animate="{
+              name: 'bounceInUp',
             }"
           >
             页面2 第一个动画
@@ -167,8 +167,8 @@ Vue.use(directives);
         <div class="page3">
           <p
             class="block"
-            v-animate-css="{
-              classes: 'bounceInRight',
+            v-animate="{
+              name: 'bounceInRight',
             }"
           >
             页面3 第一个动画
