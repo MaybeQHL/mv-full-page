@@ -1,5 +1,5 @@
 # mv-full-page
-> 一款兼容PC、移动端的滑动组件
+> 一款兼容PC、移动端(包含微信公众号)的滑动组件
 
 [![npm](https://img.shields.io/npm/v/mv-full-page.svg)](https://www.npmjs.com/package/mv-full-page)
 [![npm](https://img.shields.io/npm/dt/mv-full-page.svg)](https://www.npmjs.com/package/mv-full-page)
