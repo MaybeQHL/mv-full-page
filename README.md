@@ -13,6 +13,11 @@ https://www.npmjs.com/package/mv-full-page
 
 https://gitee.com/null_639_5368/v-full-page
 
+## 示例
+
+[http://null_639_5368.gitee.io/v-full-page](http://null_639_5368.gitee.io/v-full-page)
+
+
 ## 介绍
 
 vue 全屏滑动组件(移动端、PC 端(鼠标滚轮滑动)都已兼容)
@@ -48,10 +53,6 @@ vue 全屏滑动组件(移动端、PC 端(鼠标滚轮滑动)都已兼容)
 9. 支持组件内添加局部滚动（已经处理了微信公众号局部元素滚动回弹的问题）
 
 10. 支持自定义滚动容器定位方式和容器大小
-
-## 示例
-
-http://null_639_5368.gitee.io/v-full-page/#/
 
 ## 属性
 
