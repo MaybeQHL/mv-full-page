@@ -1,8 +1,9 @@
 # mv-full-page
+> 一款兼容PC、移动端的滑动组件
 
-## 当前版本
+[![npm](https://img.shields.io/npm/v/mv-full-page.svg)](https://www.npmjs.com/package/mv-full-page)
+[![npm](https://img.shields.io/npm/dt/mv-full-page.svg)](https://www.npmjs.com/package/mv-full-page)
 
-### 1.1.3
 
 ## NPM
 
@@ -54,9 +55,8 @@ http://null_639_5368.gitee.io/v-full-page/#/
 
 ## 属性
 
-### 组件属性
+> 组件属性
 
-<hr/>
 
 | name     | 类型    | 默认值  | 备注                                                                                                                                                                     |
 | -------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -69,9 +69,7 @@ http://null_639_5368.gitee.io/v-full-page/#/
 | bgArr    | Array   | [ ]     | 默认页面背景,设置图片背景请传入{isBg:true, src:require('这里是你的背景图片路径') }}<br>示例格式: ["pink", "orange", "pink", {isBg:true, src:require('@/assets/....') } ] |
 | page     | Number  | 1       | 当前页面                                                                                                                                                                 |
 
-### 局部滚动 div
-
-<hr/>
+> 局部滚动 div
 
 | name        | 类型    | 默认值 | 备注                                                                 |
 | ----------- | ------- | ------ | -------------------------------------------------------------------- |
