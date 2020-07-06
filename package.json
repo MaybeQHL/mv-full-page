@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build:lib": "vue-cli-service build --mode lib --target lib --name mv-full-page src/components/VFullPage/index.js ",
+    "build:lib": "vue-cli-service build --mode lib --target lib --name mv-full-page src/components/MVFullPage/index.js ",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },

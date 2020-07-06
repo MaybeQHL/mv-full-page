@@ -1,10 +1,6 @@
 <template>
   <!-- 全屏滚动组件 -->
-  <div
-    class="full-page-wrapper"
-    :style="{ position, height, width }"
-    ref="fullPage"
-  >
+  <div class="full-page-wrapper" :style="{ position, height, width }" ref="fullPage">
     <div class="all-page" ref="allPage">
       <template v-for="(item, index) in pagesArr">
         <div
@@ -49,48 +45,64 @@ import { debounce } from "./utils";
 export default {
   name: "MvFullPage",
   props: {
-    // 定位模式
+    /**
+     * 定位模式
+     */
     position: {
       type: String,
-      default: "fixed",
+      default: "fixed"
     },
-    // 自定义容器宽度
+    /**
+     * 自定义容器宽度
+     */
     width: {
       type: String,
-      default: "100%",
+      default: "100%"
     },
-    // 自定义容器高度
+    /**
+     * 自定义容器高度
+     */
     height: {
       type: String,
-      default: "100%",
+      default: "100%"
     },
-    // 滚动的方向 true为垂直方向，false为左右方向
+    /**
+     * 滚动的方向 true为垂直方向，false为左右方向
+     */
     isV: {
       type: Boolean,
-      default: true,
+      default: true
     },
-    // 是否缓存页面
+    /**
+     * 是否缓存页面
+     */
     isCache: {
       type: Boolean,
-      default: true,
+      default: true
     },
-    // 页面总数
+    /**
+     * 页面总数
+     */
     pages: {
       type: Number,
-      default: 4,
+      default: 4
     },
-    // 当前页面
+    /**
+     * 当前页面
+     */
     page: {
       type: Number,
-      default: 1,
+      default: 1
     },
-    // 默认页面背景
+    /**
+     * 默认页面背景
+     */
     bgArr: {
       type: Array,
       default: function() {
         return [];
-      },
-    },
+      }
+    }
   },
   data() {
     return {
@@ -107,7 +119,7 @@ export default {
       currentPage: 1, // 当前页面页码
       isRoll: false, // 是否可以开始滚动
       isUp: false, // 是否向上滑动
-      subScrollEl: null, // 触发源为内部滚动子元素dom
+      subScrollEl: null // 触发源为内部滚动子元素dom
     };
   },
   computed: {},
@@ -128,7 +140,7 @@ export default {
     for (let index = 0; index < this.pages; index++) {
       this.pagesArr.push({
         page: index + 1,
-        isShow: index == 0 ? true : false,
+        isShow: index == 0 ? true : false
       });
     }
   },
@@ -157,11 +169,11 @@ export default {
           this.rollPage(rollOffset);
         });
       },
-      immediate: true,
+      immediate: true
     },
     currentPage(value) {
       this.$emit("update:page", value);
-    },
+    }
   },
   methods: {
     /**
@@ -185,7 +197,7 @@ export default {
         "SymbianOS",
         "Windows Phone",
         "iPad",
-        "iPod",
+        "iPod"
       ];
       var flag = true;
       for (var v = 0; v < Agents.length; v++) {
@@ -247,7 +259,7 @@ export default {
       let self = this;
       // console.log(e)
       // 判断是否是子元素滚动
-      e.path.forEach((el) => {
+      e.path.forEach(el => {
         if (el.dataset && el.dataset.scroll == "true") {
           // 保存子元素实例
           self.subScrollEl = el;
@@ -379,7 +391,7 @@ export default {
           );
         }
       }
-    },
+    }
   },
   destroyed() {
     if (!this.isPc) {
@@ -391,7 +403,7 @@ export default {
       window.onmousewheel = document.onmousewheel = null;
       // window.onresize = null;
     }
-  },
+  }
 };
 </script>
 

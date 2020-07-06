@@ -96,33 +96,21 @@ Vue.use(directives);
 ```
 <template>
   <div class="home">
-    <v-full-page
-      :isV="isV"
-      :pages="4"
-      :page.sync="currentPage"
-      :bgArr="bgArr"
-      :isCache="false"
-    >
+    <mv-full-page :isV="isV" :pages="4" :page.sync="currentPage" :bgArr="bgArr" :isCache="false">
       <template #page1>
         <div class="page1">
           <h2>mv-full-page</h2>
           <h3>一款兼容PC端移动端的Vue滑动组件</h3>
           <h3>示例</h3>
-          <p
-            v-animate="{
+          <p v-animate="{
               name: 'bounceInLeft',
-            }"
-          >
-            页面1 第一个动画
-          </p>
+            }">页面1 第一个动画</p>
           <p
             v-animate="{
               name: 'bounceInLeft',
               delay: 500,
             }"
-          >
-            页面1 第二个动画
-          </p>
+          >页面1 第二个动画</p>
           <!-- <div class="img-test"></div> -->
           <p>移动端局部列表滚动demo</p>
           <div class="sub_scroll-test-box" data-scroll="true">
@@ -132,18 +120,10 @@ Vue.use(directives);
             <button @click="isV = !isV">切换滑动方向(默认垂直方向)</button>
           </p>
           <p>
-            <a
-              style="color:#F36B91;"
-              href="https://gitee.com/null_639_5368/v-full-page"
-              >码云</a
-            >
+            <a style="color:#F36B91;" href="https://gitee.com/null_639_5368/v-full-page">码云</a>
           </p>
           <p>
-            <a
-              style="color:#6751C1;"
-              href="https://www.npmjs.com/package/mv-full-page"
-              >npm</a
-            >
+            <a style="color:#6751C1;" href="https://www.npmjs.com/package/mv-full-page">npm</a>
           </p>
         </div>
       </template>
@@ -156,9 +136,7 @@ Vue.use(directives);
             v-animate="{
               name: 'bounceInUp',
             }"
-          >
-            页面2 第一个动画
-          </p>
+          >页面2 第一个动画</p>
         </div>
       </template>
 
@@ -169,16 +147,14 @@ Vue.use(directives);
             v-animate="{
               name: 'bounceInRight',
             }"
-          >
-            页面3 第一个动画
-          </p>
+          >页面3 第一个动画</p>
         </div>
       </template>
 
       <template #page4>
         <div class="page4">4</div>
       </template>
-    </v-full-page>
+    </mv-full-page>
   </div>
 </template>
 
@@ -187,13 +163,13 @@ Vue.use(directives);
 // import 'mv-full-page/lib-dist/mv-full-page.css'
 // import MvFullPage from 'mv-full-page'
 
-// test
-import VFullPage from "@/components/VFullPage/index.vue";
+// 本地测试组件，实际使用npm i mv-full-page 安装后导入
+import MvFullPage from "@/components/MvFullPage/index.vue";
 
 export default {
   name: "home",
   components: {
-    VFullPage,
+    MvFullPage
   },
   data() {
     return {
@@ -202,27 +178,27 @@ export default {
       bgArr: [
         {
           isBg: true,
-          src: require("@/assets/bg_img_1.jpg"),
+          src: require("@/assets/bg_img_1.jpg")
         },
         {
           isBg: true,
-          src: require("@/assets/bg_img_2.jpg"),
+          src: require("@/assets/bg_img_2.jpg")
         },
         {
           isBg: true,
-          src: require("@/assets/bg_img_3.jpg"),
+          src: require("@/assets/bg_img_3.jpg")
         },
         {
           isBg: true,
-          src: require("@/assets/bg_img_4.jpg"),
-        },
-      ],
+          src: require("@/assets/bg_img_4.jpg")
+        }
+      ]
       // bgArr: [{
       //   isBg: true,
       //   src: require('@/assets/....')
       // }, 'orange', 'pink', 'green']
     };
-  },
+  }
 };
 </script>
 <style lang="scss" scoped>
@@ -267,25 +243,28 @@ export default {
 </style>
 
 
+
 ```
 
 ```
 // vue + typescript
 <script lang="ts">
-import { Component, Vue, Prop, Watch } from 'vue-property-decorator'
-import MvFullPage from 'mv-full-page'
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import "mv-full-page/lib-dist/mv-full-page.css";
+import MvFullPage from "mv-full-page";
+
 @Component({
   components: {
-    Button
-  },
+    MvFullPage
+  }
 })
-export default class Home extends Vue implements MvFullPage {
-  currentPage = 1
-  bgArr = ['pink', 'orange', 'pink', 'green']
-  isV = false
-  isCache = false
-  pages = 4
-  page = 1
+export default class extends Vue {
+  currentPage = 1;
+  bgArr = ["pink", "orange", "pink", "green"];
+  isV = false;
+  isCache = false;
+  pages = 4;
+  page = 1;
 }
 </script>
 ```

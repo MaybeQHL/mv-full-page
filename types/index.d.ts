@@ -6,38 +6,41 @@ import Vue, { PluginObject } from "vue";
 import { BaseComponent } from "./component";
 
 /**  Component */
-export class FullPage extends BaseComponent {
+export default class MvFullPage extends BaseComponent {
+  /**
+   * 容器宽度
+   * @type {string}
+   * @default "fixed"
+   */
+  position?: "fixed" | "relative" | "static" | "absolute" | "inherit";
   /**
    * 容器宽度
    * @type {string}
    */
-  position: "fixed" | "relative" | "static" | "absolute" | "inherit";
-  /**
-   * 容器宽度
-   * @type {string}
-   */
-  height: string;
+  height?: string;
   /**
    * 容器高度
    * @type {string}
    */
-  width: string;
+  width?: string;
   /**
    * 当前页码
    * @type {number}
    */
-  currentPage: number;
+  currentPage?: number;
   /**
    * 滚动的方向
    * @type {boolean}
    * @description true为垂直方向，false为左右方向
+   * @default true
    */
-  isV: boolean;
+  isV?: boolean;
   /**
    * 是否缓存页面
    * @type {boolean}
+   * @default true
    */
-  isCache: boolean;
+  isCache?: boolean;
   /**
    * 总页数
    * @type {number}
@@ -66,4 +69,3 @@ export interface InstallationOptions {
 
 export function install(vue: typeof Vue, options: InstallationOptions): void;
 
-export default class MvFullPage extends FullPage {}
