@@ -1,9 +1,9 @@
 # mv-full-page
+
 > 一款兼容PC、移动端(包含微信公众号)的滑动组件
 
 [![npm](https://img.shields.io/npm/v/mv-full-page.svg)](https://www.npmjs.com/package/mv-full-page)
 [![npm](https://img.shields.io/npm/dt/mv-full-page.svg)](https://www.npmjs.com/package/mv-full-page)
-
 
 ## NPM
 
@@ -16,7 +16,6 @@ https://gitee.com/null_639_5368/v-full-page
 ## 示例
 
 [http://null_639_5368.gitee.io/v-full-page](http://null_639_5368.gitee.io/v-full-page)
-
 
 ## 介绍
 
@@ -34,47 +33,50 @@ vue 全屏滑动组件(移动端、PC 端(鼠标滚轮滑动)都已兼容)
 
 ## 功能点
 
-1. 移动端全屏触摸滑动
+01. 移动端全屏触摸滑动
 
-2. pc 端鼠标滚轮切换
+02. pc 端鼠标滚轮切换
 
-3. 页面切换动画重置
+03. 页面切换动画重置
 
-4. 支持动画队列式出现
+04. 支持动画队列式出现
 
-5. 解决 ios 滑动页面回弹
+05. 解决 ios 滑动页面回弹
 
-6. 扩展：自定义 animate 动画指令
+06. 扩展：自定义 animate 动画指令
 
-7. 支持水平方向或垂直方向的滚动
+07. 支持水平方向或垂直方向的滚动
 
-8. 支持 ts
+08. 支持 ts
 
-9. 支持组件内添加局部滚动（已经处理了微信公众号局部元素滚动回弹的问题）
+09. 支持组件内添加局部滚动（已经处理了微信公众号局部元素滚动回弹的问题）
 
 10. 支持自定义滚动容器定位方式和容器大小
+
+11. 指示器切换页面
 
 ## 属性
 
 > 组件属性
 
-
 | name     | 类型    | 默认值  | 备注                                                                                                                                                                     |
 | -------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| position | String  | "fixed" | 容器定位模式支持 ['fixed','relative'，'static','absolute','inherit']                                                                                                     |
+| position | String  | "fixed" | 容器定位模式支持 ['fixed', 'relative'，'static', 'absolute', 'inherit']                                                                                                     |
 | width    | String  | '100%'  | 设置滚动容器的宽度                                                                                                                                                       |
 | height   | String  | '100%'  | 设置滚动容器的高度                                                                                                                                                       |
 | isV      | Boolean | true    | 滚动的方向 true 为垂直方向，false 为左右方向                                                                                                                             |
 | isCache  | Boolean | true    | 是否缓存页面                                                                                                                                                             |
 | pages    | Number  | 4       | 页面总数                                                                                                                                                                 |
-| bgArr    | Array   | [ ]     | 默认页面背景,设置图片背景请传入{isBg:true, src:require('这里是你的背景图片路径') }}<br>示例格式: ["pink", "orange", "pink", {isBg:true, src:require('@/assets/....') } ] |
+| bgArr    | Array   | [ ]     | 默认页面背景, 设置图片背景请传入{isBg:true, src:require('这里是你的背景图片路径') }}<br>示例格式: ["pink", "orange", "pink", {isBg:true, src:require('@/assets/....') } ] |
 | page     | Number  | 1       | 当前页面                                                                                                                                                                 |
+| isPointer     | Boolean  | true       | 是是否显示指示器|
+| pointerPos    | String  | 'right'       | 指示器的位置 ['right', 'left', 'top', 'bottom'] |
 
 > 局部滚动 div
 
 | name        | 类型    | 默认值 | 备注                                                                 |
 | ----------- | ------- | ------ | -------------------------------------------------------------------- |
-| data-scroll | Boolean | false  | 局部滚动一定要在滚动容器添加这个属性`<div data-scroll="true"></div>` |
+| data-scroll | Boolean | false  | 局部滚动一定要在滚动容器添加这个属性 `<div data-scroll="true"></div>` |
 
 ## 安装
 
@@ -84,7 +86,7 @@ npm i inobounce （禁止屏幕回弹 js 从 1.1.2 版本开始无需再导入�
 
 按需使用动画指令(注意：目前该指令只提供简单的动画演示，并且在 animate 4.x 版本中不支持)
 
-```
+``` 
 // 注册动画指令
 import "animate.css";
 import directives from "./utils/directives";
@@ -93,7 +95,7 @@ Vue.use(directives);
 
 ## 使用方法
 
-```
+``` 
 <template>
   <div class="home">
     <mv-full-page :isV="isV" :pages="4" :page.sync="currentPage" :bgArr="bgArr" :isCache="false">
@@ -242,11 +244,9 @@ export default {
 }
 </style>
 
-
-
 ```
 
-```
+``` 
 // vue + typescript
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
@@ -269,7 +269,7 @@ export default class extends Vue {
 </script>
 ```
 
-```
+``` 
 // 全局引入
 // main.js
 import 'mv-full-page/lib-dist/mv-full-page.css'

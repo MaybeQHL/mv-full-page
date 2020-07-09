@@ -30,6 +30,16 @@
         </div>
       </template>
     </div>
+    <div class="pointer-wrapper" :class="pointerPos" v-if="isPointer">
+      <ul>
+        <li
+          :class="{active:page == index }"
+          @click="currentPage=index"
+          v-for="index in pages"
+          :key="index"
+        ></li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -45,6 +55,20 @@ import { debounce } from "./utils";
 export default {
   name: "MvFullPage",
   props: {
+    /**
+     * 是否显示指示器
+     */
+    isPointer: {
+      type: Boolean,
+      default: true
+    },
+    /**
+     * 指示器位置
+     */
+    pointerPos: {
+      type: String,
+      default: "right"
+    },
     /**
      * 定位模式
      */
@@ -443,5 +467,65 @@ export default {
 }
 .floatLeft {
   float: left;
+}
+.pointer-wrapper {
+  position: fixed;
+  &.right {
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    li {
+      display: block;
+      margin: 10px 0px;
+    }
+  }
+  &.left {
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    li {
+      display: block;
+      margin: 10px 0px;
+    }
+  }
+  &.top {
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    li {
+      display: inline-block;
+      margin: 0px 10px;
+    }
+  }
+
+  &.bottom {
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    li {
+      display: inline-block;
+      margin: 0px 10px;
+    }
+  }
+  .active {
+    border: 2px solid #fff;
+    background-color: #00a1d6;
+    transform: scale(1.3);
+  }
+  ul li {
+    box-sizing: border-box;
+    list-style: none;
+    width: 15px;
+    height: 15px;
+    border: 2px solid transparent;
+    border-radius: 50%;
+    background-color: #fff;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: all 0.2s;
+    &:hover {
+      @extend .active;
+    }
+  }
 }
 </style>
