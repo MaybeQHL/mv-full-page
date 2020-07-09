@@ -98,7 +98,14 @@ Vue.use(directives);
 ``` 
 <template>
   <div class="home">
-    <mv-full-page :isV="isV" :pages="4" :page.sync="currentPage" :bgArr="bgArr" :isCache="false">
+    <mv-full-page   
+    :isPointer="true"
+    pointerPos="left" 
+    :isV="isV" 
+    :pages="4" 
+    :page.sync="currentPage" 
+    :bgArr="bgArr" 
+    :isCache="false">
       <template #page1>
         <div class="page1">
           <h2>mv-full-page</h2>
