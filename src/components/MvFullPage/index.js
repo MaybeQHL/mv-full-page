@@ -4,6 +4,4 @@ import MvFullPage from './index.vue'
 MvFullPage.install = (Vue) => {
   Vue.component('mv-full-page', MvFullPage)
 };
-
-
 export default MvFullPage // 提供按需导入组件

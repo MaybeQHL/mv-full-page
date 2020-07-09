@@ -2,7 +2,7 @@
   <div class="home">
     <mv-full-page
       :isPointer="true"
-      pointerPos="left"
+      pointerPos="right"
       :isV="isV"
       :pages="4"
       :page.sync="currentPage"
