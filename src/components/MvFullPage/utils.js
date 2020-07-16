@@ -61,3 +61,9 @@ export const stopDrop = () => {
     lastY = y;
   });
 }
+/**
+ * 判断是否是火狐浏览器
+ */
+export const isFireFox = () => {
+  return window.navigator.userAgent.toLowerCase().indexOf("firefox") != -1;
+}

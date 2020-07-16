@@ -51,7 +51,7 @@
  */
 // 禁止IOS回弹库
 import inobounce from "./inobounce";
-import { debounce } from "./utils";
+import { debounce, isFireFox } from "./utils";
 export default {
   name: "MvFullPage",
   props: {
@@ -258,27 +258,42 @@ export default {
         this.$refs.allPage.addEventListener("touchend", this.pageEnd, false);
       } else {
         // pc端鼠标滚轮事件监听 使用函数防抖解决滚动多次触发问题
-        window.onmousewheel = document.onmousewheel = debounce(
-          this.pcRoll,
-          100,
-          true
-        ); //IE/Opera/Chrome
-      }
-    },
-    pcRoll(e) {
-      if (e.deltaY > 0) {
-        // console.log("滚动下");
-        this.switchPage(true);
-      } else {
-        this.switchPage(false);
-        // console.log("滚动上");
+        //IE/Opera/Chrome
+        window.onmousewheel = document.onmousewheel = this.pcRoll;
+        // 判断火狐浏览器
+        if (isFireFox()) {
+          document.addEventListener("DOMMouseScroll", this.pcRoll, false);
+        }
       }
     },
     removePageListener() {
-      this.$refs.allPage.removeEventListener("touchstart");
-      this.$refs.allPage.removeEventListener("touchmove");
-      this.$refs.allPage.removeEventListener("touchend");
+      if (!this.isPc) {
+        // 解除滚动禁用
+        inobounce.disable();
+        this.$refs.allPage.removeEventListener("touchstart");
+        this.$refs.allPage.removeEventListener("touchmove");
+        this.$refs.allPage.removeEventListener("touchend");
+      } else {
+        window.onmousewheel = document.onmousewheel = null;
+        if (isFireFox()) {
+          document.removeEventListener("DOMMouseScroll", this.pcRoll, false);
+        }
+      }
     },
+    pcRoll: debounce(
+      function(e) {
+        // ..
+        if (e.deltaY > 0 || e.detail > 0 || e.wheelDelta < 0) {
+          // console.log("滚动下");
+          this.switchPage(true);
+        } else {
+          this.switchPage(false);
+          // console.log("滚动上");
+        }
+      },
+      100,
+      true
+    ),
     pageStart(e) {
       let self = this;
       // console.log(e)
@@ -418,15 +433,8 @@ export default {
     }
   },
   destroyed() {
-    if (!this.isPc) {
-      // 解除滚动禁用
-      inobounce.disable();
-      // 销毁页面滑动事件
-      this.removePageListener();
-    } else {
-      window.onmousewheel = document.onmousewheel = null;
-      // window.onresize = null;
-    }
+    // 销毁页面滑动事件
+    this.removePageListener();
   }
 };
 </script>
