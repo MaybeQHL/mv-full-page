@@ -1,6 +1,6 @@
 {
   "name": "mv-full-page",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "private": false,
   "main": "lib-dist/mv-full-page.umd.min.js",
   "types": "types/index.d.ts",

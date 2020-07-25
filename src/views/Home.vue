@@ -24,6 +24,9 @@
             }"
           >页面1 第二个动画</p>
           <!-- <div class="img-test"></div> -->
+          <div>
+            <router-link to="/about">切换页面</router-link>
+          </div>
           <p>移动端局部列表滚动demo</p>
           <div class="sub_scroll-test-box" data-scroll="true">
             <p v-for="item in 99" :key="item">滚动测试数据</p>
@@ -81,7 +84,7 @@ import MvFullPage from "@/components/MvFullPage/index.vue";
 export default {
   name: "home",
   components: {
-    MvFullPage
+    MvFullPage,
   },
   data() {
     return {
@@ -90,27 +93,27 @@ export default {
       bgArr: [
         {
           isBg: true,
-          src: require("@/assets/bg_img_1.jpg")
+          src: require("@/assets/bg_img_1.jpg"),
         },
         {
           isBg: true,
-          src: require("@/assets/bg_img_2.jpg")
+          src: require("@/assets/bg_img_2.jpg"),
         },
         {
           isBg: true,
-          src: require("@/assets/bg_img_3.jpg")
+          src: require("@/assets/bg_img_3.jpg"),
         },
         {
           isBg: true,
-          src: require("@/assets/bg_img_4.jpg")
-        }
-      ]
+          src: require("@/assets/bg_img_4.jpg"),
+        },
+      ],
       // bgArr: [{
       //   isBg: true,
       //   src: require('@/assets/....')
       // }, 'orange', 'pink', 'green']
     };
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>
