@@ -8,21 +8,32 @@
       :page.sync="currentPage"
       :bgArr="bgArr"
       :isCache="false"
+      :transition="{
+        duration: '700ms', // 动画时长
+        timingFun: 'ease', // 动画速度曲线
+        delay: '0s', // 动画延迟
+      }"
     >
       <template #page1>
         <div class="page1">
           <h2>mv-full-page</h2>
           <h3>一款兼容PC端移动端的Vue滑动组件</h3>
           <h3>示例</h3>
-          <p v-animate="{
+          <p
+            v-animate="{
               name: 'bounceInLeft',
-            }">页面1 第一个动画</p>
+            }"
+          >
+            页面1 第一个动画
+          </p>
           <p
             v-animate="{
               name: 'bounceInLeft',
               delay: 500,
             }"
-          >页面1 第二个动画</p>
+          >
+            页面1 第二个动画
+          </p>
           <!-- <div class="img-test"></div> -->
           <div>
             <router-link to="/about">切换页面</router-link>
@@ -35,10 +46,18 @@
             <button @click="isV = !isV">切换滑动方向(默认垂直方向)</button>
           </p>
           <p>
-            <a style="color:#F36B91;" href="https://gitee.com/null_639_5368/v-full-page">码云</a>
+            <a
+              style="color: #f36b91"
+              href="https://gitee.com/null_639_5368/v-full-page"
+              >码云</a
+            >
           </p>
           <p>
-            <a style="color:#6751C1;" href="https://www.npmjs.com/package/mv-full-page">npm</a>
+            <a
+              style="color: #6751c1"
+              href="https://www.npmjs.com/package/mv-full-page"
+              >npm</a
+            >
           </p>
         </div>
       </template>
@@ -47,11 +66,13 @@
         <div class="page2">
           <p
             class="block"
-            style="margin-top:250px;"
+            style="margin-top: 250px"
             v-animate="{
               name: 'bounceInUp',
             }"
-          >页面2 第一个动画</p>
+          >
+            页面2 第一个动画
+          </p>
         </div>
       </template>
 
@@ -62,7 +83,9 @@
             v-animate="{
               name: 'bounceInRight',
             }"
-          >页面3 第一个动画</p>
+          >
+            页面3 第一个动画
+          </p>
         </div>
       </template>
 

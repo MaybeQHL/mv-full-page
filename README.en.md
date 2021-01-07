@@ -1,36 +1,188 @@
-# v-full-page
+# mv-full-page
 
-#### Description
-vue全屏滑动组件(目前仅支持移动端，后续支持PC端)
+> A sliding (rolling) component compatible with PC and mobile terminal (including WeChat public number)
 
-#### Software Architecture
-Software architecture description
+[![npm](https://img.shields.io/npm/v/mv-full-page.svg)](https://www.npmjs.com/package/mv-full-page)
+[![npm](https://img.shields.io/npm/dt/mv-full-page.svg)](https://www.npmjs.com/package/mv-full-page)
+[![npm](https://img.shields.io/bundlephobia/min/mv-full-page.svg)](https://www.npmjs.com/package/mv-full-page)
+![NPM](https://img.shields.io/npm/l/mv-full-page)
+![npm collaborators](https://img.shields.io/npm/collaborators/mv-full-page)
+## NPM
 
-#### Installation
+https://www.npmjs.com/package/mv-full-page
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+## gitee
 
-#### Instructions
+https://gitee.com/null_639_5368/v-full-page
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+## demo
 
-#### Contribution
+[http://null_639_5368.gitee.io/v-full-page](http://null_639_5368.gitee.io/v-full-page)
 
-1.  Fork the repository
-2.  Create Feat_xxx branch
-3.  Commit your code
-4.  Create Pull Request
+## introduce
+
+Vue full-screen sliding component (mobile terminal, PC (mouse wheel sliding) are compatible)
+Support partial page animation with sample demo
+Note: This component currently only supports refresh initialization to determine the PC and mobile environments, and the height of the element initialization.
+Others: If you like it, give it a STAR, and update and optimize it as long as there is time
 
 
-#### Gitee Feature
+## The function point
 
-1.  You can use Readme\_XXX.md to support different languages, such as Readme\_en.md, Readme\_zh.md
-2.  Gitee blog [blog.gitee.com](https://blog.gitee.com)
-3.  Explore open source project [https://gitee.com/explore](https://gitee.com/explore)
-4.  The most valuable open source project [GVP](https://gitee.com/gvp)
-5.  The manual of Gitee [https://gitee.com/help](https://gitee.com/help)
-6.  The most popular members  [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+01. Full-screen touch sliding on the mobile terminal
+02. Switch the mouse wheel on PC
+03. Page switch animation reset
+04. Support animated queue appearance
+05. Solve iOS sliding page rebound
+06. Extension: Customize the animate animation directive
+07. Horizontal or vertical scrolling is supported
+08. Support for ts
+09. Support to add local scrolling within the component (WeChat public account has dealt with the issue of local element scrolling rebound)
+10. Support custom scrolling container positioning and container size
+11. Indicator switch page
+12. Compatible with IE, Chrome and Firefox
+13. Support custom transition animation
+
+## attribute
+
+> Component attributes
+
+| name       | type    | default                                                 | reamark                                                                                                                                                                                                          |
+| ---------- | ------- | ------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| position   | String  | "fixed"                                                 | Container location mode support ['fixed', 'relative'，'static', 'absolute', 'inherit']                                                                                                                           |
+| width      | String  | "100%"                                                  | Sets the width of the scroll container                                                                                                                                                                           |
+| height     | String  | "100%"                                                  | Sets the height of the scroll container                                                                                                                                                                          |
+| isV        | Boolean | true                                                    | Direction of roll  true vertical ，false horizontal                                                                                                                                                              |
+| isCache    | Boolean | true                                                    | cache page                                                                                                                                                                                                       |
+| pages      | Number  | 4                                                       | total pages                                                                                                                                                                                                      |
+| bgArr      | Array   | [ ]                                                     | Default page background, set picture background please pass in {isBg:true, src:require('Here is your background image path') }}<br>demo: ["pink", "orange", "pink", {isBg:true, src:require('@/assets/....') } ] |
+| page       | Number  | 1                                                       | The current page                                                                                                                                                                                                 |
+| isPointer  | Boolean | true                                                    | Display or not indicator                                                                                                                                                                                         |
+| pointerPos | String  | 'right'                                                 | Indicator position ['right', 'left', 'top', 'bottom']                                                                                                                                                            |
+| transition | Object  | {  duration: '700ms',  timingFun: 'ease',  delay: '0s'} | duration = Animation duration(s/ms)  timingFun=Animation speed curve delay= Animation delay(s/ms)                                                                                                                |
+
+
+> Local rolling div
+
+| name        | type    | default | remark                                                                                             |
+| ----------- | ------- | ------- | -------------------------------------------------------------------------------------------------- |
+| data-scroll | Boolean | false   | Local scrolling must add this property to the scrolling container `<div data-scroll="true"></div>` |
+
+
+## Installation and Updates
+
+> Try to update to the latest version of the component
+> 
+```
+npm i mv-full-page
+```
+
+## register
+
+``` 
+// Introduced the global
+import 'mv-full-page/lib-dist/mv-full-page.css'
+import MvFullPage from 'mv-full-page'
+
+Vue.use(MvFullPage)
+```
+## use
+``` 
+<template>
+  <div class="home">
+    <mv-full-page   
+    :isPointer="true"
+    pointerPos="left" 
+    :isV="isV" 
+    :pages="4" 
+    :page.sync="currentPage" 
+    :bgArr="bgArr" 
+    :isCache="false"
+    :transition="{
+        duration: '700ms',
+        timingFun: 'ease', 
+        delay: '0s',
+      }"
+    >
+      <template #page1>
+        page1
+      </template>
+
+      <template #page2>
+        <div class="page2">
+         page2
+        </div>
+      </template>
+
+      <template #page3>
+        <div class="page3">
+        page3
+        </div>
+      </template>
+
+      <template #page4>
+        page4
+      </template>
+    </mv-full-page>
+  </div>
+</template>
+
+<script>
+export default {
+  components: {
+  },
+  data() {
+    return {
+      isV: true,
+      currentPage: 1,
+      bgArr: [
+        {
+          isBg: true,
+          src: require("@/assets/bg_img_1.jpg")
+        },
+        {
+          isBg: true,
+          src: require("@/assets/bg_img_2.jpg")
+        },
+        {
+          isBg: true,
+          src: require("@/assets/bg_img_3.jpg")
+        },
+        {
+          isBg: true,
+          src: require("@/assets/bg_img_4.jpg")
+        }
+      ]
+      // bgArr: [{
+      //   isBg: true,
+      //   src: require('@/assets/....')
+      // }, 'orange', 'pink', 'green']
+    };
+  }
+};
+</script>
+
+```
+
+``` 
+// vue + typescript
+<script lang="ts">
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import "mv-full-page/lib-dist/mv-full-page.css";
+import MvFullPage from "mv-full-page";
+
+@Component({
+  components: {
+    MvFullPage
+  }
+})
+export default class extends Vue {
+  currentPage = 1;
+  bgArr = ["pink", "orange", "pink", "green"];
+  isV = false;
+  isCache = false;
+  pages = 4;
+  page = 1;
+}
+</script>
+```

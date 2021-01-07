@@ -1,7 +1,19 @@
 <template>
   <!-- 全屏滚动组件 -->
-  <div class="full-page-wrapper" :style="{ position, height, width }" ref="fullPage">
-    <div class="all-page" ref="allPage">
+  <div
+    class="full-page-wrapper"
+    :style="{ position, height, width }"
+    ref="fullPage"
+  >
+    <div
+      class="all-page"
+      ref="allPage"
+      :style="{
+        'transition-duration': transition.duration,
+        'transition-timing-function': transition.timingFun,
+        'transition-delay': transition.delay,
+      }"
+    >
       <template v-for="(item, index) in pagesArr">
         <div
           class="page"
@@ -33,8 +45,8 @@
     <div class="pointer-wrapper" :class="pointerPos" v-if="isPointer">
       <ul>
         <li
-          :class="{active:page == index }"
-          @click="currentPage=index"
+          :class="{ active: page == index }"
+          @click="currentPage = index"
           v-for="index in pages"
           :key="index"
         ></li>
@@ -55,6 +67,17 @@ import { debounce, isFireFox, addEvent, removeEvent, eventPath } from "./utils";
 export default {
   name: "MvFullPage",
   props: {
+    // 自定义过渡动画
+    transition: {
+      type: Object,
+      default: function () {
+        return {
+          duration: "700ms", // 动画时长
+          timingFun: "ease", // 动画速度曲线
+          delay: "0s", // 动画延迟
+        };
+      },
+    },
     /**
      * 是否显示指示器
      */
@@ -466,15 +489,18 @@ export default {
   .all-page {
     width: 100%;
     transform: translateY(0px);
-    transition: all 700ms ease 0s;
     -webkit-overflow-scrolling: touch;
+    // transition: all 700ms ease 0s;
+    transition-property: transform;
+    // transition-duration: 700ms;
+    // transition-timing-function: ease;
+    // transition-delay: 0s;
   }
   .page {
     z-index: 11;
     background-size: cover;
     background-repeat: no-repeat;
     position: relative;
-    // transition: all 0.1s linear;
   }
   .page-box {
     position: absolute;
