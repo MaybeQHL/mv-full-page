@@ -75,13 +75,24 @@ vue 全屏滑动组件(移动端、PC 端(鼠标滚轮滑动)都已兼容)
 | isPointer  | Boolean | true                                                    | 是是否显示指示器                                                                                                                                                          |
 | pointerPos | String  | 'right'                                                 | 指示器的位置 ['right', 'left', 'top', 'bottom']                                                                                                                           |
 | transition | Object  | {  duration: '700ms',  timingFun: 'ease',  delay: '0s'} | duration = 动画时长(s/ms)  timingFun=动画速度曲线 delay= 动画延迟(s/ms)                                                                                                   |
+***
+<br>
+<br>
 
+> 事件
+
+| name    | 说明           | 回调参数          |
+| ------- | -------------- | ----------------- |
+| rollEnd | 滚动页面后触发 | page:滚动后的页码 |
+<br>
+<br>
 
 > 局部滚动 div
 
 | name        | 类型    | 默认值 | 备注                                                                  |
 | ----------- | ------- | ------ | --------------------------------------------------------------------- |
 | data-scroll | Boolean | false  | 局部滚动一定要在滚动容器添加这个属性 `<div data-scroll="true"></div>` |
+
 
 
 ## 安装和更新
@@ -174,7 +185,7 @@ export default {
       //   src: require('@/assets/....')
       // }, 'orange', 'pink', 'green']
     };
-  }
+  },
 };
 </script>
 

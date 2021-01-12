@@ -420,6 +420,7 @@ export default {
             setTimeout(() => {
               // console.log("解除滑动限制");
               self.isRoll = false;
+              self.$emit("rollEnd", this.currentPage);
             }, 100);
             self.currentPage++;
             this.$refs.allPage.removeEventListener(
@@ -448,6 +449,7 @@ export default {
             setTimeout(() => {
               // console.log("解除滑动限制");
               self.isRoll = false;
+              self.$emit("rollEnd", this.currentPage);
             }, 100);
             self.currentPage--;
             this.$refs.allPage.removeEventListener(

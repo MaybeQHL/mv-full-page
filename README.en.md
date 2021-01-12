@@ -60,7 +60,16 @@ Others: If you like it, give it a STAR, and update and optimize it as long as th
 | isPointer  | Boolean | true                                                    | Display or not indicator                                                                                                                                                                                         |
 | pointerPos | String  | 'right'                                                 | Indicator position ['right', 'left', 'top', 'bottom']                                                                                                                                                            |
 | transition | Object  | {  duration: '700ms',  timingFun: 'ease',  delay: '0s'} | duration = Animation duration(s/ms)  timingFun=Animation speed curve delay= Animation delay(s/ms)                                                                                                                |
+<br>
+<br>
 
+> 事件
+
+| name    | explain                            | callback parameter |
+| ------- | ---------------------------------- | ------------------ |
+| rollEnd | Triggered after scrolling the page | page: Scroll the page number  |
+<br>
+<br>
 
 > Local rolling div
 

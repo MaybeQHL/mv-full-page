@@ -13,6 +13,7 @@
         timingFun: 'ease', // 动画速度曲线
         delay: '0s', // 动画延迟
       }"
+      @rollEnd="onRollEnd"
     >
       <template #page1>
         <div class="page1">
@@ -136,6 +137,11 @@ export default {
       //   src: require('@/assets/....')
       // }, 'orange', 'pink', 'green']
     };
+  },
+  methods: {
+    onRollEnd(page) {
+      console.log("当前页面为", page);
+    },
   },
 };
 </script>
