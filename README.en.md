@@ -65,9 +65,9 @@ Others: If you like it, give it a STAR, and update and optimize it as long as th
 
 > 事件
 
-| name    | explain                            | callback parameter |
-| ------- | ---------------------------------- | ------------------ |
-| rollEnd | Triggered after scrolling the page | page: Scroll the page number  |
+| name    | explain                            | callback parameter           |
+| ------- | ---------------------------------- | ---------------------------- |
+| rollEnd | Triggered after scrolling the page | page: Scroll the page number |
 <br>
 <br>
 
@@ -101,7 +101,7 @@ Vue.use(MvFullPage)
   <div class="home">
     <mv-full-page   
     :isPointer="true"
-    pointerPos="left" 
+    pointerPos="right" 
     :isV="isV" 
     :pages="4" 
     :page.sync="currentPage" 
@@ -144,24 +144,7 @@ export default {
     return {
       isV: true,
       currentPage: 1,
-      bgArr: [
-        {
-          isBg: true,
-          src: require("@/assets/bg_img_1.jpg")
-        },
-        {
-          isBg: true,
-          src: require("@/assets/bg_img_2.jpg")
-        },
-        {
-          isBg: true,
-          src: require("@/assets/bg_img_3.jpg")
-        },
-        {
-          isBg: true,
-          src: require("@/assets/bg_img_4.jpg")
-        }
-      ]
+      bgArr: ["#4FD7F9", "orange", "pink", "green"]
       // bgArr: [{
       //   isBg: true,
       //   src: require('@/assets/....')

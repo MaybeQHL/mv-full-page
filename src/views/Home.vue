@@ -132,10 +132,6 @@ export default {
           src: require("@/assets/bg_img_4.jpg"),
         },
       ],
-      // bgArr: [{
-      //   isBg: true,
-      //   src: require('@/assets/....')
-      // }, 'orange', 'pink', 'green']
     };
   },
   methods: {

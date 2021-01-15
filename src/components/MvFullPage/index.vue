@@ -22,10 +22,14 @@
           :style="{
             height: fullHeight + 'px',
             width: fullWidth + 'px',
-            'background-color': !bgArr[index].isBg ? bgArr[index] : '',
-            'background-image': bgArr[index].isBg
-              ? `url(${bgArr[index].src})`
-              : '',
+            'background-color':
+              bgArr.length > 0 && bgArr[index] && !bgArr[index].isBg
+                ? bgArr[index]
+                : '',
+            'background-image':
+              bgArr.length > 0 && bgArr[index] && bgArr[index].isBg
+                ? `url(${bgArr[index].src})`
+                : '',
           }"
           :ref="`page${item}`"
         >
@@ -486,7 +490,7 @@ export default {
   left: 0px;
   // width: 100%;
   // height: 100%;
-  background: #ffffff;
+  background: #4fd7f9;
   overflow: hidden;
   .all-page {
     width: 100%;
