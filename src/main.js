@@ -9,6 +9,8 @@ import directives from "./utils/directives";
 Vue.use(directives);
 
 
+import VConsole from 'vconsole' //引入
+new VConsole() //初始化
 
 Vue.config.productionTip = false;
 

@@ -1,6 +1,6 @@
 {
   "name": "mv-full-page",
-  "version": "1.1.9",
+  "version": "1.2.0",
   "private": false,
   "main": "lib-dist/mv-full-page.umd.min.js",
   "types": "types/index.d.ts",
@@ -16,6 +16,7 @@
     "animate.css": "^3.5.2",
     "core-js": "^3.6.5",
     "inobounce": "^0.2.0",
+    "vconsole": "^3.4.0",
     "vue": "^2.6.11",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0"

@@ -47,10 +47,10 @@
       </template>
     </div>
     <div class="pointer-wrapper" :class="pointerPos" v-if="isPointer">
-      <ul>
+      <ul :class="isPc && 'hover'">
         <li
           :class="{ active: page == index }"
-          @click="currentPage = index"
+          @click="pointerClick(index)"
           v-for="index in pages"
           :key="index"
         ></li>
@@ -197,16 +197,12 @@ export default {
     }
   },
   mounted() {
-    // 禁止回弹
-    // stopDrop();
-    // 初始化页面宽高
-    this.initPageWH();
-    // 初始化页面滑动事件
-    this.initPageListener();
-    // PC端监听窗口大小变化
-    // if (this.isPc) {
-    //   window.onresize = throttle(this.initPageWH, 100)
-    // }
+    this.$nextTick(() => {
+      // 初始化页面宽高
+      this.initPageWH();
+      // 初始化页面滑动事件
+      this.initPageListener();
+    });
   },
   watch: {
     page: {
@@ -223,11 +219,11 @@ export default {
       },
       immediate: true,
     },
-    currentPage(value) {
-      this.$emit("update:page", value);
-    },
   },
   methods: {
+    pointerClick(index) {
+      this.$emit("update:page", index);
+    },
     /**
      * 判断是否是ios系统
      */
@@ -331,9 +327,10 @@ export default {
     ),
     pageStart(e) {
       let self = this;
-      // console.log(e)
+      console.log(e);
+      let path = eventPath(e);
       // 判断是否是子元素滚动
-      e.path.forEach((el) => {
+      path.forEach((el) => {
         if (el.dataset && el.dataset.scroll == "true") {
           // 保存子元素实例
           self.subScrollEl = el;
@@ -425,6 +422,7 @@ export default {
               // console.log("解除滑动限制");
               self.isRoll = false;
               self.$emit("rollEnd", this.currentPage);
+              self.$emit("update:page", this.currentPage);
             }, 100);
             self.currentPage++;
             this.$refs.allPage.removeEventListener(
@@ -454,6 +452,7 @@ export default {
               // console.log("解除滑动限制");
               self.isRoll = false;
               self.$emit("rollEnd", this.currentPage);
+              self.$emit("update:page", this.currentPage);
             }, 100);
             self.currentPage--;
             this.$refs.allPage.removeEventListener(
@@ -498,9 +497,9 @@ export default {
     -webkit-overflow-scrolling: touch;
     // transition: all 700ms ease 0s;
     transition-property: transform;
-    // transition-duration: 700ms;
-    // transition-timing-function: ease;
-    // transition-delay: 0s;
+    transition-duration: 700ms;
+    transition-timing-function: ease;
+    transition-delay: 0s;
   }
   .page {
     z-index: 11;
@@ -556,12 +555,8 @@ export default {
       margin: 0px 10px;
     }
   }
-  .active {
-    border: 2px solid #fff;
-    background-color: #00a1d6;
-    transform: scale(1.3);
-  }
-  ul li {
+
+  ul > li {
     box-sizing: border-box;
     list-style: none;
     width: 15px;
@@ -572,9 +567,16 @@ export default {
     vertical-align: middle;
     cursor: pointer;
     transition: all 0.2s;
-    &:hover {
-      @extend .active;
+    &.active {
+      border: 2px solid #fff;
+      background-color: #00a1d6;
+      transform: scale(1.3);
     }
   }
+}
+.hover li:hover {
+  border: 2px solid #fff;
+  background-color: #00a1d6;
+  transform: scale(1.3);
 }
 </style>
