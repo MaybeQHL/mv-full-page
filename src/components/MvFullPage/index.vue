@@ -67,7 +67,14 @@
  */
 // 禁止IOS回弹库
 import inobounce from "./inobounce";
-import { debounce, isFireFox, addEvent, removeEvent, eventPath } from "./utils";
+import {
+  debounce,
+  throttle,
+  isFireFox,
+  addEvent,
+  removeEvent,
+  eventPath,
+} from "./utils";
 export default {
   name: "MvFullPage",
   props: {
@@ -203,6 +210,8 @@ export default {
       // 初始化页面滑动事件
       this.initPageListener();
     });
+    // 响应窗口大小
+    window.addEventListener("resize", this.resizeFn);
   },
   watch: {
     page: {
@@ -221,6 +230,13 @@ export default {
     },
   },
   methods: {
+    // 响应窗口大小监听函数
+    resizeFn: throttle(function () {
+      console.log(this.$refs);
+      // 初始化页面宽高
+      this.initPageWH();
+    }, 500),
+    // 指示器点击
     pointerClick(index) {
       this.$emit("update:page", index);
     },
@@ -471,6 +487,7 @@ export default {
   beforeDestroy() {
     // 销毁页面事件
     this.removePageListener();
+    window.removeEventListener("resize", this.resizeFn);
     console.log("销毁页面事件成功");
   },
 };
@@ -506,6 +523,7 @@ export default {
     background-size: cover;
     background-repeat: no-repeat;
     position: relative;
+    background-size: cover;
   }
   .page-box {
     position: absolute;

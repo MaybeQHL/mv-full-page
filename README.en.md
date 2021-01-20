@@ -42,7 +42,7 @@ Others: If you like it, give it a STAR, and update and optimize it as long as th
 11. Indicator switch page
 12. Compatible with IE, Chrome and Firefox
 13. Support custom transition animation
-
+14. Support for responsive window size resizing
 ## attribute
 
 > Component attributes
