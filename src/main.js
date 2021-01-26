@@ -9,8 +9,12 @@ import directives from "./utils/directives";
 Vue.use(directives);
 
 
-import VConsole from 'vconsole' //引入
-new VConsole() //初始化
+// VConsole 
+import VConsole from 'vconsole';
+// 开发模式下开启VConsole
+if (process.env.NODE_ENV == "development") {
+  new VConsole();
+}
 
 Vue.config.productionTip = false;
 
