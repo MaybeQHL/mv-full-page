@@ -164,7 +164,7 @@ export default {
       console.log("当前页面为", page);
     },
     toPage() {
-      this.currentPage = this.tempPage;
+      this.page = this.tempPage;
     },
   },
 };
