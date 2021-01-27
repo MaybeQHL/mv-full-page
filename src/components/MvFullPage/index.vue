@@ -39,7 +39,7 @@
             </div>
           </template>
           <template v-else>
-            <div class="page-box" v-if="currentPage == item.page">
+            <div class="page-box" v-if="page == item.page">
               <slot :name="`page${item.page}`"></slot>
             </div>
           </template>
@@ -142,14 +142,14 @@ export default {
      * 页面总数
      */
     pages: {
-      type: Number,
+      type: [Number, String],
       default: 4,
     },
     /**
      * 当前页面
      */
     page: {
-      type: Number,
+      type: [Number, String],
       default: 1,
     },
     /**
@@ -179,6 +179,7 @@ export default {
       isUp: false, // 是否向上滑动
       subScrollEl: null, // 触发源为内部滚动子元素dom
       wheelEventName: null, // 不同浏览器环境下滚轮事件名称
+      isInit: false, // 是否初始化完成
     };
   },
   computed: {},
@@ -209,6 +210,10 @@ export default {
       this.initPageWH();
       // 初始化页面滑动事件
       this.initPageListener();
+      // 初始化设置当前页面为可视页面
+      this.pagesArr[this.page - 1].isShow = true;
+      // 初始化切换页面
+      this.rollPage(this.page);
     });
     // 响应窗口大小
     window.addEventListener("resize", this.resizeFn);
@@ -216,17 +221,16 @@ export default {
   watch: {
     page: {
       handler: function (val) {
-        this.currentPage = val;
         // 动态切换到具体页面
+        this.currentPage = val;
         this.$nextTick(() => {
-          let rollOffset = -(
-            (val - 1) *
-            (this.isV ? this.fullHeight : this.fullWidth)
-          );
-          this.rollPage(rollOffset);
+          // 设置当前页面为可视页面
+          this.pagesArr[this.page - 1].isShow = true;
+          // 切换页面
+          this.rollPage(val);
         });
       },
-      immediate: true,
+      immediate: false,
     },
   },
   methods: {
@@ -405,7 +409,11 @@ export default {
         }
       }
     },
-    rollPage(offset) {
+    rollPage(page) {
+      let offset = -(
+        (page - 1) *
+        (this.isV ? this.fullHeight : this.fullWidth)
+      );
       let transformBind = `translate${this.isV ? "Y" : "X"}(${offset}px)`;
       this.$refs.allPage.style.transform = transformBind;
     },
@@ -415,17 +423,16 @@ export default {
      * @author   maybe
      */
     switchPage(isDown = true) {
-      // debugger;
       if (this.$refs.allPage && !this.isRoll) {
         // let rollY;
         // let rollX;
         let rollOffset;
-        if (isDown && this.currentPage < this.pages) {
+        if (isDown && this.page < this.pages) {
           this.isRoll = true;
           // 设置下一页为可视
-          this.pagesArr[this.currentPage + 1 - 1].isShow = true;
+          this.pagesArr[this.page + 1 - 1].isShow = true;
           rollOffset = -(
-            this.currentPage * (this.isV ? this.fullHeight : this.fullWidth)
+            this.page * (this.isV ? this.fullHeight : this.fullWidth)
           );
           // 页面开始滑动
           let transformBind = `translate${
@@ -437,10 +444,9 @@ export default {
             setTimeout(() => {
               // console.log("解除滑动限制");
               self.isRoll = false;
-              self.$emit("rollEnd", this.currentPage);
-              self.$emit("update:page", this.currentPage);
+              self.$emit("rollEnd", this.page + 1);
+              self.$emit("update:page", this.page + 1);
             }, 100);
-            self.currentPage++;
             this.$refs.allPage.removeEventListener(
               "transitionend",
               rollTransitionend
@@ -450,13 +456,13 @@ export default {
             "transitionend",
             rollTransitionend
           );
-        } else if (!isDown && this.currentPage > 1) {
+        } else if (!isDown && this.page > 1) {
           this.isRoll = true;
+          // 设置上一页为可视
+          this.pagesArr[this.page - 1 - 1].isShow = true;
           rollOffset =
-            -(
-              (this.currentPage - 1) *
-              (this.isV ? this.fullHeight : this.fullWidth)
-            ) + (this.isV ? this.fullHeight : this.fullWidth);
+            -((this.page - 1) * (this.isV ? this.fullHeight : this.fullWidth)) +
+            (this.isV ? this.fullHeight : this.fullWidth);
           // 页面开始滑动
           let transformBind = `translate${
             this.isV ? "Y" : "X"
@@ -467,10 +473,9 @@ export default {
             setTimeout(() => {
               // console.log("解除滑动限制");
               self.isRoll = false;
-              self.$emit("rollEnd", this.currentPage);
-              self.$emit("update:page", this.currentPage);
+              self.$emit("rollEnd", this.page - 1);
+              self.$emit("update:page", this.page - 1);
             }, 100);
-            self.currentPage--;
             this.$refs.allPage.removeEventListener(
               "transitionend",
               rollTransitionend
@@ -506,7 +511,7 @@ export default {
   left: 0px;
   // width: 100%;
   // height: 100%;
-  background: #4fd7f9;
+  background: #ffffff;
   overflow: hidden;
   .all-page {
     width: 100%;

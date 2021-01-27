@@ -5,7 +5,7 @@
       pointerPos="right"
       :isV="isV"
       :pages="4"
-      :page.sync="currentPage"
+      :page.sync="page"
       :bgArr="bgArr"
       :isCache="false"
       :transition="{
@@ -18,7 +18,7 @@
       <template #page1>
         <div class="page1" style="line-height: 30px">
           <h2>mv-full-page</h2>
-          <h3 style="margin-bottom: 30px">一款兼容PC端移动端的Vue滑动组件</h3>
+          <h3 style="margin-bottom: 10px">一款兼容PC端移动端的Vue滑动组件</h3>
           <h3>动画（可以使用三方动画库或者自己封装）↓</h3>
           <p
             v-animate="{
@@ -44,9 +44,14 @@
             <p v-for="item in 99" :key="item">滚动测试数据</p>
           </div>
           <h3>滑动方向↓</h3>
-          <p>
+          <div>
             <button @click="isV = !isV">切换滑动方向(默认垂直方向)</button>
-          </p>
+          </div>
+          <h3>手动切换到具体页码</h3>
+          <div>
+            <input type="text" v-model="tempPage" />
+            <button @click="toPage">切换</button>
+          </div>
           <h3>开源资源↓</h3>
           <p>
             <a
@@ -76,6 +81,11 @@
           >
             页面2 第一个动画
           </p>
+          <h3>手动切换到具体页码</h3>
+          <div>
+            <input type="text" v-model="tempPage" />
+            <button @click="toPage">切换</button>
+          </div>
         </div>
       </template>
 
@@ -89,11 +99,23 @@
           >
             页面3 第一个动画
           </p>
+          <h3>手动切换到具体页码</h3>
+          <div>
+            <input type="text" v-model="tempPage" />
+            <button @click="toPage">切换</button>
+          </div>
         </div>
       </template>
 
       <template #page4>
-        <div class="page4">4</div>
+        <div class="page4">
+          4
+          <h3>手动切换到具体页码</h3>
+          <div>
+            <input type="text" v-model="tempPage" />
+            <button @click="toPage">切换</button>
+          </div>
+        </div>
       </template>
     </mv-full-page>
   </div>
@@ -114,8 +136,9 @@ export default {
   },
   data() {
     return {
+      tempPage: 1,
       isV: true,
-      currentPage: 1,
+      page: 1,
       bgArr: [
         {
           isBg: true,
@@ -139,6 +162,9 @@ export default {
   methods: {
     onRollEnd(page) {
       console.log("当前页面为", page);
+    },
+    toPage() {
+      this.currentPage = this.tempPage;
     },
   },
 };
