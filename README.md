@@ -60,6 +60,8 @@ vue 全屏滑动组件(移动端、PC 端(鼠标滚轮滑动)都已兼容)
 
 14. 支持响应式窗口大小改变
 
+15. 支持动态插槽
+
 
 ## 属性
 
@@ -176,9 +178,58 @@ export default {
 </script>
 
 ```
+### 动态插槽Demo
 
 ``` 
-// vue + typescript
+<template>
+  <div class="home">
+    <mv-full-page   
+    :isPointer="true"
+    pointerPos="right" 
+    :isV="isV" 
+    :pages="pages" 
+    :page.sync="currentPage" 
+    :bgArr="bgArr" 
+    :isCache="false"
+    :transition="{
+        duration: '700ms', // 动画时长
+        timingFun: 'ease', // 动画速度曲线
+        delay: '0s', // 动画延迟
+      }"
+    >
+      <!-- 动态插槽 -->
+      <template v-slot:[dynamicSlotName+page] v-for="page in pages">
+        <div :class="`page${page}`" :key="page">
+          {{ `页面${page}` }}
+        </div>
+      </template>
+    </mv-full-page>
+  </div>
+</template>
+
+<script>
+export default {
+  components: {
+  },
+  data() {
+    return {
+      dynamicSlotName: "page",
+      pages:4,
+      isV: true,
+      currentPage: 1,
+      bgArr: ["#4FD7F9", "orange", "pink", "green"]
+      // bgArr: [{
+      //   isBg: true,
+      //   src: require('@/assets/....')
+      // }, 'orange', 'pink', 'green']
+    };
+  },
+};
+</script>
+
+```
+### vue + typescript
+``` 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import "mv-full-page/lib-dist/mv-full-page.css";

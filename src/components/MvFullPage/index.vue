@@ -35,12 +35,12 @@
         >
           <template v-if="isCache">
             <div class="page-box" v-if="item.isShow">
-              <slot :name="`page${item.page}`"></slot>
+              <slot :name="`page${item.page}`" :data="item"></slot>
             </div>
           </template>
           <template v-else>
             <div class="page-box" v-if="page == item.page">
-              <slot :name="`page${item.page}`"></slot>
+              <slot :name="`page${item.page}`" :data="item"></slot>
             </div>
           </template>
         </div>

@@ -4,7 +4,7 @@
       :isPointer="true"
       pointerPos="right"
       :isV="isV"
-      :pages="4"
+      :pages="pages"
       :page.sync="page"
       :bgArr="bgArr"
       :isCache="false"
@@ -15,6 +15,13 @@
       }"
       @rollEnd="onRollEnd"
     >
+      <!-- 动态插槽 -->
+      <!-- <template v-slot:[dynamicSlotName+page] v-for="page in pages">
+        <div :class="`page${page}`" :key="page">
+          {{ `页面${page}` }}
+        </div>
+      </template> -->
+      <!-- 静态插槽 -->
       <template #page1>
         <div class="page1" style="line-height: 30px">
           <h2>mv-full-page</h2>
@@ -136,6 +143,8 @@ export default {
   },
   data() {
     return {
+      dynamicSlotName: "page",
+      pages: 4,
       tempPage: 1,
       isV: true,
       page: 1,

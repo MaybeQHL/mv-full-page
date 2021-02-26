@@ -156,8 +156,58 @@ export default {
 
 ```
 
+### dynamic slot Demo
+
 ``` 
-// vue + typescript
+<template>
+  <div class="home">
+    <mv-full-page   
+    :isPointer="true"
+    pointerPos="right" 
+    :isV="isV" 
+    :pages="pages" 
+    :page.sync="currentPage" 
+    :bgArr="bgArr" 
+    :isCache="false"
+    :transition="{
+        duration: '700ms', 
+        timingFun: 'ease', 
+        delay: '0s', 
+      }"
+    >
+      <!-- dynamic slot -->
+      <template v-slot:[dynamicSlotName+page] v-for="page in pages">
+        <div :class="`page${page}`" :key="page">
+          {{ `page${page}` }}
+        </div>
+      </template>
+    </mv-full-page>
+  </div>
+</template>
+
+<script>
+export default {
+  components: {
+  },
+  data() {
+    return {
+      dynamicSlotName: "page",
+      pages:4,
+      isV: true,
+      currentPage: 1,
+      bgArr: ["#4FD7F9", "orange", "pink", "green"]
+      // bgArr: [{
+      //   isBg: true,
+      //   src: require('@/assets/....')
+      // }, 'orange', 'pink', 'green']
+    };
+  },
+};
+</script>
+
+```
+### vue + typescript
+``` 
 <script lang="ts">
 import { Component, Vue, Prop, Watch } from "vue-property-decorator";
 import "mv-full-page/lib-dist/mv-full-page.css";
