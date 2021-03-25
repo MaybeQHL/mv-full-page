@@ -13,7 +13,12 @@ const routes = [
     path: '/about',
     name: 'about',
     component: () => import('../views/About.vue')
-  }
+  },
+  {
+    path: '/demoDynamic',
+    name: 'demoDynamic',
+    component: () => import("@/views/demoDynamic.vue")
+  },
 ]
 
 const router = new VueRouter({

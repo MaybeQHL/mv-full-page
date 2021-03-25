@@ -187,7 +187,7 @@ export default {
     :isPointer="true"
     pointerPos="right" 
     :isV="isV" 
-    :pages="pages" 
+    :pages="list.length"
     :page.sync="currentPage" 
     :bgArr="bgArr" 
     :isCache="false"
@@ -197,10 +197,13 @@ export default {
         delay: '0s', // 动画延迟
       }"
     >
-      <!-- 动态插槽 -->
-      <template v-slot:[dynamicSlotName+page] v-for="page in pages">
-        <div :class="`page${page}`" :key="page">
-          {{ `页面${page}` }}
+        <!-- 动态插槽 -->
+      <template
+        v-slot:[dynamicSlotName+(index+1)]
+        v-for="(item, index) in list"
+      >
+        <div :class="`page${index + 1}`" :key="index">
+          {{ `页面${JSON.stringify(item)}` }}
         </div>
       </template>
     </mv-full-page>
@@ -222,7 +225,27 @@ export default {
       //   isBg: true,
       //   src: require('@/assets/....')
       // }, 'orange', 'pink', 'green']
+      list: [],
     };
+  },
+   mounted() {
+    // 模拟异步请求
+    setTimeout(() => {
+      this.list = [
+        {
+          id: 1,
+        },
+        {
+          id: 2,
+        },
+        {
+          id: 3,
+        },
+        {
+          id: 4,
+        },
+      ];
+    }, 1000);
   },
 };
 </script>

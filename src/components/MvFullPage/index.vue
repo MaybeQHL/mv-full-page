@@ -196,13 +196,6 @@ export default {
     } else {
       console.log("当前mv-full-page运行环境为: PC端");
     }
-    this.pagesArr.length = 0;
-    for (let index = 0; index < this.pages; index++) {
-      this.pagesArr.push({
-        page: index + 1,
-        isShow: index == 0 ? true : false,
-      });
-    }
   },
   mounted() {
     this.$nextTick(() => {
@@ -210,10 +203,6 @@ export default {
       this.initPageWH();
       // 初始化页面滑动事件
       this.initPageListener();
-      // 初始化设置当前页面为可视页面
-      this.pagesArr[this.page - 1].isShow = true;
-      // 初始化切换页面
-      this.rollPage(this.page);
     });
     // 响应窗口大小
     window.addEventListener("resize", this.resizeFn);
@@ -231,6 +220,25 @@ export default {
         });
       },
       immediate: false,
+    },
+    pages: {
+      handler: function (val) {
+        if (!this.pages || this.pages <= 0) {
+          return;
+        }
+        this.pagesArr.length = 0;
+        for (let index = 0; index < this.pages; index++) {
+          this.pagesArr.push({
+            page: index + 1,
+            isShow: index == 0 ? true : false,
+          });
+        }
+        // 初始化设置当前页面为可视页面
+        this.pagesArr[this.page - 1].isShow = true;
+        // 初始化切换页面
+        this.rollPage(this.page);
+      },
+      immediate: true,
     },
   },
   methods: {
@@ -415,7 +423,9 @@ export default {
         (this.isV ? this.fullHeight : this.fullWidth)
       );
       let transformBind = `translate${this.isV ? "Y" : "X"}(${offset}px)`;
-      this.$refs.allPage.style.transform = transformBind;
+      if (this.$refs.allPage) {
+        this.$refs.allPage.style.transform = transformBind;
+      }
     },
     /**
      * 切换页面
