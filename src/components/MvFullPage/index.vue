@@ -234,11 +234,12 @@ export default {
             isShow: index == 0 ? true : false,
           });
         }
-
-        // 初始化设置当前页面为可视页面
-        this.pagesArr[this.page - 1].isShow = true;
-        // 初始化切换页面
-        this.rollPage(this.page);
+        this.$nextTick(() => {
+          // 初始化设置当前页面为可视页面
+          this.pagesArr[this.page - 1].isShow = true;
+          // 初始化切换页面
+          this.rollPage(this.page);
+        });
       },
       immediate: true,
     },
