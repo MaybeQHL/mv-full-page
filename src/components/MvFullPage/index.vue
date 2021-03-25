@@ -226,6 +226,7 @@ export default {
         if (!this.pages || this.pages <= 0) {
           return;
         }
+        this.$emit("update:page", 1);
         this.pagesArr.length = 0;
         for (let index = 0; index < this.pages; index++) {
           this.pagesArr.push({
@@ -233,6 +234,7 @@ export default {
             isShow: index == 0 ? true : false,
           });
         }
+
         // 初始化设置当前页面为可视页面
         this.pagesArr[this.page - 1].isShow = true;
         // 初始化切换页面

@@ -1,5 +1,10 @@
 <template>
   <div class="home">
+    <div class="change">
+      <button @click="chagePages('1')">切换1</button>
+      <button @click="chagePages('2')">切换2</button>
+      {{ list.length }}
+    </div>
     <mv-full-page
       :isPointer="true"
       pointerPos="right"
@@ -76,26 +81,36 @@ export default {
     toPage() {
       this.page = this.tempPage;
     },
+    chagePages(type) {
+      if (type == "1") {
+        this.list = [
+          {
+            id: 1,
+          },
+          {
+            id: 2,
+          },
+        ];
+      }
+      if (type == "2") {
+        this.list = [
+          {
+            id: 1,
+          },
+          {
+            id: 2,
+          },
+          {
+            id: 3,
+          },
+          {
+            id: 4,
+          },
+        ];
+      }
+    },
   },
-  mounted() {
-    // 模拟异步请求
-    setTimeout(() => {
-      this.list = [
-        {
-          id: 1,
-        },
-        {
-          id: 2,
-        },
-        {
-          id: 3,
-        },
-        {
-          id: 4,
-        },
-      ];
-    }, 1000);
-  },
+  mounted() {},
 };
 </script>
 <style lang="scss" scoped>
@@ -136,5 +151,11 @@ export default {
 }
 .color-red {
   color: aquamarine;
+}
+.change {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 99;
 }
 </style>
