@@ -429,6 +429,7 @@ export default {
       if (this.$refs.allPage) {
         this.$refs.allPage.style.transform = transformBind;
       }
+      this.$emit("rollEnd", this.page);
     },
     /**
      * 切换页面
@@ -457,7 +458,6 @@ export default {
             setTimeout(() => {
               // console.log("解除滑动限制");
               self.isRoll = false;
-              self.$emit("rollEnd", this.page + 1);
               self.$emit("update:page", this.page + 1);
             }, 100);
             this.$refs.allPage.removeEventListener(
@@ -486,7 +486,6 @@ export default {
             setTimeout(() => {
               // console.log("解除滑动限制");
               self.isRoll = false;
-              self.$emit("rollEnd", this.page - 1);
               self.$emit("update:page", this.page - 1);
             }, 100);
             this.$refs.allPage.removeEventListener(
