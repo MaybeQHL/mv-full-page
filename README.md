@@ -77,7 +77,7 @@ vue 全屏滑动组件(移动端、PC 端(鼠标滚轮滑动)都已兼容)
 | pages      | Number  | 4                                                       | 页面总数                                                                                                                                                                  |
 | bgArr      | Array   | [ ]                                                     | 默认页面背景, 设置图片背景请传入{isBg:true, src:require('这里是你的背景图片路径') }}<br>示例格式: ["pink", "orange", "pink", {isBg:true, src:require('@/assets/....') } ] |
 | page       | Number  | 1                                                       | 当前页面                                                                                                                                                                  |
-| isPointer  | Boolean | true                                                    | 是是否显示指示器                                                                                                                                                          |
+| isPointer  | Boolean | true                                                    | 是否显示指示器                                                                                                                                                            |
 | pointerPos | String  | 'right'                                                 | 指示器的位置 ['right', 'left', 'top', 'bottom']                                                                                                                           |
 | transition | Object  | {  duration: '700ms',  timingFun: 'ease',  delay: '0s'} | duration = 动画时长(s/ms)  timingFun=动画速度曲线 delay= 动画延迟(s/ms)                                                                                                   |
 ***

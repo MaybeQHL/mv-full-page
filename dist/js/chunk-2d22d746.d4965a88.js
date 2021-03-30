@@ -1,2 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d22d746"],{f820:function(n,t,e){"use strict";e.r(t);var u=function(){var n=this,t=n.$createElement,e=n._self._c||t;return e("div",[n._v(" 控制台查看事件是否被完全注销了 "),e("button",{on:{click:function(t){return n.$router.go(-1)}}},[n._v("返回")])])},c=[],o={},r=o,l=e("2877"),i=Object(l["a"])(r,u,c,!1,null,null,null);t["default"]=i.exports}}]);
-//# sourceMappingURL=chunk-2d22d746.d4965a88.js.map

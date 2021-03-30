@@ -12,9 +12,9 @@ Vue.use(directives);
 // VConsole 
 import VConsole from 'vconsole';
 // 开发模式下开启VConsole
-if (process.env.NODE_ENV == "development") {
-  new VConsole();
-}
+// if (process.env.NODE_ENV == "development") {
+//   new VConsole();
+// }
 
 Vue.config.productionTip = false;
 

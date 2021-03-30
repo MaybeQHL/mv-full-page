@@ -7,7 +7,7 @@
       :pages="pages"
       :page.sync="page"
       :bgArr="bgArr"
-      :isCache="false"
+      :isCache="true"
       :transition="{
         duration: '700ms', // 动画时长
         timingFun: 'ease', // 动画速度曲线

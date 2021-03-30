@@ -34,12 +34,12 @@
           :ref="`page${item}`"
         >
           <template v-if="isCache">
-            <div class="page-box" v-if="item.isShow">
+            <div class="page-box" v-show="item.isShow">
               <slot :name="`page${item.page}`" :data="item"></slot>
             </div>
           </template>
           <template v-else>
-            <div class="page-box" v-if="page == item.page">
+            <div class="page-box" v-show="page == item.page">
               <slot :name="`page${item.page}`" :data="item"></slot>
             </div>
           </template>
@@ -50,7 +50,7 @@
       <ul :class="isPc && 'hover'">
         <li
           :class="{ active: page == index }"
-          @click="pointerClick(index)"
+          @click.stop="pointerClick(index)"
           v-for="index in pages"
           :key="index"
         ></li>
@@ -83,7 +83,7 @@ export default {
       type: Object,
       default: function () {
         return {
-          duration: "700ms", // 动画时长
+          duration: "1000ms", // 动画时长
           timingFun: "ease", // 动画速度曲线
           delay: "0s", // 动画延迟
         };
@@ -210,8 +210,9 @@ export default {
   watch: {
     page: {
       handler: function (val) {
+        // debugger;
         // 动态切换到具体页面
-        this.currentPage = val;
+        // this.currentPage = val;
         this.$nextTick(() => {
           // 设置当前页面为可视页面
           this.pagesArr[this.page - 1].isShow = true;
@@ -234,12 +235,10 @@ export default {
             isShow: index == 0 ? true : false,
           });
         }
-        this.$nextTick(() => {
-          // 初始化设置当前页面为可视页面
-          this.pagesArr[this.page - 1].isShow = true;
-          // 初始化切换页面
-          this.rollPage(this.page);
-        });
+        // 初始化设置当前页面为可视页面
+        this.pagesArr[0].isShow = true;
+        // 初始化切换页面
+        this.rollPage(1);
       },
       immediate: true,
     },
@@ -322,9 +321,9 @@ export default {
       if (!this.isPc) {
         // 解除滚动禁用
         inobounce.disable();
-        this.$refs.allPage.removeEventListener("touchstart");
-        this.$refs.allPage.removeEventListener("touchmove");
-        this.$refs.allPage.removeEventListener("touchend");
+        this.$refs.allPage.removeEventListener("touchstart", this.pageStart);
+        this.$refs.allPage.removeEventListener("touchmove", this.pageMove);
+        this.$refs.allPage.removeEventListener("touchend", this.pageEnd);
       } else {
         removeEvent(this.$refs.allPage, this.wheelEventName, this.pcRoll);
       }
@@ -421,82 +420,91 @@ export default {
       }
     },
     rollPage(page) {
-      let offset = -(
-        (page - 1) *
-        (this.isV ? this.fullHeight : this.fullWidth)
-      );
-      let transformBind = `translate${this.isV ? "Y" : "X"}(${offset}px)`;
+      const self = this;
+
       if (this.$refs.allPage) {
+        let offset = -(
+          (page - 1) *
+          (this.isV ? this.fullHeight : this.fullWidth)
+        );
+        let transformBind = `translate${this.isV ? "Y" : "X"}(${offset}px)`;
         this.$refs.allPage.style.transform = transformBind;
+        const eventFn = () => {
+          this.$emit("rollEnd", self.page);
+          this.$refs.allPage.removeEventListener("transitionend", eventFn);
+        };
+        this.$refs.allPage.addEventListener("transitionend", eventFn);
       }
-      this.$emit("rollEnd", this.page);
     },
     /**
      * 切换页面
-     * @param   {Boolean} isDown 滑动方向 默认向下滑动 true  向上滑动 false
+     * @param   {Boolean} forward 滑动方向 前进方向 true  后退方向 false
      * @author   maybe
      */
-    switchPage(isDown = true) {
+    switchPage(forward = true) {
       if (this.$refs.allPage && !this.isRoll) {
         // let rollY;
         // let rollX;
         let rollOffset;
-        if (isDown && this.page < this.pages) {
-          this.isRoll = true;
-          // 设置下一页为可视
-          this.pagesArr[this.page + 1 - 1].isShow = true;
-          rollOffset = -(
-            this.page * (this.isV ? this.fullHeight : this.fullWidth)
-          );
-          // 页面开始滑动
-          let transformBind = `translate${
-            this.isV ? "Y" : "X"
-          }(${rollOffset}px)`;
-          this.$refs.allPage.style.transform = transformBind;
-          let self = this;
-          let rollTransitionend = () => {
-            setTimeout(() => {
-              // console.log("解除滑动限制");
-              self.isRoll = false;
-              self.$emit("update:page", this.page + 1);
-            }, 100);
-            this.$refs.allPage.removeEventListener(
-              "transitionend",
-              rollTransitionend
-            );
-          };
-          this.$refs.allPage.addEventListener(
-            "transitionend",
-            rollTransitionend
-          );
-        } else if (!isDown && this.page > 1) {
-          this.isRoll = true;
-          // 设置上一页为可视
-          this.pagesArr[this.page - 1 - 1].isShow = true;
-          rollOffset =
-            -((this.page - 1) * (this.isV ? this.fullHeight : this.fullWidth)) +
-            (this.isV ? this.fullHeight : this.fullWidth);
-          // 页面开始滑动
-          let transformBind = `translate${
-            this.isV ? "Y" : "X"
-          }(${rollOffset}px)`;
-          this.$refs.allPage.style.transform = transformBind;
-          let self = this;
-          let rollTransitionend = () => {
-            setTimeout(() => {
-              // console.log("解除滑动限制");
-              self.isRoll = false;
-              self.$emit("update:page", this.page - 1);
-            }, 100);
-            this.$refs.allPage.removeEventListener(
-              "transitionend",
-              rollTransitionend
-            );
-          };
-          this.$refs.allPage.addEventListener(
-            "transitionend",
-            rollTransitionend
-          );
+        if (forward && this.page < this.pages) {
+          // this.isRoll = true;
+          // // 设置下一页为可视
+          // this.pagesArr[this.page + 1 - 1].isShow = true;
+          // rollOffset = -(
+          //   this.page * (this.isV ? this.fullHeight : this.fullWidth)
+          // );
+          // // 页面开始滑动
+          // let transformBind = `translate${
+          //   this.isV ? "Y" : "X"
+          // }(${rollOffset}px)`;
+          // this.$refs.allPage.style.transform = transformBind;
+          // let self = this;
+          // let rollTransitionend = () => {
+          //   setTimeout(() => {}, 100);
+          //   // console.log("解除滑动限制");
+          //   self.isRoll = false;
+          //   self.$emit("update:page", this.page + 1);
+          //   this.$refs.allPage.removeEventListener(
+          //     "transitionend",
+          //     rollTransitionend
+          //   );
+          // };
+          // this.$refs.allPage.addEventListener(
+          //   "transitionend",
+          //   rollTransitionend
+          // );
+          this.isRoll = false;
+          this.$emit("update:page", this.page + 1);
+        } else if (!forward && this.page > 1) {
+          // this.isRoll = true;
+          // // 设置上一页为可视
+          // this.pagesArr[this.page - 1 - 1].isShow = true;
+          // rollOffset =
+          //   -((this.page - 1) * (this.isV ? this.fullHeight : this.fullWidth)) +
+          //   (this.isV ? this.fullHeight : this.fullWidth);
+          // // 页面开始滑动
+          // let transformBind = `translate${
+          //   this.isV ? "Y" : "X"
+          // }(${rollOffset}px)`;
+          // this.$refs.allPage.style.transform = transformBind;
+          // let self = this;
+          // let rollTransitionend = () => {
+          //   setTimeout(() => {
+          //     // console.log("解除滑动限制");
+          //   }, 100);
+          //   self.isRoll = false;
+          //   self.$emit("update:page", this.page - 1);
+          //   this.$refs.allPage.removeEventListener(
+          //     "transitionend",
+          //     rollTransitionend
+          //   );
+          // };
+          // this.$refs.allPage.addEventListener(
+          //   "transitionend",
+          //   rollTransitionend
+          // );
+          this.isRoll = false;
+          this.$emit("update:page", this.page - 1);
         }
       }
     },
