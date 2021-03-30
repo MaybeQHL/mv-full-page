@@ -238,7 +238,7 @@ export default {
         // 初始化设置当前页面为可视页面
         this.pagesArr[0].isShow = true;
         // 初始化切换页面
-        this.rollPage(1);
+        this.$emit("update:page", 1);
       },
       immediate: true,
     },
