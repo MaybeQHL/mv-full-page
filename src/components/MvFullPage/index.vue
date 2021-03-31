@@ -175,11 +175,11 @@ export default {
       startX: 0,
       endX: 0,
       currentPage: 1, // 当前页面页码
-      isRoll: false, // 是否可以开始滚动
+      isRoll: true, // 是否可以开始滚动
       isUp: false, // 是否向上滑动
       subScrollEl: null, // 触发源为内部滚动子元素dom
       wheelEventName: null, // 不同浏览器环境下滚轮事件名称
-      isInit: false, // 是否初始化完成
+      isInitTranslate: false, // 是否初始化位置
     };
   },
   computed: {},
@@ -210,13 +210,20 @@ export default {
   watch: {
     page: {
       handler: function (val) {
-        // debugger;
-        // 动态切换到具体页面
-        // this.currentPage = val;
+        // 是否需要重置位置（避免页面显示错误的过渡动画）
+        if (this.isInitTranslate) {
+          this.startRoll(0);
+          this.isInitTranslate = false;
+          // 用setTimeout进入异步队列避免还没重置位置就提前解除过渡动画锁定
+          setTimeout(() => {
+            this.$refs.allPage.classList.remove("transition-clear");
+          }, 1);
+          return;
+        }
         this.$nextTick(() => {
           // 设置当前页面为可视页面
           this.pagesArr[this.page - 1].isShow = true;
-          // 切换页面
+          // 动画切换页面
           this.rollPage(val);
         });
       },
@@ -227,7 +234,6 @@ export default {
         if (!this.pages || this.pages <= 0) {
           return;
         }
-        this.$emit("update:page", 1);
         this.pagesArr.length = 0;
         for (let index = 0; index < this.pages; index++) {
           this.pagesArr.push({
@@ -235,8 +241,16 @@ export default {
             isShow: index == 0 ? true : false,
           });
         }
-        // 初始化设置当前页面为可视页面
+        // 初始化设置页面1为可视页面
         this.pagesArr[0].isShow = true;
+        // 如果当前页码大于1重置位置（避免页面显示错误的过渡动画）
+        if (this.page > 1) {
+          // 页面数改变标识
+          this.$refs.allPage &&
+            this.$refs.allPage.classList.add("transition-clear");
+          this.isInitTranslate = true;
+        }
+
         // 初始化切换页面
         this.$emit("update:page", 1);
       },
@@ -244,6 +258,20 @@ export default {
     },
   },
   methods: {
+    // 监听页面动画结束
+    addPageTransEndListener(fn) {
+      const eventFn = () => {
+        // this.$emit("rollEnd", self.page);
+        fn();
+        this.$refs.allPage.removeEventListener("transitionend", eventFn);
+      };
+      this.$refs.allPage.addEventListener("transitionend", eventFn);
+    },
+    // 根据偏移量开始滚动
+    startRoll(offset) {
+      let transformBind = `translate${this.isV ? "Y" : "X"}(${offset}px)`;
+      this.$refs.allPage.style.transform = transformBind;
+    },
     // 响应窗口大小监听函数
     resizeFn: throttle(function () {
       console.log(this.$refs);
@@ -342,7 +370,6 @@ export default {
         // 如果是子元素滚动直接终止父元素滚动
         if (isSubScroll) return;
         //#endregion
-
         // 判断是否达到滚动条件
         if (e.deltaY > 0 || e.detail > 0 || e.wheelDelta < 0) {
           // console.log("滚动下");
@@ -352,7 +379,7 @@ export default {
           // console.log("滚动上");
         }
       },
-      100,
+      500,
       true
     ),
     pageStart(e) {
@@ -420,8 +447,8 @@ export default {
       }
     },
     rollPage(page) {
+      // debugger;
       const self = this;
-
       if (this.$refs.allPage) {
         let offset = -(
           (page - 1) *
@@ -442,7 +469,8 @@ export default {
      * @author   maybe
      */
     switchPage(forward = true) {
-      if (this.$refs.allPage && !this.isRoll) {
+      // debugger;
+      if (this.$refs.allPage) {
         // let rollY;
         // let rollX;
         let rollOffset;
@@ -473,7 +501,7 @@ export default {
           //   "transitionend",
           //   rollTransitionend
           // );
-          this.isRoll = false;
+
           this.$emit("update:page", this.page + 1);
         } else if (!forward && this.page > 1) {
           // this.isRoll = true;
@@ -503,7 +531,7 @@ export default {
           //   "transitionend",
           //   rollTransitionend
           // );
-          this.isRoll = false;
+
           this.$emit("update:page", this.page - 1);
         }
       }
@@ -621,5 +649,8 @@ export default {
   border: 2px solid #fff;
   background-color: #00a1d6;
   transform: scale(1.3);
+}
+.transition-clear {
+  transition: none !important;
 }
 </style>
