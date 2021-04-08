@@ -358,6 +358,7 @@ export default {
     },
     pcRoll: debounce(
       function (e) {
+        // debugger;
         //#region 解决鼠标滚轮冲突
         // 获取事件冒泡路径
         let path = eventPath(e);
@@ -379,7 +380,7 @@ export default {
           // console.log("滚动上");
         }
       },
-      500,
+      100,
       true
     ),
     pageStart(e) {
