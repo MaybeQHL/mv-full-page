@@ -673,9 +673,6 @@ export default {
       background-color: #00a1d6;
       transform: scale(1.3);
     }
-    &:hover {
-      @extend .active;
-    }
   }
 }
 .hover li:hover {
