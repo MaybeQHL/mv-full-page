@@ -175,7 +175,7 @@ export default {
       startX: 0,
       endX: 0,
       currentPage: 1, // 当前页面页码
-      isRoll: true, // 是否可以开始滚动
+      isRock: false, // 是否锁定页面避免多次触发出现bug
       isUp: false, // 是否向上滑动
       subScrollEl: null, // 触发源为内部滚动子元素dom
       wheelEventName: null, // 不同浏览器环境下滚轮事件名称
@@ -280,6 +280,7 @@ export default {
     }, 500),
     // 指示器点击
     pointerClick(index) {
+      if (this.isRock) return;
       this.$emit("update:page", index);
     },
     /**
@@ -356,33 +357,58 @@ export default {
         removeEvent(this.$refs.allPage, this.wheelEventName, this.pcRoll);
       }
     },
-    pcRoll: debounce(
-      function (e) {
-        // debugger;
-        //#region 解决鼠标滚轮冲突
-        // 获取事件冒泡路径
-        let path = eventPath(e);
-        let isSubScroll = Array.from(path).some((el) => {
-          if (el.dataset && el.dataset.scroll == "true") {
-            return true;
-          }
-          return false;
-        });
-        // 如果是子元素滚动直接终止父元素滚动
-        if (isSubScroll) return;
-        //#endregion
-        // 判断是否达到滚动条件
-        if (e.deltaY > 0 || e.detail > 0 || e.wheelDelta < 0) {
-          // console.log("滚动下");
-          this.switchPage(true);
-        } else {
-          this.switchPage(false);
-          // console.log("滚动上");
+    // pcRoll: debounce(
+    //   function (e) {
+    //     // debugger;
+    //     if (this.isRock) return;
+    //     //#region 解决鼠标滚轮冲突
+    //     // 获取事件冒泡路径
+    //     let path = eventPath(e);
+    //     let isSubScroll = Array.from(path).some((el) => {
+    //       if (el.dataset && el.dataset.scroll == "true") {
+    //         return true;
+    //       }
+    //       return false;
+    //     });
+    //     // 如果是子元素滚动直接终止父元素滚动
+    //     if (isSubScroll) return;
+    //     //#endregion
+    //     // 判断是否达到滚动条件
+    //     if (e.deltaY > 0 || e.detail > 0 || e.wheelDelta < 0) {
+    //       // console.log("滚动下");
+    //       this.switchPage(true);
+    //     } else {
+    //       this.switchPage(false);
+    //       // console.log("滚动上");
+    //     }
+    //   },
+    //   100,
+    //   true
+    // ),
+    pcRoll(e) {
+      // debugger;
+      if (this.isRock) return;
+      //#region 解决鼠标滚轮冲突
+      // 获取事件冒泡路径
+      let path = eventPath(e);
+      let isSubScroll = Array.from(path).some((el) => {
+        if (el.dataset && el.dataset.scroll == "true") {
+          return true;
         }
-      },
-      100,
-      true
-    ),
+        return false;
+      });
+      // 如果是子元素滚动直接终止父元素滚动
+      if (isSubScroll) return;
+      //#endregion
+      // 判断是否达到滚动条件
+      if (e.deltaY > 0 || e.detail > 0 || e.wheelDelta < 0) {
+        // console.log("滚动下");
+        this.switchPage(true);
+      } else {
+        this.switchPage(false);
+        // console.log("滚动上");
+      }
+    },
     pageStart(e) {
       let self = this;
       console.log(e);
@@ -421,6 +447,7 @@ export default {
     },
     pageEnd(e) {
       // console.log('触摸结束')
+      if (this.isRock) return;
       // // 判断是否是子元素滚动
       if (this.subScrollEl) {
         this.subScrollEl = null;
@@ -457,7 +484,9 @@ export default {
         );
         let transformBind = `translate${this.isV ? "Y" : "X"}(${offset}px)`;
         this.$refs.allPage.style.transform = transformBind;
+        this.isRock = true;
         const eventFn = () => {
+          this.isRock = false; // 解除锁定
           this.$emit("rollEnd", self.page);
           this.$refs.allPage.removeEventListener("transitionend", eventFn);
         };
@@ -643,6 +672,9 @@ export default {
       border: 2px solid #fff;
       background-color: #00a1d6;
       transform: scale(1.3);
+    }
+    &:hover {
+      @extend .active;
     }
   }
 }
