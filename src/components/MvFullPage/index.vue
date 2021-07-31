@@ -161,6 +161,22 @@ export default {
         return [];
       },
     },
+    /**
+     * 配置
+     */
+    config: {
+      type: Object,
+      default: function () {
+        return {
+          // 自动播放
+          autoPlay: false,
+          //  循环播放
+          loop: false,
+          // 切换间隔
+          interval: 1000,
+        };
+      },
+    },
   },
   data() {
     return {
@@ -180,6 +196,8 @@ export default {
       subScrollEl: null, // 触发源为内部滚动子元素dom
       wheelEventName: null, // 不同浏览器环境下滚轮事件名称
       isInitTranslate: false, // 是否初始化位置
+      playInterval: false,
+      isForward: true,
     };
   },
   computed: {},
@@ -256,8 +274,43 @@ export default {
       },
       immediate: true,
     },
+    "config.autoPlay": {
+      handler: function (val) {
+        if (val) {
+          this.$nextTick(() => {
+            this.initAutoPlay();
+          });
+        } else {
+          this.stopAutoPlay();
+        }
+      },
+      immediate: true,
+    },
   },
   methods: {
+    initAutoPlay() {
+      const self = this;
+      this.playInterval = setInterval(() => {
+        if (self.page < self.pages && this.isForward) {
+          self.$emit("update:page", self.page + 1);
+        } else if (self.config.loop) {
+          if (self.page > 1) {
+            this.isForward = false;
+            self.$emit("update:page", self.page - 1);
+          } else {
+            this.isForward = true;
+            self.$emit("update:page", self.page + 1);
+          }
+        } else {
+          self.stopAutoPlay();
+        }
+      }, this.config.interval || 1000);
+    },
+    stopAutoPlay() {
+      clearInterval(this.playInterval);
+      this.playInterval = null;
+      this.isForward = true;
+    },
     // 监听页面动画结束
     addPageTransEndListener(fn) {
       const eventFn = () => {
@@ -571,6 +624,7 @@ export default {
     // 销毁页面事件
     this.removePageListener();
     window.removeEventListener("resize", this.resizeFn);
+    this.stopAutoPlay();
     console.log("销毁页面事件成功");
   },
 };

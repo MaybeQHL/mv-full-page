@@ -14,6 +14,7 @@
         delay: '0s', // 动画延迟
       }"
       @rollEnd="onRollEnd"
+      :config="config"
     >
       <!-- 动态插槽 -->
       <!-- <template v-slot:[dynamicSlotName+page] v-for="page in pages">
@@ -166,6 +167,14 @@ export default {
           src: require("@/assets/bg_img_4.jpg"),
         },
       ],
+      config: {
+        // 自动播放
+        autoPlay: true,
+        //  循环播放
+        loop: true,
+        // 切换间隔
+        interval: 1000,
+      },
     };
   },
   methods: {

@@ -59,11 +59,12 @@ Others: If you like it, give it a STAR, and update and optimize it as long as th
 | page       | Number  | 1                                                       | The current page                                                                                                                                                                                                 |
 | isPointer  | Boolean | true                                                    | Display or not indicator                                                                                                                                                                                         |
 | pointerPos | String  | 'right'                                                 | Indicator position ['right', 'left', 'top', 'bottom']                                                                                                                                                            |
-| transition | Object  | {  duration: '700ms',  timingFun: 'ease',  delay: '0s'} | duration = Animation duration(s/ms)  timingFun=Animation speed curve delay= Animation delay(s/ms)                                                                                                                |
+| transition | Object  | {  duration: '700ms',  timingFun: 'ease',  delay: '0s'} | duration = Animation duration(s/ms)  timingFun=Animation speed curve delay= Animation delay(s/ms)|
+| config | Object | {autoPlay: false,  loop:  false,  interval: 1000} |  autoPlay = automatic playback, loop = whether looping, interval = time interval|
 <br>
 <br>
 
-> 事件
+> event
 
 | name    | explain                            | callback parameter           |
 | ------- | ---------------------------------- | ---------------------------- |

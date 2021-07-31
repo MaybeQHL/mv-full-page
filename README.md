@@ -79,7 +79,8 @@ vue 全屏滑动组件(移动端、PC 端(鼠标滚轮滑动)都已兼容)
 | page       | Number  | 1                                                       | 当前页面                                                                                                                                                                  |
 | isPointer  | Boolean | true                                                    | 是否显示指示器                                                                                                                                                            |
 | pointerPos | String  | 'right'                                                 | 指示器的位置 ['right', 'left', 'top', 'bottom']                                                                                                                           |
-| transition | Object  | {  duration: '700ms',  timingFun: 'ease',  delay: '0s'} | duration = 动画时长(s/ms)  timingFun=动画速度曲线 delay= 动画延迟(s/ms)                                                                                                   |
+| transition | Object  | {  duration: '700ms',  timingFun: 'ease', delay: '0s'} | duration = 动画时长(s/ms)  timingFun=动画速度曲线 delay= 动画延迟(s/ms)                                                                                                   |
+| config | Object  | {autoPlay:false,loop:false,interval:1000}| autoPlay=自动播放 loop=是否循环播放 interval=时间间隔|  
 ***
 <br>
 <br>
