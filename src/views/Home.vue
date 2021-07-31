@@ -71,7 +71,7 @@
           >
             开启自动且循环播放
           </button>
-          事件间隔：<input type="text" v-model="config.interval" />
+          时间间隔：<input type="text" v-model="config.interval" />
           <h3>开源资源↓</h3>
           <p>
             <a
