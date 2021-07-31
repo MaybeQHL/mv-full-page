@@ -60,6 +60,18 @@
             <input type="text" v-model="tempPage" />
             <button @click="toPage">切换</button>
           </div>
+          <h3>自动播放</h3>
+          <button
+            @click="
+              () => {
+                config.loop = true;
+                config.autoPlay = true;
+              }
+            "
+          >
+            开启自动且循环播放
+          </button>
+          事件间隔：<input type="text" v-model="config.interval" />
           <h3>开源资源↓</h3>
           <p>
             <a
@@ -169,9 +181,9 @@ export default {
       ],
       config: {
         // 自动播放
-        autoPlay: true,
+        autoPlay: false,
         //  循环播放
-        loop: true,
+        loop: false,
         // 切换间隔
         interval: 1000,
       },

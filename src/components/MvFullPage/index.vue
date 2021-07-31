@@ -56,6 +56,7 @@
         ></li>
       </ul>
     </div>
+    <div class="autoplay-mask"></div>
   </div>
 </template>
 
@@ -500,7 +501,7 @@ export default {
     },
     pageEnd(e) {
       // console.log('触摸结束')
-      if (this.isRock) return;
+      if (this.isRock || this.config.autoPlay) return;
       // // 判断是否是子元素滚动
       if (this.subScrollEl) {
         this.subScrollEl = null;
@@ -528,7 +529,6 @@ export default {
       }
     },
     rollPage(page) {
-      // debugger;
       const self = this;
       if (this.$refs.allPage) {
         let offset = -(
@@ -736,5 +736,7 @@ export default {
 }
 .transition-clear {
   transition: none !important;
+}
+.autoplay-mask {
 }
 </style>
