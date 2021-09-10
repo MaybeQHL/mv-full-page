@@ -15,6 +15,7 @@
       }"
       @rollEnd="onRollEnd"
       :config="config"
+      @pointerMouseover="pointerMouseover"
     >
       <!-- 动态插槽 -->
       <!-- <template v-slot:[dynamicSlotName+page] v-for="page in pages">
@@ -190,6 +191,9 @@ export default {
     };
   },
   methods: {
+    pointerMouseover({ event, index }) {
+      console.log(event, index);
+    },
     onRollEnd(page) {
       console.log("当前页面为", page);
     },
@@ -232,8 +236,9 @@ export default {
   width: 300px;
   border: 1px solid #ff715e;
   color: #ffffff;
-  overflow: auto;
   background: #ff715e;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .color-red {
   color: aquamarine;

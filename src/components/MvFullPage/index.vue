@@ -53,6 +53,7 @@
           @click.stop="pointerClick(index)"
           v-for="index in pages"
           :key="index"
+          @mouseover="pointerMouseover($event, index)"
         ></li>
       </ul>
     </div>
@@ -289,6 +290,12 @@ export default {
     },
   },
   methods: {
+    pointerMouseover(event, index) {
+      this.$emit("pointerMouseover", {
+        event,
+        index,
+      });
+    },
     initAutoPlay() {
       const self = this;
       this.playInterval = setInterval(() => {
@@ -440,19 +447,25 @@ export default {
     //   true
     // ),
     pcRoll(e) {
-      // debugger;
       if (this.isRock) return;
       //#region 解决鼠标滚轮冲突
       // 获取事件冒泡路径
+      /**
+       * @type {HTMLElement}
+       */
+      let scrollEl;
       let path = eventPath(e);
       let isSubScroll = Array.from(path).some((el) => {
         if (el.dataset && el.dataset.scroll == "true") {
+          scrollEl = el;
           return true;
         }
         return false;
       });
       // 如果是子元素滚动直接终止父元素滚动
-      if (isSubScroll) return;
+      if (isSubScroll) {
+        return;
+      }
       //#endregion
       // 判断是否达到滚动条件
       if (e.deltaY > 0 || e.detail > 0 || e.wheelDelta < 0) {
@@ -554,67 +567,9 @@ export default {
     switchPage(forward = true) {
       // debugger;
       if (this.$refs.allPage) {
-        // let rollY;
-        // let rollX;
-        let rollOffset;
         if (forward && this.page < this.pages) {
-          // this.isRoll = true;
-          // // 设置下一页为可视
-          // this.pagesArr[this.page + 1 - 1].isShow = true;
-          // rollOffset = -(
-          //   this.page * (this.isV ? this.fullHeight : this.fullWidth)
-          // );
-          // // 页面开始滑动
-          // let transformBind = `translate${
-          //   this.isV ? "Y" : "X"
-          // }(${rollOffset}px)`;
-          // this.$refs.allPage.style.transform = transformBind;
-          // let self = this;
-          // let rollTransitionend = () => {
-          //   setTimeout(() => {}, 100);
-          //   // console.log("解除滑动限制");
-          //   self.isRoll = false;
-          //   self.$emit("update:page", this.page + 1);
-          //   this.$refs.allPage.removeEventListener(
-          //     "transitionend",
-          //     rollTransitionend
-          //   );
-          // };
-          // this.$refs.allPage.addEventListener(
-          //   "transitionend",
-          //   rollTransitionend
-          // );
-
           this.$emit("update:page", this.page + 1);
         } else if (!forward && this.page > 1) {
-          // this.isRoll = true;
-          // // 设置上一页为可视
-          // this.pagesArr[this.page - 1 - 1].isShow = true;
-          // rollOffset =
-          //   -((this.page - 1) * (this.isV ? this.fullHeight : this.fullWidth)) +
-          //   (this.isV ? this.fullHeight : this.fullWidth);
-          // // 页面开始滑动
-          // let transformBind = `translate${
-          //   this.isV ? "Y" : "X"
-          // }(${rollOffset}px)`;
-          // this.$refs.allPage.style.transform = transformBind;
-          // let self = this;
-          // let rollTransitionend = () => {
-          //   setTimeout(() => {
-          //     // console.log("解除滑动限制");
-          //   }, 100);
-          //   self.isRoll = false;
-          //   self.$emit("update:page", this.page - 1);
-          //   this.$refs.allPage.removeEventListener(
-          //     "transitionend",
-          //     rollTransitionend
-          //   );
-          // };
-          // this.$refs.allPage.addEventListener(
-          //   "transitionend",
-          //   rollTransitionend
-          // );
-
           this.$emit("update:page", this.page - 1);
         }
       }

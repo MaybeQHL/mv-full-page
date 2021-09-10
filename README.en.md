@@ -69,6 +69,7 @@ Others: If you like it, give it a STAR, and update and optimize it as long as th
 | name    | explain                            | callback parameter           |
 | ------- | ---------------------------------- | ---------------------------- |
 | rollEnd | Triggered after scrolling the page | page: Scroll the page number |
+| pointerMouseover | pointer mouseover event and pointer index |{event:event,page:pointer index}|
 <br>
 <br>
 
