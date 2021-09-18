@@ -161,7 +161,7 @@ export default {
       pages: 4,
       tempPage: 1,
       isV: true,
-      page: 1,
+      page: 2,
       bgArr: [
         {
           isBg: true,

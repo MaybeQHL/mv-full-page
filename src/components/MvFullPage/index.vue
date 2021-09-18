@@ -184,8 +184,8 @@ export default {
     return {
       pagesArr: [],
       isPc: false, // 默认 移动端
-      fullHeight: 800, // 全屏高度
-      fullWidth: 1920, // 全屏宽度
+      fullHeight: 0, // 全屏高度
+      fullWidth: 0, // 全屏宽度
       maxY: 0,
       maxX: 0,
       startY: 0,
@@ -200,6 +200,7 @@ export default {
       isInitTranslate: false, // 是否初始化位置
       playInterval: false,
       isForward: true,
+      isInitPage: false, // 已经初始化页面
     };
   },
   computed: {},
@@ -218,12 +219,10 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(() => {
-      // 初始化页面宽高
-      this.initPageWH();
-      // 初始化页面滑动事件
-      this.initPageListener();
-    });
+    // 初始化页面宽高
+    this.initPageWH();
+    // 初始化页面滑动事件
+    this.initPageListener();
     // 响应窗口大小
     window.addEventListener("resize", this.resizeFn);
   },
@@ -244,10 +243,15 @@ export default {
           // 设置当前页面为可视页面
           this.pagesArr[this.page - 1].isShow = true;
           // 动画切换页面
+          if (!this.isInitPage) {
+            this.isInitPage = true;
+            this.rollPage(val, true);
+            return;
+          }
           this.rollPage(val);
         });
       },
-      immediate: false,
+      immediate: true,
     },
     pages: {
       handler: function (val) {
@@ -264,13 +268,17 @@ export default {
         // 初始化设置页面1为可视页面
         this.pagesArr[0].isShow = true;
         // 如果当前页码大于1重置位置（避免页面显示错误的过渡动画）
-        if (this.page > 1) {
+        if (this.page > 1 && this.isInitPage) {
           // 页面数改变标识
           this.$refs.allPage &&
             this.$refs.allPage.classList.add("transition-clear");
           this.isInitTranslate = true;
         }
-
+        if (!this.isInitPage) {
+          // 初始化切换页面
+          this.$emit("update:page", this.page);
+          return;
+        }
         // 初始化切换页面
         this.$emit("update:page", 1);
       },
@@ -541,22 +549,32 @@ export default {
         }
       }
     },
-    rollPage(page) {
+    rollPage(page, isStatic) {
       const self = this;
-      if (this.$refs.allPage) {
+      if (this.$refs.allPage && this.fullHeight > 0 && this.fullWidth > 0) {
         let offset = -(
           (page - 1) *
           (this.isV ? this.fullHeight : this.fullWidth)
         );
+        if (isStatic) {
+          this.$refs.allPage.style.transitionProperty = "none";
+        }
         let transformBind = `translate${this.isV ? "Y" : "X"}(${offset}px)`;
         this.$refs.allPage.style.transform = transformBind;
-        this.isRock = true;
-        const eventFn = () => {
-          this.isRock = false; // 解除锁定
-          this.$emit("rollEnd", self.page);
-          this.$refs.allPage.removeEventListener("transitionend", eventFn);
-        };
-        this.$refs.allPage.addEventListener("transitionend", eventFn);
+        if (isStatic) {
+          // debugger;
+          setTimeout(() => {
+            this.$refs.allPage.style.transitionProperty = "transform";
+          }, 1);
+        } else {
+          this.isRock = true;
+          const eventFn = () => {
+            this.isRock = false; // 解除锁定
+            this.$emit("rollEnd", self.page);
+            this.$refs.allPage.removeEventListener("transitionend", eventFn);
+          };
+          this.$refs.allPage.addEventListener("transitionend", eventFn);
+        }
       }
     },
     /**
@@ -605,7 +623,7 @@ export default {
     transform: translateY(0px);
     -webkit-overflow-scrolling: touch;
     // transition: all 700ms ease 0s;
-    transition-property: transform;
+    transition-property: none;
     transition-duration: 700ms;
     transition-timing-function: ease;
     transition-delay: 0s;
