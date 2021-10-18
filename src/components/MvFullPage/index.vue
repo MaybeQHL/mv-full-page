@@ -750,7 +750,7 @@ export default {
   transform: translateX(-50%);
   // width: 10vw;
   // height: 10vw;
-  font-size: 15vw;
+  font-size: 50px;
   animation: upAnime linear 2s infinite;
 }
 .next-arrow {
@@ -761,7 +761,7 @@ export default {
   transform: translateX(-50%);
   // width: 10vw;
   // height: 10vw;
-  font-size: 15vw;
+  font-size: 50px;
   animation: downAnime linear 2s infinite;
 }
 @keyframes upAnime {
