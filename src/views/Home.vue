@@ -161,7 +161,7 @@ export default {
       pages: 4,
       tempPage: 1,
       isV: true,
-      page: 2,
+      page: 1,
       bgArr: [
         {
           isBg: true,
@@ -187,6 +187,10 @@ export default {
         loop: false,
         // 切换间隔
         interval: 1000,
+        // 上一页箭头
+        lastArrow: true,
+        // 下一页箭头
+        nextArrow: true,
       },
     };
   },

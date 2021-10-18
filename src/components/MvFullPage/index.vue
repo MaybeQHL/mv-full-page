@@ -57,7 +57,16 @@
         ></li>
       </ul>
     </div>
-    <div class="autoplay-mask"></div>
+    <div
+      class="last-arrow iconfont icon-xiangshang"
+      v-if="baseConfig.lastArrow && page > 1"
+      @click="toPage('last')"
+    ></div>
+    <div
+      class="next-arrow iconfont icon-xiangxia"
+      v-if="baseConfig.nextArrow && page < pages"
+      @click="toPage('next')"
+    ></div>
   </div>
 </template>
 
@@ -79,6 +88,7 @@ import {
 } from "./utils";
 export default {
   name: "MvFullPage",
+  components: {},
   props: {
     // 自定义过渡动画
     transition: {
@@ -169,14 +179,7 @@ export default {
     config: {
       type: Object,
       default: function () {
-        return {
-          // 自动播放
-          autoPlay: false,
-          //  循环播放
-          loop: false,
-          // 切换间隔
-          interval: 1000,
-        };
+        return {};
       },
     },
   },
@@ -203,7 +206,23 @@ export default {
       isInitPage: false, // 已经初始化页面
     };
   },
-  computed: {},
+  computed: {
+    baseConfig() {
+      const config = {
+        // 自动播放
+        autoPlay: false,
+        //  循环播放
+        loop: false,
+        // 切换间隔
+        interval: 1000,
+        // 上一页箭头
+        lastArrow: false,
+        // 下一页箭头
+        nextArrow: false,
+      };
+      return Object.assign(config, this.config);
+    },
+  },
   created() {
     this.isPc = this.isPCFn();
     if (!this.isPc) {
@@ -284,7 +303,7 @@ export default {
       },
       immediate: true,
     },
-    "config.autoPlay": {
+    "baseConfig.autoPlay": {
       handler: function (val) {
         if (val) {
           this.$nextTick(() => {
@@ -298,6 +317,14 @@ export default {
     },
   },
   methods: {
+    toPage(type) {
+      if (type == "last") {
+        this.$emit("update:page", this.page - 1);
+      }
+      if (type == "next") {
+        this.$emit("update:page", this.page + 1);
+      }
+    },
     pointerMouseover(event, index) {
       this.$emit("pointerMouseover", {
         event,
@@ -309,7 +336,7 @@ export default {
       this.playInterval = setInterval(() => {
         if (self.page < self.pages && this.isForward) {
           self.$emit("update:page", self.page + 1);
-        } else if (self.config.loop) {
+        } else if (self.baseConfig.loop) {
           if (self.page > 1) {
             this.isForward = false;
             self.$emit("update:page", self.page - 1);
@@ -320,7 +347,7 @@ export default {
         } else {
           self.stopAutoPlay();
         }
-      }, this.config.interval || 1000);
+      }, this.baseConfig.interval || 1000);
     },
     stopAutoPlay() {
       clearInterval(this.playInterval);
@@ -522,7 +549,7 @@ export default {
     },
     pageEnd(e) {
       // console.log('触摸结束')
-      if (this.isRock || this.config.autoPlay) return;
+      if (this.isRock || this.baseConfig.autoPlay) return;
       // // 判断是否是子元素滚动
       if (this.subScrollEl) {
         this.subScrollEl = null;
@@ -604,6 +631,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import url("./iconfont/iconfont.css");
 // .fixed {
 //   position: fixed !important;
 // }
@@ -710,6 +738,64 @@ export default {
 .transition-clear {
   transition: none !important;
 }
-.autoplay-mask {
+.last-arrow,
+.next-arrow {
+  opacity: 0.8;
+}
+.last-arrow {
+  z-index: 99;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  // width: 10vw;
+  // height: 10vw;
+  font-size: 15vw;
+  animation: upAnime linear 2s infinite;
+}
+.next-arrow {
+  z-index: 99;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  // width: 10vw;
+  // height: 10vw;
+  font-size: 15vw;
+  animation: downAnime linear 2s infinite;
+}
+@keyframes upAnime {
+  0% {
+    transform: translateX(-50%) translateY(0);
+  }
+  25% {
+    transform: translateX(-50%) translateY(-10%);
+  }
+  50% {
+    transform: translateX(-50%) translateY(-25%);
+  }
+  75% {
+    transform: translateX(-50%) translateY(-15%);
+  }
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+}
+@keyframes downAnime {
+  0% {
+    transform: translateX(-50%) translateY(0);
+  }
+  25% {
+    transform: translateX(-50%) translateY(10%);
+  }
+  50% {
+    transform: translateX(-50%) translateY(25%);
+  }
+  75% {
+    transform: translateX(-50%) translateY(15%);
+  }
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
 }
 </style>
