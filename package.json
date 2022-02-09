@@ -1,6 +1,6 @@
 {
   "name": "mv-full-page",
-  "version": "3.0.0-alpha.1",
+  "version": "3.0.0-alpha.2",
   "main": "./dist-lib/mv-full-page.umd.js",
   "module": "./dist-lib/mv-full-page.es.js",
   "exports": {
