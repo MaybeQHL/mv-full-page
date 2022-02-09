@@ -1,293 +1,172 @@
-# mv-full-page
 
-> 一款兼容PC、移动端(包含微信公众号)的滑动(滚动)组件
+<p align="center">
+ 兼容PC、移动端(微信公众号) 全屏滚动组件
+</p>
+<p align="center">
+ 喜欢的帮忙给个 star, 只要有时间就更新和优化
+</p>
 
-[![npm](https://img.shields.io/npm/v/mv-full-page.svg)](https://www.npmjs.com/package/mv-full-page)
-[![npm](https://img.shields.io/npm/dt/mv-full-page.svg)](https://www.npmjs.com/package/mv-full-page)
-[![npm](https://img.shields.io/bundlephobia/min/mv-full-page.svg)](https://www.npmjs.com/package/mv-full-page)
-![NPM](https://img.shields.io/npm/l/mv-full-page)
-![npm collaborators](https://img.shields.io/npm/collaborators/mv-full-page)
-## NPM
+ <p align="center" >
+    <img src="https://img.shields.io/npm/v/mv-full-page?style=flat-square" alt="npm version"  style="margin-right:5px;" />
+    <img src="https://img.shields.io/npm/dt/mv-full-page.svg?style=flat-square&color=#4fc08d" alt="downloads" style="margin-right:5px;"   />
+    <img src="https://img.shields.io/jsdelivr/npm/hm/mv-full-page?style=flat-square" alt="Jsdelivr Hits" style="margin-right:5px;"  >
+ <img src="https://img.shields.io/bundlephobia/min/mv-full-page.svg?style=flat-square" alt="minified size"  style="margin-right:5px;" >
+  <img src="https://img.shields.io/github/stars/maybeQHL/mv-full-page?style=flat-square&logo=GitHub" alt="star" style="margin-right:5px;"  >
+   <img src="https://gitee.com/null_639_5368/v-full-page/badge/star.svg?style=flat-square" alt="star">
+</p>
 
-https://www.npmjs.com/package/mv-full-page
+## 安装
+```
+npm i mv-full-page@next
+```
+或
+```
+yarn add mv-full-page@next
+```
 
-## 码云
+## 全局注册
 
-https://gitee.com/null_639_5368/v-full-page
+``` 
+import { createApp } from 'vue';
+import MvFullPage from 'mv-full-page'
+import 'mv-full-page/dist-lib/style.css'
 
-## 示例
+const app = createApp();
 
-[http://null_639_5368.gitee.io/v-full-page](http://null_639_5368.gitee.io/v-full-page)
+app.use(MvFullPage);
+```
+## 局部注册
+```
+import { defineComponent } from "vue";
+import MvFullPage from 'mv-full-page'
+import 'mv-full-page/dist-lib/style.css'
 
-## 介绍
+export default defineComponent({
+    components:{
+        MvFullPage
+    }
+});
+```
+## 示例代码
+[跳转](https://gitee.com/null_639_5368/v-full-page/blob/vue3/src/App.vue)
 
-vue 全屏滑动组件(移动端、PC 端(鼠标滚轮滑动)都已兼容)
+## 演示
 
-支持局部页面动画 附带示例 demo
-
-注意事项：本组件目前仅支持刷新初始化判断 PC 端和移动端环境、以及元素高度的初始化。
-
-其他：喜欢的帮忙给个 star, 只要有时间就更新和优化
+[Demo](http://null_639_5368.gitee.io/v-full-page)
 
 
 ## 功能点
 
-01. 移动端全屏触摸滑动
+*  移动端触摸滑动
 
-02. pc 端鼠标滚轮切换
+*  pc端鼠标滚轮切换
 
-03. 页面切换动画重置
+*  支持页面缓存
 
-04. 支持动画队列式出现
+*  解决 ios 滑动页面回弹
 
-05. 解决 ios 滑动页面回弹
+*  支持滚动方向切换
 
-06. 扩展：自定义 animate 动画指令
+*  支持局部滚动（处理了微信公众号局部元素滚动回弹的问题）
 
-07. 支持水平方向或垂直方向的滚动
+*  支持自定义滚动容器定位方式和容器大小
 
-08. 支持 ts
+*  指示器切换页面
 
-09. 支持组件内添加局部滚动（已经处理了微信公众号局部元素滚动回弹的问题）
+*  支持自定义过渡动画速度
 
-10. 支持自定义滚动容器定位方式和容器大小
+*  支持响应式窗口大小改变
 
-11. 指示器切换页面
+*  支持动态插槽
 
-12. 兼容 IE、Chrome、Firefox
+*  支持 typescript
 
-13. 支持自定义过渡动画速度
+## Props
 
-14. 支持响应式窗口大小改变
+| name                 | 类型   | 默认值 | 备注       |
+| -------------------- | ------ | ------ | ---------- |
+| pages                | Number | 1      | 页面总数   |
+| page: `v-model:page` | Number | 1      | 当前页面   |
+| config               | Object | -      | 详情见配置 |
 
-15. 支持动态插槽
-
-
-## 属性
-
-> 组件属性
-
-| name       | 类型    | 默认值                                                  | 备注                                                                                                                                                                      |
-| ---------- | ------- | ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| position   | String  | "fixed"                                                 | 容器定位模式支持 ['fixed', 'relative'，'static', 'absolute', 'inherit']                                                                                                   |
-| width      | String  | "100%"                                                  | 设置滚动容器的宽度                                                                                                                                                        |
-| height     | String  | "100%"                                                  | 设置滚动容器的高度                                                                                                                                                        |
-| isV        | Boolean | true                                                    | 滚动的方向 true 为垂直方向，false 为左右方向                                                                                                                              |
-| isCache    | Boolean | true                                                    | 是否缓存页面                                                                                                                                                              |
-| pages      | Number  | 4                                                       | 页面总数                                                                                                                                                                  |
-| bgArr      | Array   | [ ]                                                     | 默认页面背景, 设置图片背景请传入{isBg:true, src:require('这里是你的背景图片路径') }}<br>示例格式: ["pink", "orange", "pink", {isBg:true, src:require('@/assets/....') } ] |
-| page       | Number  | 1                                                       | 当前页面                                                                                                                                                                  |
-| isPointer  | Object | true                                                    | 是否显示指示器                                                                                                                                                            |
-| pointerPos | String  | 'right'                                                 | 指示器的位置 ['right', 'left', 'top', 'bottom']                                                                                                                           |
-| transition | Object  | {  duration: '700ms',  timingFun: 'ease', delay: '0s'} | duration = 动画时长(s/ms)  timingFun=动画速度曲线 delay= 动画延迟(s/ms)                                                                                                   |
-| config | Object  | 详情见默认配置 | -|  
-
-### 默认配置
+### 配置
 ```
 {
-       // 自动播放
+        /**
+         * 定位模式
+         */
+        position: "fixed",
+        /**
+         * 自定义容器宽度
+         */
+        width: "100%",
+        /**
+         * 自定义容器高度
+         */
+        height: "100%",
+        /**
+         *  v => 垂直方向 ， h => 水平方向
+         */
+        direction: "h",
+        /**
+         * 显示指示器
+         */
+        pointer: true,
+        /**
+         * 指示器位置
+         */
+        poiPosition: "right",
+        /**
+         * 缓存页面
+         */
+        cache: true,
+        /**
+         * 页面背景数组
+         * 示例格式: [{ color:'pink' },{ image:'https://xxx.png' }]
+         */
+        bgArr: [],
+        /**
+         * 自定义过渡动画
+         */
+        transition: {
+          duration: "1000ms", // 动画时长
+          timingFun: "ease", // 动画速度曲线
+          delay: "0s", // 动画延迟
+        },
+        // 自动播放
         autoPlay: false,
-        // 循环播放
+        //  循环播放
         loop: false,
-        // 切换间隔(ms)
+        // 切换间隔
         interval: 1000,
-        // 上一页箭头
-        lastArrow: false,
-        // 下一页箭头
-        nextArrow: false,
+        arrow: {
+          // 上一页箭头
+          last: false,
+          // 下一页箭头
+          next: false,
+        },
 }
 ```
 
 ***
-<br>
-<br>
 
-> 事件
+### Events
 
-| name    | 说明           | 回调参数          |
-| ------- | -------------- | ----------------- |
-| rollEnd | 滚动页面后触发 | page:滚动后的页码 |
-| pointerMouseover | 指示器mouseover事件和指示器索引 | {event:事件,index:指示器对应索引} |
+| name             | 说明                            | 回调参数                              |
+| ---------------- | ------------------------------- | ------------------------------------- |
+| rollEnd          | 滚动页面后触发                  | `(page:滚动后的页码)`                 |
+| pointerMouseover | 指示器mouseover事件和指示器索引 | `({event:事件,index:指示器对应索引})` |
 <br>
 
-> 局部滚动 div
+### 局部滚动 div
 
 | name        | 类型    | 默认值 | 备注                                                                  |
 | ----------- | ------- | ------ | --------------------------------------------------------------------- |
 | data-scroll | Boolean | false  | 局部滚动一定要在滚动容器添加这个属性 `<div data-scroll="true"></div>` |
 
 
+## Browsers support
 
-## 安装和更新
-
-> 尽量更新到最新版本组件
-> 
-```
-npm i mv-full-page
-```
-
-## 注册组件
-
-
-``` 
-// 全局引入
-import 'mv-full-page/lib-dist/mv-full-page.css'
-import MvFullPage from 'mv-full-page'
-
-Vue.use(MvFullPage)
-```
-## 具体使用
-``` 
-<template>
-  <div class="home">
-    <mv-full-page   
-    :isPointer="true"
-    pointerPos="right" 
-    :isV="isV" 
-    :pages="4" 
-    :page.sync="currentPage" 
-    :bgArr="bgArr" 
-    :isCache="false"
-    :transition="{
-        duration: '700ms', // 动画时长
-        timingFun: 'ease', // 动画速度曲线
-        delay: '0s', // 动画延迟
-      }"
-    >
-      <template #page1>
-        页面1
-      </template>
-
-      <template #page2>
-        <div class="page2">
-         页面2
-        </div>
-      </template>
-
-      <template #page3>
-        <div class="page3">
-        页面3
-        </div>
-      </template>
-
-      <template #page4>
-        页面4
-      </template>
-    </mv-full-page>
-  </div>
-</template>
-
-<script>
-export default {
-  components: {
-  },
-  data() {
-    return {
-      isV: true,
-      currentPage: 1,
-      bgArr: ["#4FD7F9", "orange", "pink", "green"]
-      // bgArr: [{
-      //   isBg: true,
-      //   src: require('@/assets/....')
-      // }, 'orange', 'pink', 'green']
-    };
-  },
-};
-</script>
-
-```
-### 动态插槽Demo
-
-``` 
-<template>
-  <div class="home">
-    <mv-full-page   
-    :isPointer="true"
-    pointerPos="right" 
-    :isV="isV" 
-    :pages="list.length"
-    :page.sync="currentPage" 
-    :bgArr="bgArr" 
-    :isCache="false"
-    :transition="{
-        duration: '700ms', // 动画时长
-        timingFun: 'ease', // 动画速度曲线
-        delay: '0s', // 动画延迟
-      }"
-    >
-        <!-- 动态插槽 -->
-      <template
-        v-slot:[dynamicSlotName+(index+1)]
-        v-for="(item, index) in list"
-      >
-        <div :class="`page${index + 1}`" :key="index">
-          {{ `页面${JSON.stringify(item)}` }}
-        </div>
-      </template>
-    </mv-full-page>
-  </div>
-</template>
-
-<script>
-export default {
-  components: {
-  },
-  data() {
-    return {
-      dynamicSlotName: "page",
-      pages:4,
-      isV: true,
-      currentPage: 1,
-      bgArr: ["#4FD7F9", "orange", "pink", "green"]
-      // bgArr: [{
-      //   isBg: true,
-      //   src: require('@/assets/....')
-      // }, 'orange', 'pink', 'green']
-      list: [],
-    };
-  },
-   mounted() {
-    // 模拟异步请求
-    setTimeout(() => {
-      this.list = [
-        {
-          id: 1,
-        },
-        {
-          id: 2,
-        },
-        {
-          id: 3,
-        },
-        {
-          id: 4,
-        },
-      ];
-    }, 1000);
-  },
-};
-</script>
-
-```
-### vue + typescript
-``` 
-<script lang="ts">
-import { Component, Vue, Prop, Watch } from "vue-property-decorator";
-import "mv-full-page/lib-dist/mv-full-page.css";
-import MvFullPage from "mv-full-page";
-
-@Component({
-  components: {
-    MvFullPage
-  }
-})
-export default class extends Vue {
-  currentPage = 1;
-  bgArr = ["pink", "orange", "pink", "green"];
-  isV = false;
-  isCache = false;
-  pages = 4;
-  page = 1;
-}
-</script>
-```
+| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="42px" height="42px" />](https://godban.github.io/browsers-support-badges/)</br>Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="42px" height="42px" />](https://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="42px" height="42px" />](https://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="42px" height="42px" />](https://godban.github.io/browsers-support-badges/)</br>Safari |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Edge                                                                                                                                                                                                        | last 2 versions                                                                                                                                                                                                    | last 2 versions                                                                                                                                                                                                | last 2 versions                                                                                                                                                                                                |

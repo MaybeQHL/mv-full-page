@@ -71,14 +71,14 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from "vue";
-import MPanel from "./components/MPanel.vue";
+import MPanel from "../../../src/components/MPanel.vue";
 // 本地测试组件，实际使用npm i mv-full-page@next 安装后导入
-import MvFullPage from "../lib";
-
+import MvFullPage from "../../../";
+import "../../../dist-lib/style.css";
 export default defineComponent({
   components: {
     MPanel,
-    [MvFullPage.name]: MvFullPage,
+    MvFullPage,
   },
   setup() {
     const state = reactive({
@@ -119,7 +119,7 @@ export default defineComponent({
           // 下一页箭头
           next: true,
         },
-      } as import("../lib/type").Config,
+      },
     });
     const pointerMouseover = ({ event, index }: any) => {
       console.log(event, index);
@@ -153,7 +153,7 @@ export default defineComponent({
 }
 .home {
   text-align: center;
-  color: #ffffff;
+  color: orange;
   line-height: 30px;
   a {
     color: #ffffff;
