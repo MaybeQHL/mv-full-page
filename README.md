@@ -16,6 +16,9 @@
    <img src="https://gitee.com/null_639_5368/v-full-page/badge/star.svg?style=flat-square" alt="star">
 </p>
 
+#### 其他版本
+Vue2版本请移步[2.0分支](https://gitee.com/null_639_5368/v-full-page/tree/master/)
+
 ## 安装
 ```
 npm i mv-full-page@next
