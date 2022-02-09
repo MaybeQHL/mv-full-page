@@ -674,9 +674,7 @@ export default defineComponent({
   }
 }
 .hover li:hover {
-  border: 2px solid #fff;
-  background-color: #00a1d6;
-  transform: scale(1.3);
+  background-color: #6bd1f3;
 }
 .transition-clear {
   transition: none !important;
