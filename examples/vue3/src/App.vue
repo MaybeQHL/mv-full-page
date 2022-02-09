@@ -7,65 +7,10 @@
       @rollEnd="onRollEnd"
       @pointerMouseover="pointerMouseover"
     >
-      <!-- 动态插槽 -->
-      <!-- <template v-slot:[dynamicSlotName+page] v-for="page in pages">
-        <div :class="`page${page}`" :key="page">
-          {{ `页面${page}` }}
-        </div>
-      </template> -->
-      <!-- 静态插槽 -->
-      <template #page1>
-        <div class="page1" style="line-height: 30px">
-          <h2>mv-full-page</h2>
-          <h3 style="margin-bottom: 10px">
-            一款兼容PC端移动端的Vue全屏滚动组件
-          </h3>
-
-          <m-panel title="切换方向">
-            <button class="btn btn-s1" @click="switchDire">
-              切换滑动方向(默认垂直方向)
-            </button>
-          </m-panel>
-
-          <m-panel title="手动切换到具体页码">
-            <input type="text" v-model="tempPage" />
-            <p><button class="btn btn-s1" @click="toPage">切换</button></p>
-          </m-panel>
-
-          <m-panel title="自动播放">
-            时间间隔：<input type="text" v-model="config.interval" />
-            <button
-              class="btn btn-s1"
-              @click="
-                () => {
-                  config.loop = true;
-                  config.autoPlay = true;
-                }
-              "
-            >
-              开启自动且循环播放
-            </button>
-          </m-panel>
-
-          <m-panel title="移动端局部列表滚动demo">
-            <div class="sub_scroll-test-box" data-scroll="true">
-              <p v-for="item in 99" :key="item">滚动测试数据</p>
-            </div>
-          </m-panel>
-        </div>
-      </template>
-
-      <template #page2>
-        <div class="page2">2</div>
-      </template>
-
-      <template #page3>
-        <div class="page3">3</div>
-      </template>
-
-      <template #page4>
-        <div class="page4">4</div>
-      </template>
+      <template #page1> 1 </template>
+      <template #page2> 2 </template>
+      <template #page3> 3 </template>
+      <template #page4> 4 </template>
     </mv-full-page>
   </div>
 </template>
@@ -73,8 +18,8 @@
 import { defineComponent, reactive, toRefs } from "vue";
 import MPanel from "../../../src/components/MPanel.vue";
 // 本地测试组件，实际使用npm i mv-full-page@next 安装后导入
-import MvFullPage from "../../../";
-import "../../../dist-lib/style.css";
+import MvFullPage from "mv-full-page";
+import "mv-full-page/dist-lib/style.css";
 export default defineComponent({
   components: {
     MPanel,

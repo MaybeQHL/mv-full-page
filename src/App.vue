@@ -119,6 +119,9 @@ export default defineComponent({
           // 下一页箭头
           next: true,
         },
+        poi: {
+          className: "my-poi",
+        },
       } as import("../lib/type").Config,
     });
     const pointerMouseover = ({ event, index }: any) => {

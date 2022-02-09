@@ -1,4 +1,5 @@
 
+<h1 style="text-align:center;">mv-full-page</h1>
 <p align="center">
  兼容PC、移动端(微信公众号) 全屏滚动组件
 </p>
@@ -7,10 +8,10 @@
 </p>
 
  <p align="center" >
-    <img src="https://img.shields.io/npm/v/mv-full-page?style=flat-square" alt="npm version"  style="margin-right:5px;" />
+    <img src="https://img.shields.io/npm/v/mv-full-page/next?style=flat-square" alt="npm version"  style="margin-right:5px;" />
     <img src="https://img.shields.io/npm/dt/mv-full-page.svg?style=flat-square&color=#4fc08d" alt="downloads" style="margin-right:5px;"   />
-    <img src="https://img.shields.io/jsdelivr/npm/hm/mv-full-page?style=flat-square" alt="Jsdelivr Hits" style="margin-right:5px;"  >
- <img src="https://img.shields.io/bundlephobia/min/mv-full-page.svg?style=flat-square" alt="minified size"  style="margin-right:5px;" >
+    <img src="https://img.shields.io/jsdelivr/npm/hm/mv-full-page@next?style=flat-square" alt="Jsdelivr Hits" style="margin-right:5px;"  >
+
   <img src="https://img.shields.io/github/stars/maybeQHL/mv-full-page?style=flat-square&logo=GitHub" alt="star" style="margin-right:5px;"  >
    <img src="https://gitee.com/null_639_5368/v-full-page/badge/star.svg?style=flat-square" alt="star">
 </p>
@@ -48,8 +49,27 @@ export default defineComponent({
 });
 ```
 ## 示例代码
+### 基本使用
+
 [跳转](https://gitee.com/null_639_5368/v-full-page/blob/vue3/src/App.vue)
 
+### 动态插槽
+```
+   <mv-full-page   
+    :pages="list.length"
+    :v-model:page="page" 
+    >
+      <!-- 动态插槽 -->
+      <template
+        v-slot:[dynamicSlotName+(index+1)]
+        v-for="(item, index) in list"
+      >
+        <div :class="`page${index + 1}`" :key="index">
+          {{ `页面${JSON.stringify(item)}` }}
+        </div>
+      </template>
+    </mv-full-page>
+```
 ## 演示
 
 [Demo](http://null_639_5368.gitee.io/v-full-page)
@@ -109,13 +129,22 @@ export default defineComponent({
          */
         direction: "h",
         /**
-         * 显示指示器
+         * 指示器
          */
-        pointer: true,
-        /**
-         * 指示器位置
-         */
-        poiPosition: "right",
+        poi: {
+          /**
+           * 显示指示器
+           */
+          pointer: true,
+          /**
+           * 指示器位置
+           */
+          position: "right",
+          /**
+           * 指示器类名
+           */
+          className: ""
+        },
         /**
          * 缓存页面
          */

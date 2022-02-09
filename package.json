@@ -1,6 +1,6 @@
 {
   "name": "mv-full-page",
-  "version": "3.0.0-alpha.2",
+  "version": "3.0.0-alpha.3",
   "main": "./dist-lib/mv-full-page.umd.js",
   "module": "./dist-lib/mv-full-page.es.js",
   "exports": {
@@ -16,7 +16,7 @@
     "package.json"
   ],
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview",
     "build:lib": "vite build --mode lib"

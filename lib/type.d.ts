@@ -16,13 +16,22 @@ export interface Config {
      */
     direction: 'v' | 'h',
     /**
-     * 显示指示器
+     * 指示器
      */
-    pointer: boolean,
-    /**
-     * 指示器位置
-     */
-    poiPosition: string,
+    poi: {
+        /**
+         * 显示指示器
+         */
+        pointer: boolean,
+        /**
+         * 指示器位置
+         */
+        position: string,
+        /**
+         * 指示器类名
+         */
+        className: string
+    },
     /**
      * 缓存页面
      */

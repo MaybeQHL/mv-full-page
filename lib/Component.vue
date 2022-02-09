@@ -46,8 +46,8 @@
     </div>
     <div
       class="mv-pointer-wrapper"
-      :class="config.poiPosition"
-      v-if="config.pointer"
+      v-if="config.poi.pointer"
+      :class="[config.poi.position, config.poi.className]"
     >
       <ul :class="isPc && 'hover'">
         <li
@@ -86,6 +86,8 @@ import {
   watch,
 } from "vue";
 import throttle from "lodash/throttle";
+import cloneDeep from "lodash/cloneDeep";
+import merge from "lodash/merge";
 import { Config } from "./type";
 import { addEvent, eventPath, isFireFox, isMoile, removeEvent } from "./utils";
 import inobounce from "./libs/inobounce";
@@ -158,14 +160,16 @@ export default defineComponent({
          *  v => 垂直方向 ， h => 水平方向
          */
         direction: "h",
-        /**
-         * 显示指示器
-         */
-        pointer: true,
-        /**
-         * 指示器位置
-         */
-        poiPosition: "right",
+        poi: {
+          /**
+           * 显示指示器
+           */
+          pointer: true,
+          /**
+           * 指示器位置
+           */
+          position: "right",
+        },
         /**
          * 缓存页面
          */
@@ -196,7 +200,7 @@ export default defineComponent({
           next: false,
         },
       };
-      const reConfig = Object.assign(baseConfig, props.config);
+      const reConfig = merge(baseConfig, props.config);
       return reConfig;
     });
 
@@ -575,6 +579,10 @@ export default defineComponent({
 
 <style scoped lang="scss">
 @import url("./iconfont/iconfont.css");
+* {
+  margin: 0;
+  padding: 0;
+}
 .mv-page-container {
   position: fixed;
   top: 0px;
@@ -650,20 +658,18 @@ export default defineComponent({
   }
 
   ul > li {
-    box-sizing: border-box;
-    list-style: none;
+    display: inline-block;
     width: 15px;
-    height: 15px;
-    border: 2px solid transparent;
-    border-radius: 50%;
-    background-color: #fff;
-    vertical-align: middle;
+    height: 12px;
+    margin: 0 3px;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.4);
+    overflow: hidden;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: height 0.3s;
     &.active {
-      border: 2px solid #fff;
-      background-color: #00a1d6;
-      transform: scale(1.3);
+      height: 30px;
+      background-color: #fff;
     }
   }
 }
@@ -680,6 +686,7 @@ export default defineComponent({
   opacity: 0.8;
   cursor: pointer;
   font-size: 50px;
+  color: #fff;
 }
 .last-arrow {
   z-index: 99;
