@@ -84,7 +84,7 @@ export default defineComponent({
       tempPage: 1,
       page: 1,
       config: {
-        direction: "h",
+        direction: "v",
         cache: true,
         bgArr: [
           {
