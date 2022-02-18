@@ -17,7 +17,7 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-import { defineComponent, reactive, ref, computed, watch, nextTick, onMounted, onBeforeUnmount, openBlock, createElementBlock, normalizeStyle, unref, createElementVNode, Fragment, renderList, normalizeClass, renderSlot, withDirectives, vShow, withModifiers, createCommentVNode } from "vue";
+import { defineComponent, reactive, ref, computed, watch, nextTick, onMounted, onBeforeUnmount, openBlock, createElementBlock, normalizeStyle, unref, createElementVNode, Fragment, renderList, normalizeClass, createCommentVNode, renderSlot, withDirectives, vShow, withModifiers } from "vue";
 var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
 function isObject$a(value) {
   var type = typeof value;
@@ -1204,13 +1204,13 @@ var _export_sfc = (sfc, props) => {
   return target;
 };
 const _hoisted_1 = ["data-num"];
-const _hoisted_2 = ["src"];
+const _hoisted_2 = ["src", "onLoad"];
 const _hoisted_3 = {
-  key: 0,
+  key: 1,
   class: "page-box"
 };
 const _hoisted_4 = {
-  key: 1,
+  key: 2,
   class: "page-box"
 };
 const _hoisted_5 = ["onClick", "onMouseover"];
@@ -1263,7 +1263,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent(__spreadProps(__spreadValues({
         position: "fixed",
         width: "100%",
         height: "100%",
-        direction: "h",
+        direction: "v",
         poi: {
           pointer: true,
           position: "right"
@@ -1517,14 +1517,17 @@ const _sfc_main = /* @__PURE__ */ defineComponent(__spreadProps(__spreadValues({
       initPageWH();
       initPageListener();
       window.addEventListener("resize", resizeWin);
-      setTimeout(() => {
-        if (config.value.autoPlay.play) {
-          startAutoPlay();
-        }
-      }, config.value.autoPlay.interval + 1e3);
     };
     const goPage = (page, quiet) => {
       movePage(page, quiet);
+    };
+    const imgLoad = (page) => {
+      if (page == props.page && config.value.autoPlay.play) {
+        console.log(`\u9875\u7801${page}\u80CC\u666F\u56FE\u7247\u521D\u59CB\u5316\u5B8C\u6210`);
+        setTimeout(() => {
+          startAutoPlay();
+        }, config.value.autoPlay.interval);
+      }
     };
     watch(() => props.page, (val) => {
       nextTick(() => {
@@ -1569,18 +1572,22 @@ const _sfc_main = /* @__PURE__ */ defineComponent(__spreadProps(__spreadValues({
       immediate: true
     });
     watch(() => config.value.direction, (val) => {
-      const container = allPageRef.value;
-      if (val == "h" && config.value.loop) {
-        movePageByOffset(-state.fullWidth, true);
-        container.querySelectorAll(".page").forEach((item) => {
-          item.classList.add("floatLeft");
-        });
-      } else {
-        movePageByOffset(-state.fullHeight, true);
-        container.querySelectorAll(".page").forEach((item) => {
-          item.classList.remove("floatLeft");
-        });
-      }
+      nextTick(() => {
+        const container = allPageRef.value;
+        if (val == "h") {
+          movePageByOffset(-state.fullWidth, true);
+          container.querySelectorAll(".page").forEach((item) => {
+            item.classList.add("floatLeft");
+          });
+        } else {
+          movePageByOffset(-state.fullHeight, true);
+          container.querySelectorAll(".page").forEach((item) => {
+            item.classList.remove("floatLeft");
+          });
+        }
+      });
+    }, {
+      immediate: true
     });
     watch(() => config.value.autoPlay.play, (val) => {
       if (val) {
@@ -1636,11 +1643,13 @@ const _sfc_main = /* @__PURE__ */ defineComponent(__spreadProps(__spreadValues({
               ref: `page${item.page}`,
               "data-num": index + 1
             }, [
-              createElementVNode("img", {
+              unref(config).bgArr[index] && unref(config).bgArr[index].image ? (openBlock(), createElementBlock("img", {
+                key: 0,
                 class: "page-bg-img",
-                src: unref(config).bgArr[index].image && `${unref(config).bgArr[index].image}`,
-                style: normalizeStyle({ "object-fit": unref(config).bgConfig.fit })
-              }, null, 12, _hoisted_2),
+                src: `${unref(config).bgArr[index].image}`,
+                style: normalizeStyle({ "object-fit": unref(config).bgConfig.fit }),
+                onLoad: ($event) => imgLoad(index + 1)
+              }, null, 44, _hoisted_2)) : createCommentVNode("v-if", true),
               unref(config).cache ? (openBlock(), createElementBlock("div", _hoisted_3, [
                 renderSlot(_ctx.$slots, `page${item.page}`, { data: item }, void 0, true)
               ])) : withDirectives((openBlock(), createElementBlock("div", _hoisted_4, [

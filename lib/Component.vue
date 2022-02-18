@@ -32,8 +32,10 @@
         >
           <img
             class="page-bg-img"
-            :src="config.bgArr[index].image && `${config.bgArr[index].image}`"
+            v-if="config.bgArr[index] && config.bgArr[index].image"
+            :src="`${config.bgArr[index].image}`"
             :style="{ 'object-fit': config.bgConfig.fit }"
+            @load="imgLoad(index + 1)"
           />
           <template v-if="config.cache">
             <div class="page-box">
@@ -78,9 +80,6 @@
 <script setup lang="ts">
 import {
   computed,
-  defineComponent,
-
-  defineEmits,
   PropType,
   reactive,
   ref,
@@ -91,9 +90,8 @@ import {
   toRefs
 } from "vue";
 import throttle from "lodash/throttle";
-import cloneDeep from "lodash/cloneDeep";
 import merge from "lodash/merge";
-import { Config } from "./type";
+import { Config } from "../types/type";
 import { addEvent, eventPath, isFireFox, isMoile, removeEvent } from "./utils";
 import inobounce from "./libs/inobounce";
 
@@ -165,7 +163,7 @@ const config = computed<Config>(() => {
     /**
      *  v => 垂直方向 ， h => 水平方向
      */
-    direction: "h",
+    direction: "v",
     poi: {
       /**
        * 显示指示器
@@ -565,16 +563,21 @@ const init = () => {
   // 响应窗口大小
   window.addEventListener("resize", resizeWin);
 
-  setTimeout(() => {
-    // 初始化自动播放
-    if (config.value.autoPlay.play) {
-      startAutoPlay();
-    }
-  }, config.value.autoPlay.interval + 1000);
 };
 
 const goPage = (page: number, quiet?: boolean) => {
   movePage(page, quiet)
+}
+
+const imgLoad = (page: number) => {
+
+  if (page == props.page && config.value.autoPlay.play) {
+    console.log(`页码${page}背景图片初始化完成`)
+    setTimeout(() => {
+      // 初始化自动播放
+      startAutoPlay();
+    }, config.value.autoPlay.interval);
+  }
 }
 
 watch(
@@ -642,18 +645,22 @@ watch(
 );
 
 watch(() => config.value.direction, (val) => {
-  const container = allPageRef.value as HTMLElement;
-  if (val == 'h' && config.value.loop) {
-    movePageByOffset(-state.fullWidth, true)
-    container.querySelectorAll('.page').forEach(item => {
-      item.classList.add('floatLeft');
-    })
-  } else {
-    movePageByOffset(-state.fullHeight, true)
-    container.querySelectorAll('.page').forEach(item => {
-      item.classList.remove('floatLeft');
-    })
-  }
+  nextTick(() => {
+    const container = allPageRef.value as HTMLElement;
+    if (val == 'h') {
+      movePageByOffset(-state.fullWidth, true)
+      container.querySelectorAll('.page').forEach(item => {
+        item.classList.add('floatLeft');
+      })
+    } else {
+      movePageByOffset(-state.fullHeight, true)
+      container.querySelectorAll('.page').forEach(item => {
+        item.classList.remove('floatLeft');
+      })
+    }
+  })
+}, {
+  immediate: true
 })
 
 watch(

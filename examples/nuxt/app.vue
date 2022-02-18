@@ -1,10 +1,12 @@
 <template>
   <div>
-    <NuxtWelcome />
-    <mv-full-page></mv-full-page>
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
   </div>
 </template>
 
 <script setup>
-import MvFullPage from "../../../";
+
+
 </script>

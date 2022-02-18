@@ -25,7 +25,7 @@
             "_conf/*": [
                 "build/*"
             ]
-        }
+        },
     },
     "include": [
         "src/**/*.ts",
@@ -37,7 +37,7 @@
         "lib/**/*.ts",
         "lib/**/*.d.ts",
         "lib/**/*.tsx",
-        "lib/**/*.vue",
+        "lib/**/*.vue", "types/type.d.ts",
     ],
     "exclude": [
         "node_modules",

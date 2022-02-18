@@ -6,6 +6,10 @@
     "start": "node .output/server/index.mjs"
   },
   "devDependencies": {
-    "nuxt3": "latest"
+    "nuxt3": "latest",
+    "vue-gtag-next": "^1.14.0"
+  },
+  "dependencies": {
+    "mv-full-page": "^3.0.0-alpha.6"
   }
 }

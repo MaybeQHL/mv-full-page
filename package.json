@@ -1,6 +1,6 @@
 {
   "name": "mv-full-page",
-  "version": "3.0.0-alpha.5",
+  "version": "3.0.0-alpha.7",
   "main": "./dist-lib/mv-full-page.umd.js",
   "module": "./dist-lib/mv-full-page.es.js",
   "exports": {
@@ -13,7 +13,8 @@
   "files": [
     "dist-lib",
     "types",
-    "package.json"
+    "package.json",
+    "nuxt.js"
   ],
   "scripts": {
     "dev": "vite --host",

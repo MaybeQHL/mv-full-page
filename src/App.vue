@@ -84,7 +84,7 @@ export default defineComponent({
       tempPage: 1,
       page: 1,
       config: {
-        direction: "v",
+        direction: "h",
         cache: true,
         bgArr: [
           {
@@ -122,7 +122,7 @@ export default defineComponent({
         poi: {
           className: "my-poi",
         },
-      } as import("../lib/type").Config,
+      } as import("../types/type").Config,
     });
     const pointerMouseover = ({ event, index }: any) => {
       console.log(event, index);

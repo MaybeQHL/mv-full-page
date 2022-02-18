@@ -9,3 +9,5 @@ export declare class BaseComponent {
 }
 export default class MvFullPage extends BaseComponent {
 }
+
+export * from './type'
