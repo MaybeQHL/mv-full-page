@@ -23,12 +23,12 @@
             <button class="btn btn-s1" @click="switchDire">切换滑动方向(默认垂直方向)</button>
           </m-panel>
 
-          <m-panel title="手动切换到具体页码">
+          <!-- <m-panel title="手动切换到具体页码">
             <input type="text" v-model="tempPage" />
             <p>
               <button class="btn btn-s1" @click="toPage">切换</button>
             </p>
-          </m-panel>
+          </m-panel>-->
 
           <m-panel title="自动播放">
             时间间隔：
@@ -108,7 +108,7 @@ export default defineComponent({
         loop: true,
         // 自动轮播
         autoPlay: {
-          play: false,
+          play: true,
           // 切换间隔
           interval: 1000,
         },

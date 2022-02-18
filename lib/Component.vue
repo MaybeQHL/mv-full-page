@@ -333,19 +333,21 @@ const removePageListener = () => {
  * 页面切换前验证
  */
 const preCheck = () => {
+  // if (state.autoPlayFinished) return true;
+
   if (
     state.isRock ||
-    (config.value.autoPlay.play &&
-      !state.autoPlayFinished &&
-      !state.isInitPage)
+    (config.value.autoPlay.play && !state.autoPlayFinished)
+    || config.value.loop
   ) {
     return false;
   }
 
+
   return true;
 };
 const pcRoll = (e: any) => {
-  // if (!preCheck()) return;
+  if (!preCheck()) return;
   //#region 解决鼠标滚轮冲突
   // 获取事件冒泡路径
   /**
@@ -410,6 +412,7 @@ const pageMove = (e: any) => {
   }
 };
 const pageEnd = (e: any) => {
+  if (!preCheck()) return;
   // console.log('触摸结束')
   if (state.isRock) return;
   // // 判断是否是子元素滚动
@@ -497,7 +500,6 @@ const movePage = (page: number, quiet?: boolean, delayPage?: number) => {
  * @author   maybe
  */
 const switchPage = (forward = true, quiet = false) => {
-  if (!preCheck()) return;
   if (allPageRef.value) {
     let targetPage;
     let delayPage;
@@ -569,10 +571,11 @@ const goPage = (page: number, quiet?: boolean) => {
   movePage(page, quiet)
 }
 
+let loadedImgCount = 0;
 const imgLoad = (page: number) => {
-
-  if (page == props.page && config.value.autoPlay.play) {
-    console.log(`页码${page}背景图片初始化完成`)
+  loadedImgCount += 1;
+  if (loadedImgCount == props.pages && config.value.autoPlay.play) {
+    console.log(`全部背景图片初始化完成`)
     setTimeout(() => {
       // 初始化自动播放
       startAutoPlay();

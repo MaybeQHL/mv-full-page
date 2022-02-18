@@ -1361,12 +1361,14 @@ const _sfc_main = /* @__PURE__ */ defineComponent(__spreadProps(__spreadValues({
       }
     };
     const preCheck = () => {
-      if (state.isRock || config.value.autoPlay.play && !state.autoPlayFinished && !state.isInitPage) {
+      if (state.isRock || config.value.autoPlay.play && !state.autoPlayFinished || config.value.loop) {
         return false;
       }
       return true;
     };
     const pcRoll = (e) => {
+      if (!preCheck())
+        return;
       let path = eventPath(e);
       let isSubScroll = Array.from(path).some((el) => {
         if (el.dataset && el.dataset.scroll == "true") {
@@ -1405,6 +1407,8 @@ const _sfc_main = /* @__PURE__ */ defineComponent(__spreadProps(__spreadValues({
       }
     };
     const pageEnd = (e) => {
+      if (!preCheck())
+        return;
       if (state.isRock)
         return;
       if (state.subScrollEl) {
@@ -1466,8 +1470,6 @@ const _sfc_main = /* @__PURE__ */ defineComponent(__spreadProps(__spreadValues({
       }
     };
     const switchPage = (forward = true, quiet = false) => {
-      if (!preCheck())
-        return;
       if (allPageRef.value) {
         let targetPage;
         let delayPage;
@@ -1521,9 +1523,11 @@ const _sfc_main = /* @__PURE__ */ defineComponent(__spreadProps(__spreadValues({
     const goPage = (page, quiet) => {
       movePage(page, quiet);
     };
+    let loadedImgCount = 0;
     const imgLoad = (page) => {
-      if (page == props.page && config.value.autoPlay.play) {
-        console.log(`\u9875\u7801${page}\u80CC\u666F\u56FE\u7247\u521D\u59CB\u5316\u5B8C\u6210`);
+      loadedImgCount += 1;
+      if (loadedImgCount == props.pages && config.value.autoPlay.play) {
+        console.log(`\u5168\u90E8\u80CC\u666F\u56FE\u7247\u521D\u59CB\u5316\u5B8C\u6210`);
         setTimeout(() => {
           startAutoPlay();
         }, config.value.autoPlay.interval);
@@ -1648,7 +1652,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent(__spreadProps(__spreadValues({
                 class: "page-bg-img",
                 src: `${unref(config).bgArr[index].image}`,
                 style: normalizeStyle({ "object-fit": unref(config).bgConfig.fit }),
-                onLoad: ($event) => imgLoad(index + 1)
+                onLoad: ($event) => imgLoad()
               }, null, 44, _hoisted_2)) : createCommentVNode("v-if", true),
               unref(config).cache ? (openBlock(), createElementBlock("div", _hoisted_3, [
                 renderSlot(_ctx.$slots, `page${item.page}`, { data: item }, void 0, true)
