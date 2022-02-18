@@ -4,7 +4,8 @@
  兼容PC、移动端(微信公众号) 全屏滚动组件
 </p>
 <p align="center">
- 喜欢的帮忙给个 star, 只要有时间就更新和优化
+ 如果觉得还不错, star一下项目,
+ 然后在网页底部捐赠给作者一杯咖啡钱。
 </p>
 
  <p align="center" >
@@ -115,68 +116,69 @@ export default defineComponent({
 ### 配置
 ```
 {
-        /**
-         * 定位模式
-         */
-        position: "fixed",
-        /**
-         * 自定义容器宽度
-         */
-        width: "100%",
-        /**
-         * 自定义容器高度
-         */
-        height: "100%",
-        /**
-         *  v => 垂直方向 ， h => 水平方向
-         */
-        direction: "h",
-        /**
-         * 指示器
-         */
-        poi: {
-          /**
-           * 显示指示器
-           */
-          pointer: true,
-          /**
-           * 指示器位置
-           */
-          position: "right",
-          /**
-           * 指示器类名
-           */
-          className: ""
-        },
-        /**
-         * 缓存页面
-         */
-        cache: true,
-        /**
-         * 页面背景数组
-         * 示例格式: [{ color:'pink' },{ image:'https://xxx.png' }]
-         */
-        bgArr: [],
-        /**
-         * 自定义过渡动画
-         */
-        transition: {
-          duration: "1000ms", // 动画时长
-          timingFun: "ease", // 动画速度曲线
-          delay: "0s", // 动画延迟
-        },
-        // 自动播放
-        autoPlay: false,
-        //  循环播放
-        loop: false,
-        // 切换间隔
-        interval: 1000,
-        arrow: {
-          // 上一页箭头
-          last: false,
-          // 下一页箭头
-          next: false,
-        },
+    /**
+     * 定位模式
+     */
+    position: "fixed",
+    /**
+     * 自定义容器宽度
+     */
+    width: "100%",
+    /**
+     * 自定义容器高度
+     */
+    height: "100%",
+    /**
+     *  v => 垂直方向 ， h => 水平方向
+     */
+    direction: "h",
+    poi: {
+      /**
+       * 显示指示器
+       */
+      pointer: true,
+      /**
+       * 指示器位置
+       */
+      position: "right",
+    },
+    /**
+     * 缓存页面
+     */
+    cache: true,
+    /**
+     * 页面背景数组
+     * @example [{color:'green',image:'http://...'}]
+     */
+    bgArr: [],
+    /**
+     * 背景图片属性配置
+     */
+    bgConfig: {
+      fit: "cover",
+    },
+    /**
+     * 自定义过渡动画
+     */
+    transition: {
+      duration: "1000ms", // 动画时长
+      timingFun: "ease", // 动画速度曲线
+      delay: "0s", // 动画延迟
+    },
+    //  循环播放
+    loop: false,
+    arrow: {
+      // 上一页箭头
+      last: false,
+      // 下一页箭头
+      next: false,
+    },
+    // 自动播放
+    autoPlay: {
+      play: false,
+      // 切换间隔
+      interval: 1000,
+    },
 }
 ```
 

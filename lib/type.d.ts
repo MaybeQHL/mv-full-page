@@ -1,3 +1,5 @@
+import { CSSProperties } from "vue";
+
 export interface Config {
     /**
      * 定位模式
@@ -44,6 +46,15 @@ export interface Config {
         color?: any;
     }[],
     /**
+     * 背景图片属性配置
+     */
+    bgConfig: {
+        /**
+         * 图片展示状态
+         */
+        fit?: 'fill' | 'contain' | 'cover' | 'none' | 'scale-down';
+    },
+    /**
      * 过渡动画参数
      */
     transition: {
@@ -54,15 +65,21 @@ export interface Config {
     /**
      * 自动播放
      */
-    autoPlay: boolean,
+    autoPlay: {
+        /**
+         * 开始播放
+         */
+        play: boolean
+        /**
+         * 切换间隔
+         */
+        interval: number,
+    },
     /**
      * 循环播放
      */
     loop: boolean,
-    /**
-     * 切换间隔
-     */
-    interval: number,
+
     /**
      * 翻页箭头
      */

@@ -1,6 +1,6 @@
 {
   "name": "mv-full-page",
-  "version": "3.0.0-alpha.4",
+  "version": "3.0.0-alpha.5",
   "main": "./dist-lib/mv-full-page.umd.js",
   "module": "./dist-lib/mv-full-page.es.js",
   "exports": {
@@ -22,8 +22,7 @@
     "build:lib": "vite build --mode lib"
   },
   "dependencies": {
-    "lodash": "^4.17.21",
-    "vue": "^3.2.29"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.178",
@@ -31,7 +30,8 @@
     "@vitejs/plugin-legacy": "^1.6.4",
     "@vitejs/plugin-vue": "^2.1.0",
     "sass": "^1.49.7",
-    "vite": "^2.7.13"
+    "vite": "^2.7.13",
+    "vue": "^3.2.29"
   },
   "repository": {
     "type": "git",

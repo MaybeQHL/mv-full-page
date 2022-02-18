@@ -17,7 +17,7 @@ var __spreadValues = (a, b) => {
   return a;
 };
 var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
-import { defineComponent, reactive, ref, computed, watch, nextTick, onMounted, onBeforeUnmount, toRefs, openBlock, createElementBlock, normalizeStyle, createElementVNode, Fragment, renderList, normalizeClass, withDirectives, renderSlot, vShow, withModifiers, createCommentVNode } from "vue";
+import { defineComponent, reactive, ref, computed, watch, nextTick, onMounted, onBeforeUnmount, openBlock, createElementBlock, normalizeStyle, unref, createElementVNode, Fragment, renderList, normalizeClass, renderSlot, withDirectives, vShow, withModifiers, createCommentVNode } from "vue";
 var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
 function isObject$a(value) {
   var type = typeof value;
@@ -1203,9 +1203,21 @@ var _export_sfc = (sfc, props) => {
   }
   return target;
 };
-const _sfc_main = defineComponent({
-  name: "MvFullPage",
-  components: {},
+const _hoisted_1 = ["data-num"];
+const _hoisted_2 = ["src"];
+const _hoisted_3 = {
+  key: 0,
+  class: "page-box"
+};
+const _hoisted_4 = {
+  key: 1,
+  class: "page-box"
+};
+const _hoisted_5 = ["onClick", "onMouseover"];
+const __default__ = {
+  name: "MvFullPage"
+};
+const _sfc_main = /* @__PURE__ */ defineComponent(__spreadProps(__spreadValues({}, __default__), {
   props: {
     pages: {
       type: Number,
@@ -1219,7 +1231,9 @@ const _sfc_main = defineComponent({
       type: Object
     }
   },
-  setup(props, { emit }) {
+  emits: ["pointerMouseover", "update:page", "rollEnd"],
+  setup(__props, { expose, emit }) {
+    const props = __props;
     const state = reactive({
       pagesArr: [],
       isPc: false,
@@ -1239,7 +1253,8 @@ const _sfc_main = defineComponent({
       isInitTranslate: false,
       playInterval: null,
       isForward: true,
-      isInitPage: false
+      isInitPage: false,
+      autoPlayFinished: false
     });
     const allPageRef = ref();
     const outContainerRef = ref();
@@ -1255,28 +1270,35 @@ const _sfc_main = defineComponent({
         },
         cache: true,
         bgArr: [],
+        bgConfig: {
+          fit: "cover"
+        },
         transition: {
           duration: "1000ms",
           timingFun: "ease",
           delay: "0s"
         },
-        autoPlay: false,
         loop: false,
-        interval: 1e3,
         arrow: {
           last: false,
           next: false
+        },
+        autoPlay: {
+          play: false,
+          interval: 1e3
         }
       };
       const reConfig = merge_1(baseConfig, props.config);
       return reConfig;
     });
     const toPage = (type) => {
+      if (!preCheck())
+        return;
       if (type == "last") {
-        emit("update:page", props.page - 1);
+        switchPage(false);
       }
       if (type == "next") {
-        emit("update:page", props.page + 1);
+        switchPage(true);
       }
     };
     const pointerMouseover = (event, index) => {
@@ -1285,38 +1307,27 @@ const _sfc_main = defineComponent({
         index
       });
     };
-    const initAutoPlay = () => {
-      state.playInterval = setInterval(() => {
-        if (props.page < props.pages && state.isForward) {
-          emit("update:page", props.page + 1);
-        } else if (config.value.loop) {
-          if (props.page > 1) {
-            state.isForward = false;
-            emit("update:page", props.page - 1);
-          } else {
-            state.isForward = true;
-            emit("update:page", props.page + 1);
-          }
-        } else {
-          stopAutoPlay();
-        }
-      }, config.value.interval || 1e3);
+    const startAutoPlay = () => {
+      setTimeout(() => {
+        switchPage(true);
+      }, config.value.autoPlay.interval);
     };
-    const stopAutoPlay = () => {
-      clearInterval(state.playInterval);
-      state.playInterval = null;
-      state.isForward = true;
-    };
-    const startRoll = (offset) => {
+    const movePageByOffset = (offset = 0, quiet = false) => {
+      quiet && setQuiet(true);
+      allPageRef.value;
       let transformBind = `translate${config.value.direction == "v" ? "Y" : "X"}(${offset}px)`;
       allPageRef.value.style.transform = transformBind;
+      quiet && setTimeout(() => {
+        setQuiet(false);
+      }, 500);
     };
     const resizeWin = throttle_1(() => {
       initPageWH();
     }, 500);
     const pointerClick = (index) => {
-      if (state.isRock)
+      if (!preCheck())
         return;
+      movePage(index, true);
       emit("update:page", index);
     };
     const initPageWH = () => {
@@ -1324,8 +1335,10 @@ const _sfc_main = defineComponent({
       state.fullWidth = outContainerRef.value.clientWidth;
       state.maxY = props.pages * state.fullHeight;
       state.maxX = props.pages * state.fullWidth;
-      allPageRef.value.style.height = state.fullHeight * props.pages + "px";
-      allPageRef.value.style.width = state.fullWidth * props.pages + "px";
+    };
+    const initContainer = () => {
+      allPageRef.value.style.height = allPageRef.value.querySelectorAll(".page").length * state.fullHeight + "px";
+      allPageRef.value.style.width = allPageRef.value.querySelectorAll(".page").length * state.fullWidth + "px";
     };
     const initPageListener = () => {
       if (!state.isPc) {
@@ -1347,9 +1360,13 @@ const _sfc_main = defineComponent({
         removeEvent(allPageRef.value, state.wheelEventName, pcRoll);
       }
     };
+    const preCheck = () => {
+      if (state.isRock || config.value.autoPlay.play && !state.autoPlayFinished && !state.isInitPage) {
+        return false;
+      }
+      return true;
+    };
     const pcRoll = (e) => {
-      if (state.isRock)
-        return;
       let path = eventPath(e);
       let isSubScroll = Array.from(path).some((el) => {
         if (el.dataset && el.dataset.scroll == "true") {
@@ -1388,7 +1405,7 @@ const _sfc_main = defineComponent({
       }
     };
     const pageEnd = (e) => {
-      if (state.isRock || config.value.autoPlay)
+      if (state.isRock)
         return;
       if (state.subScrollEl) {
         state.subScrollEl = null;
@@ -1413,15 +1430,15 @@ const _sfc_main = defineComponent({
         }
       }
     };
-    const rollPage = (page, isStatic) => {
+    const movePage = (page, quiet, delayPage) => {
       if (allPageRef.value && state.fullHeight > 0 && state.fullWidth > 0) {
-        let offset = -((page - 1) * (config.value.direction == "v" ? state.fullHeight : state.fullWidth));
-        if (isStatic) {
+        let offset = -(page * (config.value.direction == "v" ? state.fullHeight : state.fullWidth));
+        if (quiet) {
           allPageRef.value.style.transitionProperty = "none";
         }
         let transformBind = `translate${config.value.direction == "v" ? "Y" : "X"}(${offset}px)`;
         allPageRef.value.style.transform = transformBind;
-        if (isStatic) {
+        if (quiet) {
           setTimeout(() => {
             allPageRef.value.style.transitionProperty = "transform";
           }, 1);
@@ -1431,18 +1448,62 @@ const _sfc_main = defineComponent({
             state.isRock = false;
             emit("rollEnd", props.page);
             allPageRef.value.removeEventListener("transitionend", eventFn);
+            if (delayPage && delayPage > 0) {
+              movePage(delayPage, true);
+            }
+            if (config.value.autoPlay.play) {
+              if (config.value.loop) {
+                startAutoPlay();
+              } else if (props.page < props.pages && !state.autoPlayFinished) {
+                startAutoPlay();
+              } else {
+                state.autoPlayFinished = true;
+              }
+            }
           };
           allPageRef.value.addEventListener("transitionend", eventFn);
         }
       }
     };
-    const switchPage = (forward = true) => {
+    const switchPage = (forward = true, quiet = false) => {
+      if (!preCheck())
+        return;
       if (allPageRef.value) {
-        if (forward && props.page < props.pages) {
-          emit("update:page", props.page + 1);
-        } else if (!forward && props.page > 1) {
-          emit("update:page", props.page - 1);
+        let targetPage;
+        let delayPage;
+        if (forward) {
+          targetPage = props.page + 1;
+          delayPage = props.page == props.pages && 1;
+        } else {
+          targetPage = props.page - 1;
+          delayPage = props.page == 1 && props.pages;
         }
+        if (delayPage) {
+          movePage(targetPage, quiet, delayPage);
+          emit("update:page", delayPage);
+          return;
+        }
+        movePage(targetPage, quiet);
+        emit("update:page", targetPage);
+      }
+    };
+    const setQuiet = (quiet = true) => {
+      const container = allPageRef.value;
+      if (quiet) {
+        container.classList.add("transition-clear");
+      } else {
+        container.classList.remove("transition-clear");
+      }
+    };
+    const initLoop = () => {
+      const container = allPageRef.value;
+      if (container.firstChild && container.lastChild) {
+        const pageFirst = container.querySelector(".page[data-num = '1']");
+        const pageLast = container.querySelector(`.page[data-num = '${props.pages}']`);
+        const pageFirstClone = pageFirst.cloneNode(true);
+        const pageLastClone = pageLast.cloneNode(true);
+        container.append(pageFirstClone);
+        container.prepend(pageLastClone);
       }
     };
     const init = () => {
@@ -1456,24 +1517,23 @@ const _sfc_main = defineComponent({
       initPageWH();
       initPageListener();
       window.addEventListener("resize", resizeWin);
+      setTimeout(() => {
+        if (config.value.autoPlay.play) {
+          startAutoPlay();
+        }
+      }, config.value.autoPlay.interval + 1e3);
+    };
+    const goPage = (page, quiet) => {
+      movePage(page, quiet);
     };
     watch(() => props.page, (val) => {
-      if (state.isInitTranslate) {
-        startRoll(0);
-        state.isInitTranslate = false;
-        setTimeout(() => {
-          allPageRef.value.classList.remove("transition-clear");
-        }, 1);
-        return;
-      }
       nextTick(() => {
-        state.pagesArr[props.page - 1].isShow = true;
         if (!state.isInitPage) {
+          const offset = -(val * state.fullHeight);
+          movePageByOffset(offset, true);
           state.isInitPage = true;
-          rollPage(val, true);
           return;
         }
-        rollPage(val);
       });
     }, {
       immediate: true
@@ -1496,22 +1556,43 @@ const _sfc_main = defineComponent({
       }
       if (!state.isInitPage) {
         emit("update:page", props.page);
-        return;
+      } else {
+        emit("update:page", 1);
       }
-      emit("update:page", 1);
+      nextTick(() => {
+        nextTick(() => {
+          initLoop();
+          initContainer();
+        });
+      });
     }, {
       immediate: true
     });
-    watch(() => config.value.autoPlay, (val) => {
-      if (val) {
-        nextTick(() => {
-          initAutoPlay();
+    watch(() => config.value.direction, (val) => {
+      const container = allPageRef.value;
+      if (val == "h" && config.value.loop) {
+        movePageByOffset(-state.fullWidth, true);
+        container.querySelectorAll(".page").forEach((item) => {
+          item.classList.add("floatLeft");
         });
       } else {
-        stopAutoPlay();
+        movePageByOffset(-state.fullHeight, true);
+        container.querySelectorAll(".page").forEach((item) => {
+          item.classList.remove("floatLeft");
+        });
+      }
+    });
+    watch(() => config.value.autoPlay.play, (val) => {
+      if (val) {
+        nextTick(() => {
+          startAutoPlay();
+        });
       }
     }, {
-      immediate: true
+      immediate: false
+    });
+    expose({
+      goPage
     });
     onMounted(() => {
       init();
@@ -1519,102 +1600,89 @@ const _sfc_main = defineComponent({
     onBeforeUnmount(() => {
       removePageListener();
       window.removeEventListener("resize", resizeWin);
-      stopAutoPlay();
       console.log("\u9500\u6BC1\u9875\u9762\u4E8B\u4EF6\u6210\u529F");
     });
-    return __spreadProps(__spreadValues({}, toRefs(state)), {
-      config,
-      allPageRef,
-      outContainerRef,
-      pointerClick,
-      pointerMouseover,
-      toPage
-    });
-  }
-});
-const _hoisted_1 = {
-  key: 0,
-  class: "page-box"
-};
-const _hoisted_2 = {
-  key: 1,
-  class: "page-box"
-};
-const _hoisted_3 = ["onClick", "onMouseover"];
-function _sfc_render(_ctx, _cache, $props, $setup, $data, $options) {
-  return openBlock(), createElementBlock("div", {
-    class: "mv-page-container",
-    style: normalizeStyle({
-      position: _ctx.config.position,
-      height: _ctx.config.height,
-      width: _ctx.config.width
-    }),
-    ref: "outContainerRef"
-  }, [
-    createElementVNode("div", {
-      class: "mv-all-page",
-      ref: "allPageRef",
-      style: normalizeStyle({
-        "transition-duration": _ctx.config.transition.duration,
-        "transition-timing-function": _ctx.config.transition.timingFun,
-        "transition-delay": _ctx.config.transition.delay
-      })
-    }, [
-      (openBlock(true), createElementBlock(Fragment, null, renderList(_ctx.pagesArr, (item, index) => {
-        return openBlock(), createElementBlock("div", {
-          key: index,
-          class: normalizeClass(["page", { floatLeft: !(_ctx.config.direction == "v") }]),
-          style: normalizeStyle({
-            height: _ctx.fullHeight + "px",
-            width: _ctx.fullWidth + "px",
-            "background-color": _ctx.config.bgArr[index] && _ctx.config.bgArr[index].color,
-            "background-image": _ctx.config.bgArr[index].image && `url(${_ctx.config.bgArr[index].image})`
-          }),
-          ref_for: true,
-          ref: `page${item.page}`
-        }, [
-          _ctx.config.cache ? withDirectives((openBlock(), createElementBlock("div", _hoisted_1, [
-            renderSlot(_ctx.$slots, `page${item.page}`, { data: item }, void 0, true)
-          ], 512)), [
-            [vShow, item.isShow]
-          ]) : withDirectives((openBlock(), createElementBlock("div", _hoisted_2, [
-            renderSlot(_ctx.$slots, `page${item.page}`, { data: item }, void 0, true)
-          ], 512)), [
-            [vShow, _ctx.page == item.page]
-          ])
-        ], 6);
-      }), 128))
-    ], 4),
-    _ctx.config.poi.pointer ? (openBlock(), createElementBlock("div", {
-      key: 0,
-      class: normalizeClass(["mv-pointer-wrapper", [_ctx.config.poi.position, _ctx.config.poi.className]])
-    }, [
-      createElementVNode("ul", {
-        class: normalizeClass(_ctx.isPc && "hover")
+    return (_ctx, _cache) => {
+      return openBlock(), createElementBlock("div", {
+        class: "mv-page-container",
+        style: normalizeStyle({
+          position: unref(config).position,
+          width: "100%",
+          height: "100%"
+        }),
+        ref_key: "outContainerRef",
+        ref: outContainerRef
       }, [
-        (openBlock(true), createElementBlock(Fragment, null, renderList(_ctx.pages, (index) => {
-          return openBlock(), createElementBlock("li", {
-            class: normalizeClass({ active: _ctx.page == index }),
-            onClick: withModifiers(($event) => _ctx.pointerClick(index), ["stop"]),
-            key: index,
-            onMouseover: ($event) => _ctx.pointerMouseover($event, index)
-          }, null, 42, _hoisted_3);
-        }), 128))
-      ], 2)
-    ], 2)) : createCommentVNode("v-if", true),
-    _ctx.config.arrow.last && _ctx.page > 1 ? (openBlock(), createElementBlock("div", {
-      key: 1,
-      class: "last-arrow iconfont icon-jiantoushang",
-      onClick: _cache[0] || (_cache[0] = ($event) => _ctx.toPage("last"))
-    })) : createCommentVNode("v-if", true),
-    _ctx.config.arrow.next && _ctx.page < _ctx.pages ? (openBlock(), createElementBlock("div", {
-      key: 2,
-      class: "next-arrow iconfont icon-jiantouxia",
-      onClick: _cache[1] || (_cache[1] = ($event) => _ctx.toPage("next"))
-    })) : createCommentVNode("v-if", true)
-  ], 4);
-}
-var MyComponent = /* @__PURE__ */ _export_sfc(_sfc_main, [["render", _sfc_render], ["__scopeId", "data-v-5e88b1b5"]]);
+        createElementVNode("div", {
+          class: "mv-all-page",
+          ref_key: "allPageRef",
+          ref: allPageRef,
+          style: normalizeStyle({
+            "transition-duration": unref(config).transition.duration,
+            "transition-timing-function": unref(config).transition.timingFun,
+            "transition-delay": unref(config).transition.delay
+          })
+        }, [
+          (openBlock(true), createElementBlock(Fragment, null, renderList(unref(state).pagesArr, (item, index) => {
+            return openBlock(), createElementBlock("div", {
+              key: index,
+              class: normalizeClass(["page", { floatLeft: !(unref(config).direction == "v") }]),
+              style: normalizeStyle({
+                height: unref(state).fullHeight + "px",
+                width: unref(state).fullWidth + "px",
+                "background-color": unref(config).bgArr[index] && unref(config).bgArr[index].color
+              }),
+              ref_for: true,
+              ref: `page${item.page}`,
+              "data-num": index + 1
+            }, [
+              createElementVNode("img", {
+                class: "page-bg-img",
+                src: unref(config).bgArr[index].image && `${unref(config).bgArr[index].image}`,
+                style: normalizeStyle({ "object-fit": unref(config).bgConfig.fit })
+              }, null, 12, _hoisted_2),
+              unref(config).cache ? (openBlock(), createElementBlock("div", _hoisted_3, [
+                renderSlot(_ctx.$slots, `page${item.page}`, { data: item }, void 0, true)
+              ])) : withDirectives((openBlock(), createElementBlock("div", _hoisted_4, [
+                renderSlot(_ctx.$slots, `page${item.page}`, { data: item }, void 0, true)
+              ], 512)), [
+                [vShow, __props.page == item.page]
+              ])
+            ], 14, _hoisted_1);
+          }), 128))
+        ], 4),
+        unref(config).poi.pointer ? (openBlock(), createElementBlock("div", {
+          key: 0,
+          class: normalizeClass(["mv-pointer-wrapper", [unref(config).poi.position, unref(config).poi.className]])
+        }, [
+          createElementVNode("ul", {
+            class: normalizeClass(unref(state).isPc && "hover")
+          }, [
+            (openBlock(true), createElementBlock(Fragment, null, renderList(__props.pages, (index) => {
+              return openBlock(), createElementBlock("li", {
+                class: normalizeClass({ active: __props.page == index }),
+                onClick: withModifiers(($event) => pointerClick(index), ["stop"]),
+                key: index,
+                onMouseover: ($event) => pointerMouseover($event, index)
+              }, null, 42, _hoisted_5);
+            }), 128))
+          ], 2)
+        ], 2)) : createCommentVNode("v-if", true),
+        unref(config).arrow.last ? (openBlock(), createElementBlock("div", {
+          key: 1,
+          class: "last-arrow iconfont icon-jiantoushang",
+          onClick: _cache[0] || (_cache[0] = ($event) => toPage("last"))
+        })) : createCommentVNode("v-if", true),
+        unref(config).arrow.next ? (openBlock(), createElementBlock("div", {
+          key: 2,
+          class: "next-arrow iconfont icon-jiantouxia",
+          onClick: _cache[1] || (_cache[1] = ($event) => toPage("next"))
+        })) : createCommentVNode("v-if", true)
+      ], 4);
+    };
+  }
+}));
+var MyComponent = /* @__PURE__ */ _export_sfc(_sfc_main, [["__scopeId", "data-v-5e88b1b5"]]);
 MyComponent.install = (app, options) => {
   app.component(MyComponent.name, MyComponent);
 };

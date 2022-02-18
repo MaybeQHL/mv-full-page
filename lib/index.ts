@@ -5,4 +5,5 @@ import MyComponent from './Component.vue'
 MyComponent.install = (app: App, options: any) => {
     app.component(MyComponent.name, MyComponent)
 };
+
 export default MyComponent // 提供按需导入组件

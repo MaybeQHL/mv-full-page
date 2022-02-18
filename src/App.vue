@@ -12,39 +12,36 @@
         <div :class="`page${page}`" :key="page">
           {{ `页面${page}` }}
         </div>
-      </template> -->
+      </template>-->
       <!-- 静态插槽 -->
       <template #page1>
         <div class="page1" style="line-height: 30px">
           <h2>mv-full-page</h2>
-          <h3 style="margin-bottom: 10px">
-            一款兼容PC端移动端的Vue全屏滚动组件
-          </h3>
+          <h3 style="margin-bottom: 10px">一款兼容PC端移动端的Vue全屏滚动组件</h3>
 
           <m-panel title="切换方向">
-            <button class="btn btn-s1" @click="switchDire">
-              切换滑动方向(默认垂直方向)
-            </button>
+            <button class="btn btn-s1" @click="switchDire">切换滑动方向(默认垂直方向)</button>
           </m-panel>
 
           <m-panel title="手动切换到具体页码">
             <input type="text" v-model="tempPage" />
-            <p><button class="btn btn-s1" @click="toPage">切换</button></p>
+            <p>
+              <button class="btn btn-s1" @click="toPage">切换</button>
+            </p>
           </m-panel>
 
           <m-panel title="自动播放">
-            时间间隔：<input type="text" v-model="config.interval" />
+            时间间隔：
+            <input type="text" v-model="config.autoPlay.interval" />
             <button
               class="btn btn-s1"
               @click="
                 () => {
                   config.loop = true;
-                  config.autoPlay = true;
+                  config.autoPlay.play = true;
                 }
               "
-            >
-              开启自动且循环播放
-            </button>
+            >开启自动且循环播放</button>
           </m-panel>
 
           <m-panel title="移动端局部列表滚动demo">
@@ -107,12 +104,15 @@ export default defineComponent({
               "https://dongman-10014144.cos.ap-shanghai.myqcloud.com/demo4.jpg",
           },
         ],
-        // 自动播放
-        autoPlay: false,
         //  循环播放
-        loop: false,
-        // 切换间隔
-        interval: 1000,
+        loop: true,
+        // 自动轮播
+        autoPlay: {
+          play: false,
+          // 切换间隔
+          interval: 1000,
+        },
+
         arrow: {
           // 上一页箭头
           last: true,

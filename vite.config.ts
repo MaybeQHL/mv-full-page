@@ -8,6 +8,9 @@ import path from 'path'
 export default defineConfig(({ mode }) => {
 
   const baseConfig = {
+    optimizeDeps: {
+      exclude: ['vue-demi']
+    },
     plugins: [
       vue(),
     ]

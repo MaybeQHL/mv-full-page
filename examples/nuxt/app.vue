@@ -6,5 +6,5 @@
 </template>
 
 <script setup>
-import MvFullPage from "../../";
+import MvFullPage from "../../../";
 </script>
