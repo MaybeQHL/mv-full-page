@@ -1361,7 +1361,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent(__spreadProps(__spreadValues({
       }
     };
     const preCheck = () => {
-      if (state.isRock || config.value.autoPlay.play && !state.autoPlayFinished || config.value.loop) {
+      if (state.isRock || config.value.autoPlay.play && !state.autoPlayFinished) {
         return false;
       }
       return true;
