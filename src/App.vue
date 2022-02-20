@@ -108,7 +108,7 @@ export default defineComponent({
         loop: true,
         // 自动轮播
         autoPlay: {
-          play: true,
+          play: false,
           // 切换间隔
           interval: 1000,
         },
