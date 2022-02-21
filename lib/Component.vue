@@ -333,12 +333,10 @@ const removePageListener = () => {
  * 页面切换前验证
  */
 const preCheck = () => {
-  // if (state.autoPlayFinished) return true;
 
   if (
     state.isRock ||
     (config.value.autoPlay.play && !state.autoPlayFinished)
-    || config.value.loop
   ) {
     return false;
   }
