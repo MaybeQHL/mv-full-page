@@ -609,12 +609,9 @@ watch(
     state.pagesArr.length = 0;
     for (let index = 0; index < props.pages; index++) {
       state.pagesArr.push({
-        page: index + 1,
-        isShow: index == 0 ? true : false,
+        page: index + 1
       });
     }
-    // 初始化设置页面1为可视页面
-    state.pagesArr[0].isShow = true;
     // 如果当前页码大于1重置位置（避免页面显示错误的过渡动画）
     if (props.page > 1 && state.isInitPage) {
       // 页面数改变标识
