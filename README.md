@@ -55,7 +55,7 @@ export default defineComponent({
 ## 示例代码
 ### 基本使用
 
-[跳转](https://gitee.com/null_639_5368/v-full-page/blob/vue3/src/App.vue)
+[跳转](./src/App.vue)
 
 ### 动态插槽
 ```
@@ -74,6 +74,8 @@ export default defineComponent({
       </template>
     </mv-full-page>
 ```
+### Nuxt3
+[示例代码](./examples/nuxt/pages/index.vue)
 ## 演示
 
 [Demo](http://null_639_5368.gitee.io/v-full-page)

@@ -3598,10 +3598,10 @@ murmurhash-es@^0.1.1:
   resolved "https://registry.yarnpkg.com/murmurhash-es/-/murmurhash-es-0.1.1.tgz#e4d7943eed19b0c1b66f5bb071fce52c7a052782"
   integrity sha512-IfA8KVe9dxv28F9KSJ8EpJP2jgO1br6xInnFaPDjQKosEfpTMAx8v1eGCUzOvcZDstadm3mdP95JILrYs0mNsg==
 
-mv-full-page@^3.0.0-alpha.6:
-  version "3.0.0-alpha.6"
-  resolved "https://registry.yarnpkg.com/mv-full-page/-/mv-full-page-3.0.0-alpha.6.tgz#87369ab4685c88c67f8e9c15a0e49165fec26949"
-  integrity sha512-WgMa855xrR+qWf5mYSFMt63GoSE681P7eE0/qdFGW5lITgbnKwIej1N/WOTLmBmAyWuy825ZpmE4oipjmKxrXA==
+mv-full-page@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/mv-full-page/-/mv-full-page-3.0.2.tgz#3e27e026d99114861449e6aea8644e2530568f9e"
+  integrity sha512-nwwxzTLRWfLz4PpOTfCHLdX81J2JAQlh6oVMTT4n46pJcqR+jbrDKkBhjWiQtjLZ6X7gTSZYp+Qhb5X8gBF1pA==
   dependencies:
     lodash "^4.17.21"
 
@@ -5229,11 +5229,6 @@ vue-bundle-renderer@^0.3.5:
   integrity sha512-LmiGFvlK3ZVtUklpJKVmVkJcmpkLEHKE9YbSR6WgFULIikw3pusXhX3vZPkL9tGcjzBERVrB9CQYDGdWApnEJQ==
   dependencies:
     bundle-runner "^0.0.1"
-
-vue-gtag-next@^1.14.0:
-  version "1.14.0"
-  resolved "https://registry.npmmirror.com/vue-gtag-next/-/vue-gtag-next-1.14.0.tgz#793aef0b90dff4213b9f3a79827cd99b06e678dd"
-  integrity sha512-iJl+cOG2GU5NuxqzSSIpt03WVOvZqyKB9TOy7d55KiuvRklcnb2nlqxW5B/a3/sbIt7fla+XEkRyMCcoz0zAHw==
 
 vue-loader@^17.0.0:
   version "17.0.0"
