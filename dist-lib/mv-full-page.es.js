@@ -1552,11 +1552,9 @@ const _sfc_main = /* @__PURE__ */ defineComponent(__spreadProps(__spreadValues({
       state.pagesArr.length = 0;
       for (let index = 0; index < props.pages; index++) {
         state.pagesArr.push({
-          page: index + 1,
-          isShow: index == 0 ? true : false
+          page: index + 1
         });
       }
-      state.pagesArr[0].isShow = true;
       if (props.page > 1 && state.isInitPage) {
         allPageRef.value && allPageRef.value.classList.add("transition-clear");
         state.isInitTranslate = true;

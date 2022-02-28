@@ -194,6 +194,12 @@ export default defineComponent({
 | pointerMouseover | 指示器mouseover事件和指示器索引 | `({event:事件,index:指示器对应索引})` |
 <br>
 
+### Ref
+| name   | 说明         | 参数                                     |
+| ------ | ------------ | ---------------------------------------- |
+| goPage | 手动跳转页面 | `(page:页码,quiet:是否静态跳转) => void` |
+
+
 ### 局部滚动 div
 
 | name        | 类型    | 默认值 | 备注                                                                  |

@@ -1,6 +1,7 @@
 <template>
   <div class="home">
     <mv-full-page
+      ref="myFullPage"
       :pages="pages"
       v-model:page="page"
       :config="config"
@@ -23,12 +24,12 @@
             <button class="btn btn-s1" @click="switchDire">切换滑动方向(默认垂直方向)</button>
           </m-panel>
 
-          <!-- <m-panel title="手动切换到具体页码">
+          <m-panel title="手动切换到具体页码">
             <input type="text" v-model="tempPage" />
             <p>
               <button class="btn btn-s1" @click="toPage">切换</button>
             </p>
-          </m-panel>-->
+          </m-panel>
 
           <m-panel title="自动播放">
             时间间隔：
@@ -67,10 +68,12 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, toRefs } from "vue";
+import { defineComponent, reactive, ref, toRefs } from "vue";
 import MPanel from "./components/MPanel.vue";
 // 本地测试组件，实际使用npm i mv-full-page@next 安装后导入
 import MvFullPage from "../lib";
+// 实际使用直接用 上面 MvFullPage 就可以了
+import { default as MvFullPageRef } from '../types/index'
 
 export default defineComponent({
   components: {
@@ -124,6 +127,7 @@ export default defineComponent({
         },
       } as import("../types/type").Config,
     });
+    const myFullPage = ref();
     const pointerMouseover = ({ event, index }: any) => {
       console.log(event, index);
     };
@@ -132,6 +136,7 @@ export default defineComponent({
     };
     const toPage = () => {
       state.page = state.tempPage;
+      (myFullPage.value as MvFullPageRef).goPage(state.page, true);
     };
     const switchDire = () => {
       state.config.direction == "v"
@@ -144,6 +149,7 @@ export default defineComponent({
       onRollEnd,
       toPage,
       switchDire,
+      myFullPage
     };
   },
 });
