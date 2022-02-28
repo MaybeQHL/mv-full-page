@@ -5,8 +5,14 @@
 </p>
 <p align="center">
  如果觉得还不错, star一下项目,
- 然后在网页底部捐赠给作者一杯咖啡钱。
+ 也可以在网页底部捐赠给作者一杯咖啡钱,Thanks♪(･ω･)ﾉ。
+
 </p>
+<p align="center">
+另外：
+如果你的项目用到了此组件，可以提交你的网址进行展示。
+</p>
+
 
  <p align="center" >
     <img src="https://img.shields.io/npm/v/mv-full-page/next?style=flat-square" alt="npm version"  style="margin-right:5px;" />
@@ -212,6 +218,12 @@ export default defineComponent({
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="42px" height="42px" />](https://godban.github.io/browsers-support-badges/)</br>Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="42px" height="42px" />](https://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="42px" height="42px" />](https://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="42px" height="42px" />](https://godban.github.io/browsers-support-badges/)</br>Safari |
 | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Edge                                                                                                                                                                                                        | last 2 versions                                                                                                                                                                                                    | last 2 versions                                                                                                                                                                                                | last 2 versions                                                                                                                                                                                                |
+
+## 展示
+* [演示网页](http://null_639_5368.gitee.io/v-full-page/)
+* .....
+
+
 ## 赞助
 > 优先处理问题，以及定制化方案
 > 
